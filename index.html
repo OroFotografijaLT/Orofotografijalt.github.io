@@ -20,12 +20,22 @@
             text-align: center;
         }
 
+        #products {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            justify-content: center;
+            padding: 10px;
+        }
+
         .product {
             border: 1px solid #ccc;
             margin: 10px;
             padding: 10px;
             background: white;
             border-radius: 8px;
+            width: 300px;
+            box-sizing: border-box;
         }
 
         .product h3 {
@@ -38,18 +48,29 @@
 
         .cart {
             position: fixed;
-            top: 50px;
-            right: 10px;
+            bottom: 0;
+            right: 0;
             background: #fff;
             border: 1px solid #ccc;
             padding: 10px;
-            border-radius: 8px;
-            width: 300px;
+            border-radius: 8px 8px 0 0;
+            width: 100%;
+            max-width: 400px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         }
 
         .cart h2 {
             font-size: 1.2em;
+        }
+
+        .cart form input,
+        .cart form select {
+            width: 100%;
+            margin-bottom: 10px;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
         }
 
         .btn {
@@ -65,12 +86,45 @@
         .btn:hover {
             background-color: #004d99;
         }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            #products {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .product {
+                width: 90%;
+            }
+
+            .cart {
+                position: static;
+                margin: 10px auto;
+                width: 90%;
+                border-radius: 8px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            header {
+                padding: 10px;
+            }
+
+            .product {
+                width: 100%;
+            }
+
+            .btn {
+                padding: 8px 16px;
+            }
+        }
     </style>
 </head>
 <body>
     <header>
         <h1>Airo Store</h1>
-        <p>svetaine</p>
+        <p>Pirotechnikos parduotuvė</p>
     </header>
 
     <div id="products">
@@ -105,16 +159,16 @@
         <ul id="cart-items"></ul>
         <form id="order-form" action="https://formspree.io/f/xgvezjqw" method="POST">
             <label for="full-name">Pilnas vardas:</label>
-            <input type="text" name="name" id="full-name" required><br>
+            <input type="text" name="name" id="full-name" required>
             <label for="dob">Gimimo data:</label>
-            <input type="date" name="dob" id="dob" required><br>
+            <input type="date" name="dob" id="dob" required>
             <label for="address">Adresas:</label>
-            <input type="text" name="address" id="address" required><br>
+            <input type="text" name="address" id="address" required>
             <label for="delivery">Pristatymo būdas:</label>
             <select name="delivery" id="delivery">
                 <option value="pickup">Atsiimti vietoje</option>
                 <option value="shipping">Pristatymas</option>
-            </select><br><br>
+            </select>
             <button class="btn" type="submit">Užsakyti</button>
         </form>
     </div>
