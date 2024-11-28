@@ -200,129 +200,128 @@
 
     <header>
         <h1>Airo Store</h1>
-        <p></p>
+        <p>Pirotechnikos parduotuvė</p>
     </header>
 
     <div id="products">
-        <!-- Products here -->
+        <div class="product">
+            <h3>Dūmų bomba (paprasta)</h3>
+            <p>Tobulas produktas nuotraukoms ar bendram smagumui.</p>
+            <select id="smoke-bomb-size">
+                <option value="1.00">Maža - €1.00</option>
+                <option value="1.50">Vidutinė - €1.50</option>
+                <option value="1.99">Originali - €1.99</option>
+            </select>
+            <button class="btn" onclick="addToCart('Dūmų bomba', parseFloat(document.getElementById('smoke-bomb-size').value))">Įdėti į krepšelį</button>
+        </div>
+        <div class="product">
+            <h3>Dūmų lazdos</h3>
+            <p>Maža tūbelė su 4g mišinio greitam dūmų išleidimui.</p>
+            <select id="smoke-stix-size">
+                <option value="1.00">Vienetinis - €1.00</option>
+                <option value="4.50">Pakuotė (6) - €4.50</option>
+            </select>
+            <button class="btn" onclick="addToCart('Dūmų lazdos', parseFloat(document.getElementById('smoke-stix-size').value))">Įdėti į krepšelį</button>
+        </div>
+        <div class="product">
+            <h3>Maža raketa</h3>
+            <p>Prototipas. Naudojama tik gamybos sąnaudoms padengti.</p>
+            <p>Kaina: €1.00</p>
+            <button class="btn" onclick="addToCart('Maža raketa', 1.00)">Įdėti į krepšelį</button>
+        </div>
+        <div class="product">
+            <h3>Storos dūmų bombos</h3>
+            <p>Degina greitai, sukuria storą baltų dūmų debesį.</p>
+            <select id="thick-smoke-size">
+                <option value="1.49">Maža - €1.49</option>
+                <option value="1.99">Vidutinė - €1.99</option>
+                <option value="2.49">Didelė - €2.49</option>
+            </select>
+            <button class="btn" onclick="addToCart('Storos dūmų bombos', parseFloat(document.getElementById('thick-smoke-size').value))">Įdėti į krepšelį</button>
+        </div>
     </div>
 
-    <div class="cart-icon" onclick="toggleCart()">🛒</div>
+    <div class="cart-icon" id="cart-icon">
+        🛒
+    </div>
 
     <div class="cart-modal" id="cart-modal">
         <div class="cart-container">
             <h2>Krepšelis</h2>
-            <ul id="cart-items"></ul>
-            <form id="order-form" action="https://formspree.io/f/xgvezjqw" method="POST">
-                <input type="text" name="name" placeholder="Pilnas vardas" required>
-                <input type="email" name="email" placeholder="El. paštas" required>
-                <input type="tel" name="phone" placeholder="Telefono numeris" required>
-                <input type="date" name="dob" placeholder="Gimimo data" required>
-                <input type="hidden" name="cartDetails" id="cart-details">
-                <button type="submit" onclick="populateCartDetails()">Užsakyti</button>
-                <button type="button" class="btn-close" onclick="toggleCart()">Grįžti</button>
-            </form>
+            <div id="cart-items"></div>
+            <button class="btn-close" onclick="closeCart()">Uždaryti</button>
         </div>
     </div>
 
     <div class="cookie-banner" id="cookie-banner">
-        <p>Ši svetainė naudoja slapukus. Sutikite su slapukais?</p>
+        <p>Mes naudojame slapukus, kad pagerintume jūsų patirtį. Norėdami tęsti, sutikite su mūsų naudojimo sąlygomis.</p>
         <button onclick="acceptCookies()">Sutinku</button>
-        <button onclick="declineCookies()">Nesutinku</button>
     </div>
 
     <script>
-        let cart = [];
-        let cookiesAccepted = localStorage.getItem('cookiesAccepted') === 'true';
-        let ageConfirmed = localStorage.getItem('ageConfirmed') === 'true';
-        let cookiesDeclined = localStorage.getItem('cookiesDeclined') === 'true';
+        // Cart and Notification Handling
+        let cart = JSON.parse(localStorage.getItem('cart')) || [];
+        const cartItemsContainer = document.getElementById('cart-items');
+        const cartModal = document.getElementById('cart-modal');
+        const notification = document.getElementById('notification');
+        const cartIcon = document.getElementById('cart-icon');
+        
+        function updateCart() {
+            cartItemsContainer.innerHTML = '';
+            cart.forEach(item => {
+                const itemElement = document.createElement('div');
+                itemElement.innerHTML = `${item.name} - €${item.price.toFixed(2)} <button onclick="removeFromCart('${item.name}')">Remove</button>`;
+                cartItemsContainer.appendChild(itemElement);
+            });
+        }
 
-        function confirmAge() {
-            ageConfirmed = true;
-            localStorage.setItem('ageConfirmed', 'true');
-            document.getElementById('age-modal').style.display = 'none';
+        function addToCart(name, price) {
+            cart.push({ name, price });
+            localStorage.setItem('cart', JSON.stringify(cart));
+            updateCart();
+            notification.style.display = 'block';
+            setTimeout(() => {
+                notification.style.display = 'none';
+            }, 2000);
+        }
+
+        function removeFromCart(name) {
+            cart = cart.filter(item => item.name !== name);
+            localStorage.setItem('cart', JSON.stringify(cart));
+            updateCart();
+        }
+
+        function openCart() {
+            cartModal.style.display = 'flex';
+        }
+
+        function closeCart() {
+            cartModal.style.display = 'none';
+        }
+
+        // Cookie Consent Banner
+        if (!localStorage.getItem('cookiesAccepted')) {
+            document.getElementById('cookie-banner').style.display = 'block';
         }
 
         function acceptCookies() {
-            cookiesAccepted = true;
-            cookiesDeclined = false;
-            localStorage.setItem('cookiesAccepted', 'true');
-            localStorage.setItem('cookiesDeclined', 'false');
-            document.getElementById('cookie-banner').style.display = 'none';
-            saveCartToCookies();
-        }
-
-        function declineCookies() {
-            cookiesDeclined = true;
-            localStorage.setItem('cookiesDeclined', 'true');
-            localStorage.setItem('cookiesAccepted', 'false');
+            localStorage.setItem('cookiesAccepted', true);
             document.getElementById('cookie-banner').style.display = 'none';
         }
 
-        function addToCart(item, price) {
-            cart.push({ item, price });
-            saveCartToCookies();
-            updateCart();
-            showNotification("Prekė sėkmingai pridėta į krepšelį!");
+        // Age Verification Modal
+        if (!localStorage.getItem('ageVerified')) {
+            document.getElementById('age-modal').style.display = 'flex';
         }
 
-        function removeFromCart(index) {
-            cart.splice(index, 1);
-            saveCartToCookies();
-            updateCart();
+        function confirmAge() {
+            localStorage.setItem('ageVerified', true);
+            document.getElementById('age-modal').style.display = 'none';
         }
 
-        function updateCart() {
-            const cartItems = document.getElementById('cart-items');
-            cartItems.innerHTML = cart.map((entry, index) => `
-                <li>
-                    ${entry.item}: €${entry.price.toFixed(2)}
-                    <button onclick="removeFromCart(${index})">❌</button>
-                </li>
-            `).join('');
-        }
-
-        function showNotification(message) {
-            const notification = document.getElementById('notification');
-            notification.textContent = message;
-            notification.style.display = 'block';
-            setTimeout(() => notification.style.display = 'none', 3000);
-        }
-
-        function toggleCart() {
-            const cartModal = document.getElementById('cart-modal');
-            cartModal.style.display = cartModal.style.display === 'flex' ? 'none' : 'flex';
-        }
-
-        function populateCartDetails() {
-            const cartDetailsField = document.getElementById('cart-details');
-            cartDetailsField.value = cart.map(entry => `${entry.item}: €${entry.price.toFixed(2)}`).join('\n');
-        }
-
-        function saveCartToCookies() {
-            if (cookiesAccepted) {
-                localStorage.setItem('cart', JSON.stringify(cart));
-            }
-        }
-
-        function loadCartFromCookies() {
-            if (cookiesAccepted && localStorage.getItem('cart')) {
-                cart = JSON.parse(localStorage.getItem('cart'));
-                updateCart();
-            }
-        }
-
-        window.onload = function () {
-            if (!ageConfirmed && !cookiesDeclined) {
-                document.getElementById('age-modal').style.display = 'flex';
-            }
-
-            if (!cookiesAccepted && !cookiesDeclined) {
-                document.getElementById('cookie-banner').style.display = 'block';
-            }
-
-            loadCartFromCookies();
-        };
+        // Cart Icon Click
+        cartIcon.onclick = openCart;
+        window.onload = updateCart;
     </script>
 </body>
 </html>
