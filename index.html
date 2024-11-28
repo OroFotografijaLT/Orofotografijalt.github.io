@@ -67,17 +67,32 @@
         }
 
         .cart {
-            position: fixed;
-            bottom: 0;
-            right: 0;
-            background: #fff;
-            border: 1px solid #ccc;
-            padding: 15px;
-            border-radius: 10px 10px 0 0;
-            width: 100%;
-            max-width: 400px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        }
+    position: fixed;
+    bottom: 0;
+    right: 0;
+    background: #fff;
+    border: 1px solid #ccc;
+    padding: 15px;
+    border-radius: 10px 10px 0 0;
+    width: 100%;
+    max-width: 400px;
+    max-height: 50%; /* Limit cart height to 50% of the viewport */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    overflow: hidden; /* Ensure overflow is handled within */
+}
+
+.cart ul {
+    max-height: 150px; /* Set max height for items list */
+    overflow-y: auto; /* Add vertical scroll when items overflow */
+    padding: 0;
+    margin: 0;
+    list-style: none;
+}
+
+.cart h2 {
+    font-size: 1.2em;
+    margin: 0 0 10px;
+}
 
         .cart h2 {
             font-size: 1.2em;
