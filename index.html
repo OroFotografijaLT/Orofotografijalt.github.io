@@ -164,7 +164,7 @@
 
     <header>
         <h1>Airo Store</h1>
-        <p>Pirotechnikos parduotuvė</p>
+        <p>Svetainė</p>
     </header>
 
     <div id="products">
@@ -211,13 +211,20 @@
         <form id="order-form" action="https://formspree.io/f/xgvezjqw" method="POST">
             <label for="full-name">Pilnas vardas:</label>
             <input type="text" name="name" id="full-name" required>
+
             <label for="email">El. paštas:</label>
             <input type="email" name="email" id="email" required>
+
             <label for="phone">Telefono numeris:</label>
             <input type="tel" name="phone" id="phone" required>
+
             <label for="dob">Gimimo data:</label>
             <input type="date" name="dob" id="dob" required>
-            <button class="btn" type="submit">Užsakyti</button>
+
+            <!-- Hidden field to include cart items -->
+            <input type="hidden" name="cartDetails" id="cart-details">
+
+            <button class="btn" type="submit" onclick="populateCartDetails()">Užsakyti</button>
         </form>
     </div>
 
@@ -243,11 +250,17 @@
         function updateCart() {
             const cartItems = document.getElementById('cart-items');
             cartItems.innerHTML = '';
-            cart.forEach((entry, index) => {
+            cart.forEach((entry) => {
                 const li = document.createElement('li');
                 li.textContent = `${entry.item}: €${entry.price.toFixed(2)}`;
                 cartItems.appendChild(li);
             });
+        }
+
+        function populateCartDetails() {
+            const cartDetailsField = document.getElementById('cart-details');
+            const cartDetails = cart.map(entry => `${entry.item}: €${entry.price.toFixed(2)}`).join('\n');
+            cartDetailsField.value = cartDetails;
         }
 
         // Cookies
@@ -259,7 +272,6 @@
             cookieBanner.style.display = 'none';
         }
 
-        // Show cookie banner on load
         window.onload = function () {
             cookieBanner.style.display = 'block';
         };
