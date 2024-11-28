@@ -38,14 +38,6 @@
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         }
 
-        .product h3 {
-            margin: 10px 0;
-        }
-
-        .product p {
-            margin: 10px 0;
-        }
-
         select {
             padding: 8px;
             margin-bottom: 10px;
@@ -66,7 +58,6 @@
             background-color: #004d99;
         }
 
-        /* Cart Icon */
         .cart-icon {
             position: fixed;
             top: 20px;
@@ -81,7 +72,6 @@
             z-index: 1000;
         }
 
-        /* Cart Modal */
         .cart-modal {
             position: fixed;
             top: 0;
@@ -106,16 +96,6 @@
             max-height: 80%;
         }
 
-        .cart-container h2 {
-            margin: 0 0 10px;
-        }
-
-        .cart-items-list li {
-            margin: 10px 0;
-            list-style: none;
-            color: #555;
-        }
-
         form input,
         form select {
             width: 100%;
@@ -134,17 +114,82 @@
             border-radius: 4px;
             cursor: pointer;
         }
+
+        .btn-close {
+            background-color: #ccc;
+            color: #333;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
+        .btn-close:hover {
+            background-color: #aaa;
+        }
+
+        .cookie-banner {
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            background: #0066cc;
+            color: white;
+            text-align: center;
+            padding: 10px;
+            display: none;
+        }
+
+        .cookie-banner button {
+            background: white;
+            color: #0066cc;
+            border: none;
+            padding: 8px 15px;
+            margin-left: 10px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .age-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .age-modal div {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            max-width: 400px;
+            width: 90%;
+        }
     </style>
 </head>
 <body>
+    <div class="age-modal" id="age-modal">
+        <div>
+            <h2>Amžiaus patvirtinimas</h2>
+            <p>Norėdami tęsti, turite patvirtinti, kad esate bent 11 metų amžiaus.</p>
+            <button onclick="confirmAge()">Aš esu 11 metų arba vyresnis</button>
+        </div>
+    </div>
+
     <header>
         <h1>Airo Store</h1>
+        <p>Pirotechnikos parduotuvė</p>
     </header>
 
     <div id="products">
         <div class="product">
             <h3>Dūmų bomba (paprasta)</h3>
-            <p>Tobulas produktas nuotraukoms ar bendram smagumui.</p>
             <select id="smoke-bomb-size">
                 <option value="1.00">Maža - €1.00</option>
                 <option value="1.50">Vidutinė - €1.50</option>
@@ -154,7 +199,6 @@
         </div>
         <div class="product">
             <h3>Dūmų lazdos</h3>
-            <p>Maža tūbelė su 4g mišinio greitam dūmų išleidimui.</p>
             <select id="smoke-stix-size">
                 <option value="1.00">Vienetinis - €1.00</option>
                 <option value="4.50">Pakuotė (6) - €4.50</option>
@@ -163,13 +207,11 @@
         </div>
         <div class="product">
             <h3>Maža raketa</h3>
-            <p>Prototipas. Naudojama tik gamybos sąnaudoms padengti.</p>
             <p>Kaina: €1.00</p>
             <button class="btn" onclick="addToCart('Maža raketa', 1.00)">Į krepšelį</button>
         </div>
         <div class="product">
             <h3>Storos dūmų bombos</h3>
-            <p>Degina greitai, sukuria storą baltų dūmų debesį.</p>
             <select id="thick-smoke-size">
                 <option value="1.49">Maža - €1.49</option>
                 <option value="1.99">Vidutinė - €1.99</option>
@@ -184,41 +226,42 @@
     <div class="cart-modal" id="cart-modal">
         <div class="cart-container">
             <h2>Krepšelis</h2>
-            <ul id="cart-items" class="cart-items-list"></ul>
+            <ul id="cart-items"></ul>
             <form id="order-form" action="https://formspree.io/f/xgvezjqw" method="POST">
-                <label for="full-name">Pilnas vardas:</label>
-                <input type="text" name="name" id="full-name" required>
-
-                <label for="email">El. paštas:</label>
-                <input type="email" name="email" id="email" required>
-
-                <label for="phone">Telefono numeris:</label>
-                <input type="tel" name="phone" id="phone" required>
-
-                <label for="dob">Gimimo data:</label>
-                <input type="date" name="dob" id="dob" required>
-
+                <input type="text" name="name" placeholder="Pilnas vardas" required>
+                <input type="email" name="email" placeholder="El. paštas" required>
+                <input type="tel" name="phone" placeholder="Telefono numeris" required>
+                <input type="date" name="dob" placeholder="Gimimo data" required>
                 <input type="hidden" name="cartDetails" id="cart-details">
-                <button class="btn" type="submit" onclick="populateCartDetails()">Užsakyti</button>
+                <button type="submit" onclick="populateCartDetails()">Užsakyti</button>
+                <button type="button" class="btn-close" onclick="toggleCart()">Grįžti</button>
             </form>
         </div>
     </div>
 
+    <div class="cookie-banner" id="cookie-banner">
+        <p>Ši svetainė naudoja slapukus. Sutikite su slapukais?</p>
+        <button onclick="acceptCookies()">Sutinku</button>
+        <button onclick="declineCookies()">Nesutinku</button>
+    </div>
+
     <script>
         let cart = [];
+        let cookiesAccepted = false;
+
+        function confirmAge() {
+            document.getElementById('age-modal').style.display = 'none';
+        }
+
         function addToCart(item, price) {
             cart.push({ item, price });
+            saveCartToCookies();
             updateCart();
         }
 
         function updateCart() {
             const cartItems = document.getElementById('cart-items');
-            cartItems.innerHTML = '';
-            cart.forEach(entry => {
-                const li = document.createElement('li');
-                li.textContent = `${entry.item}: €${entry.price.toFixed(2)}`;
-                cartItems.appendChild(li);
-            });
+            cartItems.innerHTML = cart.map(entry => `<li>${entry.item}: €${entry.price.toFixed(2)}</li>`).join('');
         }
 
         function toggleCart() {
@@ -228,9 +271,37 @@
 
         function populateCartDetails() {
             const cartDetailsField = document.getElementById('cart-details');
-            const cartDetails = cart.map(entry => `${entry.item}: €${entry.price.toFixed(2)}`).join('\n');
-            cartDetailsField.value = cartDetails;
+            cartDetailsField.value = cart.map(entry => `${entry.item}: €${entry.price.toFixed(2)}`).join('\n');
         }
+
+        function acceptCookies() {
+            cookiesAccepted = true;
+            document.getElementById('cookie-banner').style.display = 'none';
+            saveCartToCookies();
+        }
+
+        function declineCookies() {
+            cookiesAccepted = false;
+            document.getElementById('cookie-banner').style.display = 'none';
+        }
+
+        function saveCartToCookies() {
+            if (cookiesAccepted) {
+                localStorage.setItem('cart', JSON.stringify(cart));
+            }
+        }
+
+        function loadCartFromCookies() {
+            if (localStorage.getItem('cart')) {
+                cart = JSON.parse(localStorage.getItem('cart'));
+                updateCart();
+            }
+        }
+
+        window.onload = function () {
+            document.getElementById('cookie-banner').style.display = 'block';
+            loadCartFromCookies();
+        };
     </script>
 </body>
 </html>
