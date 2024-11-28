@@ -1,1 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Airo Store</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f9f9f9;
+            color: #333;
+        }
+        header {
+            background-color: #ff5722;
+            color: white;
+            padding: 10px 20px;
+            text-align: center;
+        }
+        .container {
+            padding: 20px;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        .product {
+            border: 1px solid #ddd;
+            padding: 10px;
+            margin: 10px 0;
+            background-color: #fff;
+        }
+        .product h3 {
+            margin: 0;
+        }
+        .product p {
+            margin: 5px 0;
+        }
+        .product button {
+            background-color: #ff5722;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            cursor: pointer;
+        }
+        .product button:hover {
+            background-color: #e64a19;
+        }
+        footer {
+            text-align: center;
+            padding: 10px;
+            background-color: #333;
+            color: white;
+            margin-top: 20px;
+        }
+        #cart {
+            border: 1px solid #ddd;
+            background-color: #fff;
+            padding: 10px;
+            margin: 20px 0;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Airo Store</h1>
+        <p>Your go-to store for pyrotechnic products</p>
+    </header>
 
+    <div class="container">
+        <div id="age-check">
+            <p>You must be 11 years or older to use this site.</p>
+            <button onclick="confirmAge()">I am 11 or older</button>
+        </div>
+
+        <div id="store" style="display: none;">
+            <div class="product">
+                <h3>Smoke bomb (normal)</h3>
+                <p>It is just the perfect product for photos or general fun.</p>
+                <p><strong>Price:</strong> €1.99</p>
+                <button onclick="addToCart('Smoke bomb (normal)', 1.99)">Add to Cart</button>
+            </div>
+
+            <div class="product">
+                <h3>Smoke stix</h3>
+                <p>A small tube with 4 grams of mixture, good for fast release smoke for cool effects.</p>
+                <p><strong>Price:</strong> €1.49</p>
+                <button onclick="addToCart('Smoke stix', 1.49)">Add to Cart</button>
+            </div>
+
+            <div class="product">
+                <h3>Small Rocket</h3>
+                <p><strong>Prototype:</strong> Still in production; anything can happen!</p>
+                <p><strong>Price:</strong> €1.00 (production cost)</p>
+                <button onclick="addToCart('Small Rocket', 1.00)">Add to Cart</button>
+            </div>
+
+            <div class="product">
+                <h3>Thick Smoke Bomb</h3>
+                <p>Burns quickly with a flame, producing a cloud of thick white smoke.</p>
+                <p><strong>Price:</strong> €1.49</p>
+                <button onclick="addToCart('Thick Smoke Bomb', 1.49)">Add to Cart</button>
+            </div>
+
+            <div id="cart">
+                <h3>Shopping Cart</h3>
+                <ul id="cart-items"></ul>
+                <p><strong>Total:</strong> €<span id="total">0.00</span></p>
+                <form action="https://formspree.io/f/xgvezjqw" method="POST">
+                    <label for="email">Your Email:</label>
+                    <input type="email" name="email" required>
+                    <input type="hidden" name="_subject" value="New Order from Airo Store">
+                    <input type="hidden" id="order-details" name="order">
+                    <button type="submit">Submit Order</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <p>Contact us: science.airidas@gmail.com</p>
+    </footer>
+
+    <script>
+        function confirmAge() {
+            document.getElementById('age-check').style.display = 'none';
+            document.getElementById('store').style.display = 'block';
+        }
+
+        const cart = [];
+        function addToCart(product, price) {
+            cart.push({ product, price });
+            updateCart();
+        }
+
+        function updateCart() {
+            const cartItems = document.getElementById('cart-items');
+            const total = cart.reduce((sum, item) => sum + item.price, 0).toFixed(2);
+            cartItems.innerHTML = cart.map(item => `<li>${item.product} - €${item.price.toFixed(2)}</li>`).join('');
+            document.getElementById('total').textContent = total;
+            document.getElementById('order-details').value = JSON.stringify(cart);
+        }
+    </script>
+</body>
+</html>
