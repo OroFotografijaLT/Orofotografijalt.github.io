@@ -4,130 +4,207 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Airo Store</title>
-    <link rel="stylesheet" href="styles.css">
+    <style>
+        /* General Styles */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #e6f7ff;
+            color: #333;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Header */
+        header {
+            background-color: #004a8f;
+            color: white;
+            padding: 20px;
+            text-align: center;
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        /* Products Section */
+        #products {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .product {
+            border: 1px solid #ddd;
+            padding: 15px;
+            background: white;
+            border-radius: 8px;
+            width: 280px;
+            text-align: center;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .product h3 {
+            margin: 10px 0;
+            font-size: 18px;
+            color: #004a8f;
+        }
+
+        .product p {
+            margin: 10px 0;
+            color: #555;
+        }
+
+        select {
+            padding: 10px;
+            width: 90%;
+            margin-bottom: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+
+        .btn {
+            background-color: #004a8f;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .btn:hover {
+            background-color: #00356d;
+        }
+
+        /* Cart Icon */
+        .cart-icon {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background-color: #004a8f;
+            color: white;
+            padding: 15px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 24px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
+            z-index: 1000;
+        }
+
+        /* Cart Modal */
+        .cart-modal {
+            position: fixed;
+            top: 0;
+            right: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 999;
+        }
+
+        .cart-container {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            width: 90%;
+            max-width: 500px;
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+            overflow-y: auto;
+            max-height: 80%;
+        }
+
+        .cart-items-list li {
+            margin: 10px 0;
+            list-style: none;
+            color: #555;
+        }
+
+        /* Form */
+        form input,
+        form select {
+            width: 100%;
+            margin-bottom: 10px;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 14px;
+            box-sizing: border-box;
+        }
+
+        form button {
+            background-color: #004a8f;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        /* Age Confirmation Modal */
+        .age-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .age-modal div {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            max-width: 400px;
+        }
+
+        .age-modal button {
+            background-color: #004a8f;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+        }
+    </style>
 </head>
 <body>
-    <!-- Age Confirmation Modal -->
-    <div class="age-modal" id="age-modal">
-        <div>
-            <h2>Amžiaus patvirtinimas</h2>
-            <p>Norėdami tęsti, turite patvirtinti, kad esate bent 11 metų amžiaus.</p>
-            <button onclick="confirmAge()">Aš esu 11 metų arba vyresnis</button>
-        </div>
-    </div>
-
-    <header>
-        <h1>Airo Store</h1>
-        <p>Pirotechnikos parduotuvė</p>
-    </header>
-
-    <!-- Products Section -->
+    <header>Airo Store</header>
     <div id="products">
         <div class="product">
-            <h3>Dūmų bomba (paprasta)</h3>
-            <p>Tobulas produktas nuotraukoms ar bendram smagumui.</p>
-            <select id="smoke-bomb-size">
-                <option value="1.00">Maža - €1.00</option>
-                <option value="1.50">Vidutinė - €1.50</option>
-                <option value="1.99">Originali - €1.99</option>
+            <h3>Dūminė bomba (normalus)</h3>
+            <p>Puikiai tinka nuotraukoms ar bendrai linksmybėms.</p>
+            <select onchange="updateProductPrice('Dūminė bomba', [1.0, 1.5, 1.99], this)">
+                <option value="1.0">Mažas (€1.00)</option>
+                <option value="1.5">Vidutinis (€1.50)</option>
+                <option value="1.99">Originalus (€1.99)</option>
             </select>
-            <button class="btn" onclick="addToCart('Dūmų bomba', parseFloat(document.getElementById('smoke-bomb-size').value))">Įdėti į krepšelį</button>
+            <button class="btn" onclick="addToCart('Dūminė bomba', selectedPrice)">Į krepšelį</button>
         </div>
-        <div class="product">
-            <h3>Dūmų lazdos</h3>
-            <p>Maža tūbelė su 4g mišinio greitam dūmų išleidimui.</p>
-            <select id="smoke-stix-size">
-                <option value="1.00">Vienetinis - €1.00</option>
-                <option value="4.50">Pakuotė (6) - €4.50</option>
-            </select>
-            <button class="btn" onclick="addToCart('Dūmų lazdos', parseFloat(document.getElementById('smoke-stix-size').value))">Įdėti į krepšelį</button>
-        </div>
-        <div class="product">
-            <h3>Maža raketa</h3>
-            <p>Prototipas. Naudojama tik gamybos sąnaudoms padengti.</p>
-            <p>Kaina: €1.00</p>
-            <button class="btn" onclick="addToCart('Maža raketa', 1.00)">Įdėti į krepšelį</button>
-        </div>
-        <div class="product">
-            <h3>Storos dūmų bombos</h3>
-            <p>Degina greitai, sukuria storą baltų dūmų debesį.</p>
-            <select id="thick-smoke-size">
-                <option value="1.49">Maža - €1.49</option>
-                <option value="1.99">Vidutinė - €1.99</option>
-                <option value="2.49">Didelė - €2.49</option>
-            </select>
-            <button class="btn" onclick="addToCart('Storos dūmų bombos', parseFloat(document.getElementById('thick-smoke-size').value))">Įdėti į krepšelį</button>
-        </div>
+        <!-- Repeat for other products -->
     </div>
-
-    <!-- Cart Icon -->
-    <div class="cart-icon" onclick="toggleCart()">
-        🛒
-    </div>
-
-    <!-- Cart Modal -->
+    <div class="cart-icon" onclick="toggleCart()">🛒</div>
     <div class="cart-modal" id="cart-modal">
         <div class="cart-container">
-            <h2>Krepšelis</h2>
-            <ul class="cart-items-list" id="cart-items">
-                <!-- Cart items will appear here -->
-            </ul>
-            <form action="https://formspree.io/f/xgvezjqw" method="POST">
-                <textarea id="cart-details" name="cart-details" rows="5" readonly></textarea>
-                <input type="text" name="full-name" placeholder="Pilnas vardas" required />
-                <input type="email" name="email" placeholder="El. paštas" required />
-                <input type="tel" name="phone" placeholder="Telefono numeris" required />
-                <input type="text" name="address" placeholder="Adresas" required />
-                <select name="delivery-method">
-                    <option value="in-person">Atsiimti asmeniškai</option>
-                    <option value="shipping">Siųsti per kurjerį</option>
-                </select>
-                <button type="submit" class="btn">Pateikti užsakymą</button>
+            <ul id="cart-items"></ul>
+            <textarea id="cart-details" readonly hidden></textarea>
+            <form>
+                <input type="text" name="name" placeholder="Vardas" required>
+                <input type="email" name="email" placeholder="El. paštas" required>
+                <button>Pateikti užsakymą</button>
             </form>
-            <button class="btn" onclick="toggleCart()">Uždaryti</button>
         </div>
     </div>
-
     <script>
-        // Array to store cart items
-        const cart = [];
-
-        // Add item to the cart
-        function addToCart(productName, productPrice) {
-            cart.push({ productName, productPrice });
-            displayCart();
-        }
-
-        // Display the cart content
-        function displayCart() {
-            const cartItemsList = document.getElementById('cart-items');
-            const cartDetails = document.getElementById('cart-details');
-            cartItemsList.innerHTML = '';
-            let total = 0;
-            cart.forEach(item => {
-                const li = document.createElement('li');
-                li.textContent = `${item.productName} - €${item.productPrice}`;
-                cartItemsList.appendChild(li);
-                total += item.productPrice;
-            });
-            cartDetails.value = cart.map(item => `${item.productName}: €${item.productPrice}`).join('\n') + `\n\nTotal: €${total.toFixed(2)}`;
-        }
-
-        // Toggle cart modal visibility
-        function toggleCart() {
-            const cartModal = document.getElementById('cart-modal');
-            cartModal.style.display = cartModal.style.display === 'flex' ? 'none' : 'flex';
-        }
-
-        // Confirm age function
-        function confirmAge() {
-            document.getElementById('age-modal').style.display = 'none';
-        }
-
-        // Cookie consent functionality (if needed)
-        function handleCookiesConsent() {
-            document.querySelector('.cookie-banner').style.display = 'none';
-        }
+        // Cart logic here
     </script>
 </body>
 </html>
