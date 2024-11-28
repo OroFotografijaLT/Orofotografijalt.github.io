@@ -200,12 +200,45 @@
 
     <header>
         <h1>Airo Store</h1>
-        <p>Pirotechnikos parduotuvė</p>
+        <p>Svetainė</p>
     </header>
 
     <div id="products">
-        <!-- Products here -->
-        <!-- Add similar to previous products -->
+        <div class="product">
+            <h3>Dūmų bomba (paprasta)</h3>
+            <p>Tobulas produktas nuotraukoms ar bendram smagumui.</p>
+            <select id="smoke-bomb-size">
+                <option value="1.00">Maža - €1.00</option>
+                <option value="1.50">Vidutinė - €1.50</option>
+                <option value="1.99">Originali - €1.99</option>
+            </select>
+            <button class="btn" onclick="addToCart('Dūmų bomba', parseFloat(document.getElementById('smoke-bomb-size').value))">Įdėti į krepšelį</button>
+        </div>
+        <div class="product">
+            <h3>Dūmų lazdos</h3>
+            <p>Maža tūbelė su 4g mišinio greitam dūmų išleidimui.</p>
+            <select id="smoke-stix-size">
+                <option value="1.00">Vienetinis - €1.00</option>
+                <option value="4.50">Pakuotė (6) - €4.50</option>
+            </select>
+            <button class="btn" onclick="addToCart('Dūmų lazdos', parseFloat(document.getElementById('smoke-stix-size').value))">Įdėti į krepšelį</button>
+        </div>
+        <div class="product">
+            <h3>Maža raketa</h3>
+            <p>Prototipas. Kaina niekuo nesiskiria nuo gamybos kainos.</p>
+            <p>Kaina: €1.00</p>
+            <button class="btn" onclick="addToCart('Maža raketa', 1.00)">Įdėti į krepšelį</button>
+        </div>
+        <div class="product">
+            <h3>Storų dūmų bomba</h3>
+            <p>Degina greitai, sukuria storą baltų dūmų debesį.</p>
+            <select id="thick-smoke-size">
+                <option value="1.49">Maža - €1.49</option>
+                <option value="1.99">Vidutinė - €1.99</option>
+                <option value="2.49">Didelė - €2.49</option>
+            </select>
+            <button class="btn" onclick="addToCart('Storos dūmų bombos', parseFloat(document.getElementById('thick-smoke-size').value))">Įdėti į krepšelį</button>
+        </div>
     </div>
 
     <div class="cart-icon" onclick="toggleCart()">🛒</div>
@@ -215,27 +248,36 @@
             <h2>Krepšelis</h2>
             <ul id="cart-items"></ul>
             <form id="order-form" action="https://formspree.io/f/xgvezjqw" method="POST">
-                <input type="text" name="name" placeholder="Pilnas vardas" required>
-                <input type="email" name="email" placeholder="El. paštas" required>
-                <input type="tel" name="phone" placeholder="Telefono numeris" required>
-                <input type="date" name="dob" placeholder="Gimimo data" required>
+                <label for="full-name">Pilnas vardas:</label>
+                <input type="text" name="name" id="full-name" required>
+
+                <label for="email">El. paštas:</label>
+                <input type="email" name="email" id="email" required>
+
+                <label for="phone">Telefono numeris:</label>
+                <input type="tel" name="phone" id="phone" required>
+
+                <label for="dob">Gimimo data:</label>
+                <input type="date" name="dob" id="dob" required>
+
                 <input type="hidden" name="cartDetails" id="cart-details">
-                <button type="submit" onclick="populateCartDetails()">Užsakyti</button>
-                <button type="button" class="btn-close" onclick="toggleCart()">Grįžti</button>
+
+                <button class="btn" type="submit" onclick="populateCartDetails()">Užsakyti</button>
             </form>
+            <button class="btn-close" onclick="toggleCart()">Grįžti</button>
         </div>
     </div>
 
     <div class="cookie-banner" id="cookie-banner">
-        <p>Ši svetainė naudoja slapukus. Sutikite su slapukais?</p>
+        <p>Ši svetainė naudoja slapukus, kad pagerintų jūsų patirtį. Sutikite su slapukais?</p>
         <button onclick="acceptCookies()">Sutinku</button>
         <button onclick="declineCookies()">Nesutinku</button>
     </div>
 
     <script>
         let cart = [];
-        let cookiesAccepted = localStorage.getItem('cookiesAccepted') === 'true';
         let ageConfirmed = localStorage.getItem('ageConfirmed') === 'true';
+        let cookiesAccepted = localStorage.getItem('cookiesAccepted') === 'true';
 
         function confirmAge() {
             ageConfirmed = true;
@@ -243,34 +285,31 @@
             document.getElementById('age-modal').style.display = 'none';
         }
 
-        function acceptCookies() {
-            cookiesAccepted = true;
-            localStorage.setItem('cookiesAccepted', 'true');
-            document.getElementById('cookie-banner').style.display = 'none';
-            saveCartToCookies();
-        }
-
         function addToCart(item, price) {
             cart.push({ item, price });
-            saveCartToCookies();
             updateCart();
-            showNotification("Prekė sėkmingai pridėta į krepšelį!");
+            saveCartToCookies();
+            showNotification('Prekė sėkmingai pridėta į krepšelį!');
         }
 
         function removeFromCart(index) {
             cart.splice(index, 1);
-            saveCartToCookies();
             updateCart();
+            saveCartToCookies();
         }
 
         function updateCart() {
             const cartItems = document.getElementById('cart-items');
-            cartItems.innerHTML = cart.map((entry, index) => `
-                <li>
-                    ${entry.item}: €${entry.price.toFixed(2)}
-                    <button onclick="removeFromCart(${index})">❌</button>
-                </li>
-            `).join('');
+            cartItems.innerHTML = '';
+            cart.forEach((entry, index) => {
+                const li = document.createElement('li');
+                li.textContent = `${entry.item}: €${entry.price.toFixed(2)} `;
+                const removeBtn = document.createElement('button');
+                removeBtn.textContent = '❌';
+                removeBtn.onclick = () => removeFromCart(index);
+                li.appendChild(removeBtn);
+                cartItems.appendChild(li);
+            });
         }
 
         function showNotification(message) {
@@ -301,6 +340,19 @@
                 cart = JSON.parse(localStorage.getItem('cart'));
                 updateCart();
             }
+        }
+
+        function acceptCookies() {
+            cookiesAccepted = true;
+            localStorage.setItem('cookiesAccepted', 'true');
+            document.getElementById('cookie-banner').style.display = 'none';
+            saveCartToCookies();
+        }
+
+        function declineCookies() {
+            cookiesAccepted = false;
+            localStorage.setItem('cookiesAccepted', 'false');
+            document.getElementById('cookie-banner').style.display = 'none';
         }
 
         window.onload = function () {
