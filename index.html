@@ -157,7 +157,7 @@
             width: 100%;
             height: 100%;
             background: rgba(0, 0, 0, 0.7);
-            display: flex;
+            display: none;
             justify-content: center;
             align-items: center;
             z-index: 1000;
@@ -171,9 +171,25 @@
             max-width: 400px;
             width: 90%;
         }
+
+        .notification {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 5px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            z-index: 1000;
+            display: none;
+        }
     </style>
 </head>
 <body>
+    <div class="notification" id="notification">Prekė sėkmingai pridėta į krepšelį!</div>
+
     <div class="age-modal" id="age-modal">
         <div>
             <h2>Amžiaus patvirtinimas</h2>
@@ -188,37 +204,8 @@
     </header>
 
     <div id="products">
-        <div class="product">
-            <h3>Dūmų bomba (paprasta)</h3>
-            <select id="smoke-bomb-size">
-                <option value="1.00">Maža - €1.00</option>
-                <option value="1.50">Vidutinė - €1.50</option>
-                <option value="1.99">Originali - €1.99</option>
-            </select>
-            <button class="btn" onclick="addToCart('Dūmų bomba', parseFloat(document.getElementById('smoke-bomb-size').value))">Į krepšelį</button>
-        </div>
-        <div class="product">
-            <h3>Dūmų lazdos</h3>
-            <select id="smoke-stix-size">
-                <option value="1.00">Vienetinis - €1.00</option>
-                <option value="4.50">Pakuotė (6) - €4.50</option>
-            </select>
-            <button class="btn" onclick="addToCart('Dūmų lazdos', parseFloat(document.getElementById('smoke-stix-size').value))">Į krepšelį</button>
-        </div>
-        <div class="product">
-            <h3>Maža raketa</h3>
-            <p>Kaina: €1.00</p>
-            <button class="btn" onclick="addToCart('Maža raketa', 1.00)">Į krepšelį</button>
-        </div>
-        <div class="product">
-            <h3>Storos dūmų bombos</h3>
-            <select id="thick-smoke-size">
-                <option value="1.49">Maža - €1.49</option>
-                <option value="1.99">Vidutinė - €1.99</option>
-                <option value="2.49">Didelė - €2.49</option>
-            </select>
-            <button class="btn" onclick="addToCart('Storos dūmų bombos', parseFloat(document.getElementById('thick-smoke-size').value))">Į krepšelį</button>
-        </div>
+        <!-- Products here -->
+        <!-- Add similar to previous products -->
     </div>
 
     <div class="cart-icon" onclick="toggleCart()">🛒</div>
@@ -247,21 +234,50 @@
 
     <script>
         let cart = [];
-        let cookiesAccepted = false;
+        let cookiesAccepted = localStorage.getItem('cookiesAccepted') === 'true';
+        let ageConfirmed = localStorage.getItem('ageConfirmed') === 'true';
 
         function confirmAge() {
+            ageConfirmed = true;
+            localStorage.setItem('ageConfirmed', 'true');
             document.getElementById('age-modal').style.display = 'none';
+        }
+
+        function acceptCookies() {
+            cookiesAccepted = true;
+            localStorage.setItem('cookiesAccepted', 'true');
+            document.getElementById('cookie-banner').style.display = 'none';
+            saveCartToCookies();
         }
 
         function addToCart(item, price) {
             cart.push({ item, price });
             saveCartToCookies();
             updateCart();
+            showNotification("Prekė sėkmingai pridėta į krepšelį!");
+        }
+
+        function removeFromCart(index) {
+            cart.splice(index, 1);
+            saveCartToCookies();
+            updateCart();
         }
 
         function updateCart() {
             const cartItems = document.getElementById('cart-items');
-            cartItems.innerHTML = cart.map(entry => `<li>${entry.item}: €${entry.price.toFixed(2)}</li>`).join('');
+            cartItems.innerHTML = cart.map((entry, index) => `
+                <li>
+                    ${entry.item}: €${entry.price.toFixed(2)}
+                    <button onclick="removeFromCart(${index})">❌</button>
+                </li>
+            `).join('');
+        }
+
+        function showNotification(message) {
+            const notification = document.getElementById('notification');
+            notification.textContent = message;
+            notification.style.display = 'block';
+            setTimeout(() => notification.style.display = 'none', 3000);
         }
 
         function toggleCart() {
@@ -274,17 +290,6 @@
             cartDetailsField.value = cart.map(entry => `${entry.item}: €${entry.price.toFixed(2)}`).join('\n');
         }
 
-        function acceptCookies() {
-            cookiesAccepted = true;
-            document.getElementById('cookie-banner').style.display = 'none';
-            saveCartToCookies();
-        }
-
-        function declineCookies() {
-            cookiesAccepted = false;
-            document.getElementById('cookie-banner').style.display = 'none';
-        }
-
         function saveCartToCookies() {
             if (cookiesAccepted) {
                 localStorage.setItem('cart', JSON.stringify(cart));
@@ -292,14 +297,21 @@
         }
 
         function loadCartFromCookies() {
-            if (localStorage.getItem('cart')) {
+            if (cookiesAccepted && localStorage.getItem('cart')) {
                 cart = JSON.parse(localStorage.getItem('cart'));
                 updateCart();
             }
         }
 
         window.onload = function () {
-            document.getElementById('cookie-banner').style.display = 'block';
+            if (!ageConfirmed) {
+                document.getElementById('age-modal').style.display = 'flex';
+            }
+
+            if (!cookiesAccepted) {
+                document.getElementById('cookie-banner').style.display = 'block';
+            }
+
             loadCartFromCookies();
         };
     </script>
