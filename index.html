@@ -38,15 +38,6 @@
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         }
 
-        .product h3 {
-            margin: 10px 0;
-            color: #0066cc;
-        }
-
-        .product p {
-            margin: 10px 0;
-        }
-
         select {
             padding: 8px;
             margin-bottom: 10px;
@@ -69,72 +60,75 @@
 
         .cart-icon {
             position: fixed;
-            top: 10px;
-            right: 10px;
-            font-size: 24px;
-            cursor: pointer;
-            color: #0066cc;
-        }
-
-        .cart {
-            display: none;
-            position: fixed;
-            top: 50px;
-            right: 10px;
-            background: #f0f8ff;
-            border: 1px solid #0066cc;
+            top: 20px;
+            right: 20px;
+            background-color: #0066cc;
+            color: white;
             padding: 15px;
-            border-radius: 10px;
-            width: 300px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 24px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
             z-index: 1000;
         }
 
-        .cart h2 {
-            font-size: 1.2em;
-            margin: 0 0 10px;
-            color: #0066cc;
+        .cart-modal {
+            position: fixed;
+            top: 0;
+            right: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 999;
         }
 
-        .cart ul {
-            list-style-type: none;
-            padding: 0;
-            margin: 0;
+        .cart-container {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            width: 90%;
+            max-width: 500px;
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+            overflow-y: auto;
+            max-height: 80%;
         }
 
-        .cart li {
-            margin: 5px 0;
-            display: flex;
-            justify-content: space-between;
+        form input,
+        form select {
+            width: 100%;
+            margin-bottom: 10px;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 14px;
         }
 
-        .cart li button {
-            background: #ff6666;
-            border: none;
-            padding: 5px;
+        form button {
+            background-color: #0066cc;
             color: white;
-            border-radius: 3px;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
             cursor: pointer;
         }
 
-        .cart li button:hover {
-            background: #cc0000;
-        }
-
-        .notification {
-            display: none;
-            position: fixed;
-            bottom: 10px;
-            left: 50%;
-            transform: translateX(-50%);
-            background: #0066cc;
-            color: white;
+        .btn-close {
+            background-color: #ccc;
+            color: #333;
             padding: 10px 20px;
-            border-radius: 5px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-top: 10px;
         }
 
-        /* Cookie Consent Banner */
+        .btn-close:hover {
+            background-color: #aaa;
+        }
+
         .cookie-banner {
             position: fixed;
             bottom: 0;
@@ -156,11 +150,6 @@
             cursor: pointer;
         }
 
-        .cookie-banner button:hover {
-            background: #ccc;
-        }
-
-        /* Age Confirmation Modal */
         .age-modal {
             position: fixed;
             top: 0;
@@ -183,18 +172,24 @@
             width: 90%;
         }
 
-        .age-modal button {
-            margin-top: 10px;
-            background-color: #0066cc;
+        .notification {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #4CAF50;
             color: white;
             padding: 10px 20px;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
+            border-radius: 5px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            z-index: 1000;
+            display: none;
         }
     </style>
 </head>
 <body>
+    <div class="notification" id="notification">Prekė sėkmingai pridėta į krepšelį!</div>
+
     <div class="age-modal" id="age-modal">
         <div>
             <h2>Amžiaus patvirtinimas</h2>
@@ -205,117 +200,86 @@
 
     <header>
         <h1>Airo Store</h1>
+        <p></p>
     </header>
 
     <div id="products">
-        <div class="product">
-            <h3>Dūmų bomba (paprasta)</h3>
-            <p>Tobulas produktas nuotraukoms ar bendram smagumui.</p>
-            <select id="smoke-bomb-size">
-                <option value="1.00">Maža - €1.00</option>
-                <option value="1.50">Vidutinė - €1.50</option>
-                <option value="1.99">Originali - €1.99</option>
-            </select>
-            <button class="btn" onclick="addToCart('Dūmų bomba', parseFloat(document.getElementById('smoke-bomb-size').value))">Į krepšelį</button>
-        </div>
-        <div class="product">
-            <h3>Dūmų lazdos</h3>
-            <p>Maža tūbelė su 4g mišinio greitam dūmų išleidimui.</p>
-            <select id="smoke-stix-size">
-                <option value="1.00">Vienetinis - €1.00</option>
-                <option value="4.50">Pakuotė (6) - €4.50</option>
-            </select>
-            <button class="btn" onclick="addToCart('Dūmų lazdos', parseFloat(document.getElementById('smoke-stix-size').value))">Į krepšelį</button>
-        </div>
-        <div class="product">
-            <h3>Maža raketa</h3>
-            <p>Prototipas. Naudojama tik gamybos sąnaudoms padengti.</p>
-            <p>Kaina: €1.00</p>
-            <button class="btn" onclick="addToCart('Maža raketa', 1.00)">Į krepšelį</button>
-        </div>
-        <div class="product">
-            <h3>Storos dūmų bombos</h3>
-            <p>Degina greitai, sukuria storą baltų dūmų debesį.</p>
-            <select id="thick-smoke-size">
-                <option value="1.49">Maža - €1.49</option>
-                <option value="1.99">Vidutinė - €1.99</option>
-                <option value="2.49">Didelė - €2.49</option>
-            </select>
-            <button class="btn" onclick="addToCart('Storos dūmų bombos', parseFloat(document.getElementById('thick-smoke-size').value))">Į krepšelį</button>
-        </div>
+        <!-- Products here -->
     </div>
 
     <div class="cart-icon" onclick="toggleCart()">🛒</div>
 
-    <div class="cart" id="cart">
-        <h2>Krepšelis</h2>
-        <ul id="cart-items"></ul>
-        <form id="order-form" action="https://formspree.io/f/xgvezjqw" method="POST">
-            <label for="full-name">Pilnas vardas:</label>
-            <input type="text" name="name" id="full-name" required>
-            <label for="email">El. paštas:</label>
-            <input type="email" name="email" id="email" required>
-            <button type="submit" class="btn" onclick="submitOrder(event)">Pateikti užsakymą</button>
-        </form>
+    <div class="cart-modal" id="cart-modal">
+        <div class="cart-container">
+            <h2>Krepšelis</h2>
+            <ul id="cart-items"></ul>
+            <form id="order-form" action="https://formspree.io/f/xgvezjqw" method="POST">
+                <input type="text" name="name" placeholder="Pilnas vardas" required>
+                <input type="email" name="email" placeholder="El. paštas" required>
+                <input type="tel" name="phone" placeholder="Telefono numeris" required>
+                <input type="date" name="dob" placeholder="Gimimo data" required>
+                <input type="hidden" name="cartDetails" id="cart-details">
+                <button type="submit" onclick="populateCartDetails()">Užsakyti</button>
+                <button type="button" class="btn-close" onclick="toggleCart()">Grįžti</button>
+            </form>
+        </div>
     </div>
 
-    <div class="notification" id="notification">Prekė sėkmingai pridėta į krepšelį!</div>
+    <div class="cookie-banner" id="cookie-banner">
+        <p>Ši svetainė naudoja slapukus. Sutikite su slapukais?</p>
+        <button onclick="acceptCookies()">Sutinku</button>
+        <button onclick="declineCookies()">Nesutinku</button>
+    </div>
 
     <script>
         let cart = [];
-        let ageConfirmed = false;
-        let cookiesAccepted = false;
-
-        document.addEventListener('DOMContentLoaded', () => {
-            if (!ageConfirmed) {
-                document.getElementById('age-modal').style.display = 'flex';
-            } else if (!cookiesAccepted) {
-                showCookieBanner();
-            }
-        });
+        let cookiesAccepted = localStorage.getItem('cookiesAccepted') === 'true';
+        let ageConfirmed = localStorage.getItem('ageConfirmed') === 'true';
+        let cookiesDeclined = localStorage.getItem('cookiesDeclined') === 'true';
 
         function confirmAge() {
             ageConfirmed = true;
+            localStorage.setItem('ageConfirmed', 'true');
             document.getElementById('age-modal').style.display = 'none';
-            showCookieBanner();
-        }
-
-        function showCookieBanner() {
-            const banner = document.querySelector('.cookie-banner');
-            if (!cookiesAccepted) {
-                banner.style.display = 'block';
-            }
         }
 
         function acceptCookies() {
             cookiesAccepted = true;
-            document.querySelector('.cookie-banner').style.display = 'none';
+            cookiesDeclined = false;
+            localStorage.setItem('cookiesAccepted', 'true');
+            localStorage.setItem('cookiesDeclined', 'false');
+            document.getElementById('cookie-banner').style.display = 'none';
+            saveCartToCookies();
         }
 
-        function addToCart(name, price) {
-            cart.push({ name, price });
-            updateCartUI();
-            showNotification('Prekė sėkmingai pridėta į krepšelį!');
+        function declineCookies() {
+            cookiesDeclined = true;
+            localStorage.setItem('cookiesDeclined', 'true');
+            localStorage.setItem('cookiesAccepted', 'false');
+            document.getElementById('cookie-banner').style.display = 'none';
+        }
+
+        function addToCart(item, price) {
+            cart.push({ item, price });
+            saveCartToCookies();
+            updateCart();
+            showNotification("Prekė sėkmingai pridėta į krepšelį!");
         }
 
         function removeFromCart(index) {
             cart.splice(index, 1);
-            updateCartUI();
+            saveCartToCookies();
+            updateCart();
         }
 
-        function toggleCart() {
-            const cartEl = document.getElementById('cart');
-            cartEl.style.display = cartEl.style.display === 'block' ? 'none' : 'block';
-        }
-
-        function updateCartUI() {
+        function updateCart() {
             const cartItems = document.getElementById('cart-items');
-            cartItems.innerHTML = '';
-            cart.forEach((item, index) => {
-                const li = document.createElement('li');
-                li.innerHTML = `${item.name} - €${item.price.toFixed(2)} <button onclick="removeFromCart(${index})">Šalinti</button>`;
-                cartItems.appendChild(li);
-            });
+            cartItems.innerHTML = cart.map((entry, index) => `
+                <li>
+                    ${entry.item}: €${entry.price.toFixed(2)}
+                    <button onclick="removeFromCart(${index})">❌</button>
+                </li>
+            `).join('');
         }
 
         function showNotification(message) {
@@ -325,38 +289,40 @@
             setTimeout(() => notification.style.display = 'none', 3000);
         }
 
-        function submitOrder(event) {
-            event.preventDefault();
-            if (cart.length === 0) {
-                alert('Jūsų krepšelis tuščias.');
-                return;
+        function toggleCart() {
+            const cartModal = document.getElementById('cart-modal');
+            cartModal.style.display = cartModal.style.display === 'flex' ? 'none' : 'flex';
+        }
+
+        function populateCartDetails() {
+            const cartDetailsField = document.getElementById('cart-details');
+            cartDetailsField.value = cart.map(entry => `${entry.item}: €${entry.price.toFixed(2)}`).join('\n');
+        }
+
+        function saveCartToCookies() {
+            if (cookiesAccepted) {
+                localStorage.setItem('cart', JSON.stringify(cart));
+            }
+        }
+
+        function loadCartFromCookies() {
+            if (cookiesAccepted && localStorage.getItem('cart')) {
+                cart = JSON.parse(localStorage.getItem('cart'));
+                updateCart();
+            }
+        }
+
+        window.onload = function () {
+            if (!ageConfirmed && !cookiesDeclined) {
+                document.getElementById('age-modal').style.display = 'flex';
             }
 
-            const form = document.getElementById('order-form');
-            const formData = new FormData(form);
+            if (!cookiesAccepted && !cookiesDeclined) {
+                document.getElementById('cookie-banner').style.display = 'block';
+            }
 
-            // Append cart details to form data
-            cart.forEach((item, index) => {
-                formData.append(`item_${index + 1}`, `${item.name} - €${item.price.toFixed(2)}`);
-            });
-
-            // Send the form data to Formspree (or other backend)
-            fetch(form.action, {
-                method: 'POST',
-                body: formData
-            })
-            .then(response => {
-                if (response.ok) {
-                    alert('Užsakymas pateiktas sėkmingai!');
-                    cart = [];
-                    updateCartUI();
-                    toggleCart();
-                } else {
-                    alert('Įvyko klaida pateikiant užsakymą.');
-                }
-            })
-            .catch(() => alert('Įvyko klaida pateikiant užsakymą.'));
-        }
+            loadCartFromCookies();
+        };
     </script>
 </body>
 </html>
