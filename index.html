@@ -40,6 +40,7 @@
 
         .product h3 {
             margin: 10px 0;
+            color: #0066cc;
         }
 
         .product p {
@@ -72,6 +73,7 @@
             right: 10px;
             font-size: 24px;
             cursor: pointer;
+            color: #0066cc;
         }
 
         .cart {
@@ -79,8 +81,8 @@
             position: fixed;
             top: 50px;
             right: 10px;
-            background: #fff;
-            border: 1px solid #ccc;
+            background: #f0f8ff;
+            border: 1px solid #0066cc;
             padding: 15px;
             border-radius: 10px;
             width: 300px;
@@ -91,15 +93,32 @@
         .cart h2 {
             font-size: 1.2em;
             margin: 0 0 10px;
+            color: #0066cc;
         }
 
-        .cart form input,
-        .cart form select {
-            width: 100%;
-            margin-bottom: 10px;
-            padding: 8px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
+        .cart ul {
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .cart li {
+            margin: 5px 0;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .cart li button {
+            background: #ff6666;
+            border: none;
+            padding: 5px;
+            color: white;
+            border-radius: 3px;
+            cursor: pointer;
+        }
+
+        .cart li button:hover {
+            background: #cc0000;
         }
 
         .notification {
@@ -215,8 +234,8 @@
             <button class="btn" onclick="addToCart('Maža raketa', 1.00)">Į krepšelį</button>
         </div>
         <div class="product">
-            <h3>Storų dūmų bombos</h3>
-            <p>Dega greitai, sukuria storą baltų dūmų debesį.</p>
+            <h3>Storos dūmų bombos</h3>
+            <p>Degina greitai, sukuria storą baltų dūmų debesį.</p>
             <select id="thick-smoke-size">
                 <option value="1.49">Maža - €1.49</option>
                 <option value="1.99">Vidutinė - €1.99</option>
@@ -236,27 +255,108 @@
             <input type="text" name="name" id="full-name" required>
             <label for="email">El. paštas:</label>
             <input type="email" name="email" id="email" required>
-            <label for="phone">Telefono numeris:</label>
-            <input type="tel" name="phone" id="phone" required>
-            <label for="dob">Gimimo data:</label>
-            <input type="date" name="dob" required>
-            <input type="hidden" name="cartDetails" id="cart-details">
-            <button class="btn" type="submit">Užsakyti</button>
+            <button type="submit" class="btn" onclick="submitOrder(event)">Pateikti užsakymą</button>
         </form>
-    </div>
-
-    <div class="cookie-banner" id="cookie-banner">
-        <p>Ši svetainė naudoja slapukus, kad pagerintų jūsų patirtį. Sutikite su slapukais?</p>
-        <button onclick="acceptCookies()">Sutinku</button>
-        <button onclick="declineCookies()">Nesutinku</button>
     </div>
 
     <div class="notification" id="notification">Prekė sėkmingai pridėta į krepšelį!</div>
 
     <script>
-        // All the logic remains unchanged from before
-        // Includes adding, removing, clearing, and submitting orders
-        // For brevity, the JavaScript portion is omitted here
+        let cart = [];
+        let ageConfirmed = false;
+        let cookiesAccepted = false;
+
+        document.addEventListener('DOMContentLoaded', () => {
+            if (!ageConfirmed) {
+                document.getElementById('age-modal').style.display = 'flex';
+            } else if (!cookiesAccepted) {
+                showCookieBanner();
+            }
+        });
+
+        function confirmAge() {
+            ageConfirmed = true;
+            document.getElementById('age-modal').style.display = 'none';
+            showCookieBanner();
+        }
+
+        function showCookieBanner() {
+            const banner = document.querySelector('.cookie-banner');
+            if (!cookiesAccepted) {
+                banner.style.display = 'block';
+            }
+        }
+
+        function acceptCookies() {
+            cookiesAccepted = true;
+            document.querySelector('.cookie-banner').style.display = 'none';
+        }
+
+        function addToCart(name, price) {
+            cart.push({ name, price });
+            updateCartUI();
+            showNotification('Prekė sėkmingai pridėta į krepšelį!');
+        }
+
+        function removeFromCart(index) {
+            cart.splice(index, 1);
+            updateCartUI();
+        }
+
+        function toggleCart() {
+            const cartEl = document.getElementById('cart');
+            cartEl.style.display = cartEl.style.display === 'block' ? 'none' : 'block';
+        }
+
+        function updateCartUI() {
+            const cartItems = document.getElementById('cart-items');
+            cartItems.innerHTML = '';
+            cart.forEach((item, index) => {
+                const li = document.createElement('li');
+                li.innerHTML = `${item.name} - €${item.price.toFixed(2)} <button onclick="removeFromCart(${index})">Šalinti</button>`;
+                cartItems.appendChild(li);
+            });
+        }
+
+        function showNotification(message) {
+            const notification = document.getElementById('notification');
+            notification.textContent = message;
+            notification.style.display = 'block';
+            setTimeout(() => notification.style.display = 'none', 3000);
+        }
+
+        function submitOrder(event) {
+            event.preventDefault();
+            if (cart.length === 0) {
+                alert('Jūsų krepšelis tuščias.');
+                return;
+            }
+
+            const form = document.getElementById('order-form');
+            const formData = new FormData(form);
+
+            // Append cart details to form data
+            cart.forEach((item, index) => {
+                formData.append(`item_${index + 1}`, `${item.name} - €${item.price.toFixed(2)}`);
+            });
+
+            // Send the form data to Formspree (or other backend)
+            fetch(form.action, {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => {
+                if (response.ok) {
+                    alert('Užsakymas pateiktas sėkmingai!');
+                    cart = [];
+                    updateCartUI();
+                    toggleCart();
+                } else {
+                    alert('Įvyko klaida pateikiant užsakymą.');
+                }
+            })
+            .catch(() => alert('Įvyko klaida pateikiant užsakymą.'));
+        }
     </script>
 </body>
 </html>
