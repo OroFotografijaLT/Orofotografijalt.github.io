@@ -249,19 +249,26 @@
   </div>
 
   <script>
-    const cart = [];
+    const cart = JSON.parse(localStorage.getItem('cart')) || [];
     const cartItems = document.getElementById('cart-items');
+    const cartIcon = document.getElementById('cart-icon');
+    const cartModal = document.getElementById('cart-modal');
     const submitOrder = document.getElementById('submit-order');
+    const goBackBtn = document.getElementById('go-back-btn');
+    const cookieBanner = document.getElementById('cookie-banner');
+    const acceptCookies = document.getElementById('accept-cookies');
+    const declineCookies = document.getElementById('decline-cookies');
 
     function updateCart() {
       cartItems.innerHTML = '';
       cart.forEach((item, index) => {
-        cartItems.innerHTML += `
-          <div class="cart-item">
-            <span>${item.name} (${item.size}) - €${item.price} - Kiekis: ${item.quantity}</span>
-            <button class="remove-item-btn" onclick="removeFromCart(${index})">Salinti</button>
-          </div>
+        const itemDiv = document.createElement('div');
+        itemDiv.classList.add('cart-item');
+        itemDiv.innerHTML = `
+          <span>${item.name} (${item.size}) x${item.quantity} - €${(item.price * item.quantity).toFixed(2)}</span>
+          <button class="remove-item-btn" onclick="removeFromCart(${index})">Salinti</button>
         `;
+        cartItems.appendChild(itemDiv);
       });
     }
 
@@ -273,23 +280,32 @@
         cart.push({ name: product, size: size, price: price, quantity: 1 });
       }
       updateCart();
+      localStorage.setItem('cart', JSON.stringify(cart));
     }
-
-    const addToCartButtons = document.querySelectorAll('.add-to-cart');
-    addToCartButtons.forEach(button => {
-      button.addEventListener('click', () => {
-        const productName = button.dataset.product;
-        const sizeSelect = button.previousElementSibling;
-        const selectedSize = sizeSelect ? sizeSelect.value : null;
-        const selectedPrice = sizeSelect ? parseFloat(sizeSelect.options[sizeSelect.selectedIndex].value) : parseFloat(button.dataset.price);
-        addToCart(productName, selectedSize || 'N/A', selectedPrice);
-      });
-    });
 
     function removeFromCart(index) {
       cart.splice(index, 1);
       updateCart();
+      localStorage.setItem('cart', JSON.stringify(cart));
     }
+
+    document.querySelectorAll('.add-to-cart').forEach(button => {
+      button.addEventListener('click', () => {
+        const productName = button.dataset.product;
+        const sizeSelect = button.previousElementSibling;
+        const selectedSize = sizeSelect ? sizeSelect.value : 'N/A';
+        const selectedPrice = parseFloat(sizeSelect ? sizeSelect.options[sizeSelect.selectedIndex].value : button.dataset.price);
+        addToCart(productName, selectedSize, selectedPrice);
+      });
+    });
+
+    cartIcon.addEventListener('click', () => {
+      cartModal.style.display = 'block';
+    });
+
+    goBackBtn.addEventListener('click', () => {
+      cartModal.style.display = 'none';
+    });
 
     submitOrder.addEventListener('click', () => {
       const formData = cart.map(item => `${item.name} (${item.size}) x${item.quantity}`).join(', ');
@@ -301,12 +317,29 @@
         if (response.ok) {
           alert('Užsakymas išsiųstas!');
           cart.length = 0;
+          localStorage.removeItem('cart');
           updateCart();
+          cartModal.style.display = 'none';
         } else {
           alert('Įvyko klaida, bandykite dar kartą.');
         }
       });
     });
+
+    if (!localStorage.getItem('cookiesAccepted')) {
+      cookieBanner.style.display = 'block';
+    }
+
+    acceptCookies.addEventListener('click', () => {
+      localStorage.setItem('cookiesAccepted', 'true');
+      cookieBanner.style.display = 'none';
+    });
+
+    declineCookies.addEventListener('click', () => {
+      cookieBanner.style.display = 'none';
+    });
+
+    updateCart();
   </script>
 </body>
 </html>
