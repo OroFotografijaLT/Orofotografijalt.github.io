@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Airo Store</title>
     <style>
+        /* Basic Styles */
         body {
             font-family: Arial, sans-serif;
             background-color: #f0f8ff;
@@ -43,10 +44,6 @@
             color: #0066cc;
         }
 
-        .product p {
-            margin: 10px 0;
-        }
-
         select {
             padding: 8px;
             margin-bottom: 10px;
@@ -67,22 +64,25 @@
             background-color: #004d99;
         }
 
+        /* Cart Icon */
         .cart-icon {
             position: fixed;
-            top: 10px;
+            bottom: 10px;
             right: 10px;
-            font-size: 24px;
-            cursor: pointer;
-            color: white;
-            background: #0066cc;
-            border-radius: 50%;
             width: 50px;
             height: 50px;
+            background-color: #0066cc;
+            color: white;
+            border-radius: 50%;
             display: flex;
-            justify-content: center;
             align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            cursor: pointer;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
         }
 
+        /* Cart Modal */
         .cart {
             display: none;
             position: fixed;
@@ -128,45 +128,7 @@
             background: #cc0000;
         }
 
-        .notification {
-            display: none;
-            position: fixed;
-            bottom: 10px;
-            left: 50%;
-            transform: translateX(-50%);
-            background: #0066cc;
-            color: white;
-            padding: 10px 20px;
-            border-radius: 5px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-        }
-
-        /* Cookie Consent Banner */
-        .cookie-banner {
-            position: fixed;
-            bottom: 0;
-            width: 100%;
-            background: #0066cc;
-            color: white;
-            text-align: center;
-            padding: 10px;
-        }
-
-        .cookie-banner button {
-            background: white;
-            color: #0066cc;
-            border: none;
-            padding: 8px 15px;
-            margin-left: 10px;
-            border-radius: 4px;
-            cursor: pointer;
-        }
-
-        .cookie-banner button:hover {
-            background: #ccc;
-        }
-
-        /* Age Confirmation Modal */
+        /* Age Modal */
         .age-modal {
             position: fixed;
             top: 0;
@@ -189,14 +151,30 @@
             width: 90%;
         }
 
-        .age-modal button {
-            margin-top: 10px;
-            background-color: #0066cc;
+        /* Cookie Banner */
+        .cookie-banner {
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            background: #0066cc;
             color: white;
-            padding: 10px 20px;
+            text-align: center;
+            padding: 10px;
+            display: none;
+        }
+
+        .cookie-banner button {
+            background: white;
+            color: #0066cc;
             border: none;
+            padding: 8px 15px;
+            margin-left: 10px;
             border-radius: 4px;
             cursor: pointer;
+        }
+
+        .cookie-banner button:hover {
+            background: #ccc;
         }
     </style>
 </head>
@@ -215,8 +193,8 @@
 
     <div id="products">
         <div class="product">
-            <h3>Dūmų bomba</h3>
-            <p>Tobulas nuotraukoms ar bendram smagumui.</p>
+            <h3>Dūmų bomba (paprasta)</h3>
+            <p>Tobulas produktas nuotraukoms ar bendram smagumui.</p>
             <select id="smoke-bomb-size">
                 <option value="1.00">Maža - €1.00</option>
                 <option value="1.50">Vidutinė - €1.50</option>
@@ -224,7 +202,31 @@
             </select>
             <button class="btn" onclick="addToCart('Dūmų bomba', parseFloat(document.getElementById('smoke-bomb-size').value))">Į krepšelį</button>
         </div>
-        <!-- Add other products here -->
+        <div class="product">
+            <h3>Dūmų lazdos</h3>
+            <p>Maža tūbelė su 4g mišinio greitam dūmų išleidimui.</p>
+            <select id="smoke-stix-size">
+                <option value="1.00">Vienetinis - €1.00</option>
+                <option value="4.50">Pakuotė (6) - €4.50</option>
+            </select>
+            <button class="btn" onclick="addToCart('Dūmų lazdos', parseFloat(document.getElementById('smoke-stix-size').value))">Į krepšelį</button>
+        </div>
+        <div class="product">
+            <h3>Maža raketa</h3>
+            <p>Prototipas. Naudojama tik gamybos sąnaudoms padengti.</p>
+            <p>Kaina: €1.00</p>
+            <button class="btn" onclick="addToCart('Maža raketa', 1.00)">Į krepšelį</button>
+        </div>
+        <div class="product">
+            <h3>Storos dūmų bombos</h3>
+            <p>Degina greitai, sukuria storą baltų dūmų debesį.</p>
+            <select id="thick-smoke-size">
+                <option value="1.49">Maža - €1.49</option>
+                <option value="1.99">Vidutinė - €1.99</option>
+                <option value="2.49">Didelė - €2.49</option>
+            </select>
+            <button class="btn" onclick="addToCart('Storos dūmų bombos', parseFloat(document.getElementById('thick-smoke-size').value))">Į krepšelį</button>
+        </div>
     </div>
 
     <div class="cart-icon" onclick="toggleCart()">🛒</div>
@@ -232,94 +234,101 @@
     <div class="cart" id="cart">
         <h2>Krepšelis</h2>
         <ul id="cart-items"></ul>
-        <form id="order-form">
-            <label for="full-name">Vardas:</label>
-            <input type="text" id="full-name" required>
-            <button onclick="submitCart()">Order!</button>
-        </form>
+        <p>Bendra suma: €<span id="cart-total">0.00</span></p>
+        <button class="btn" onclick="checkout()">Patvirtinti užsakymą</button>
     </div>
 
     <div class="cookie-banner" id="cookie-banner">
-        <p>Svetainė naudoja slapukus. Ar sutinkate?</p>
-        <button onclick="acceptCookies()">Sutinku</button>
-        <button onclick="declineCookies()">Nesutinku</button>
+        <p>Šioje svetainėje naudojami slapukai. <button onclick="acceptCookies()">Sutikti</button><button onclick="declineCookies()">Nesutikti</button></p>
     </div>
 
     <script>
         let cart = [];
-        let cookiesAccepted = false;
+        const ageModal = document.getElementById("age-modal");
+        const cartModal = document.getElementById("cart");
+        const cookieBanner = document.getElementById("cookie-banner");
 
-        window.onload = function () {
-            const hasCookieConsent = localStorage.getItem('cookieConsent');
-            if (hasCookieConsent) {
-                cookiesAccepted = true;
-                loadCart();
-                document.getElementById('cookie-banner').style.display = 'none';
-            } else {
-                document.getElementById('cookie-banner').style.display = 'block';
-            }
-        };
+        // Age Verification
+        function confirmAge() {
+            localStorage.setItem("ageVerified", true);
+            ageModal.style.display = "none";
+        }
 
+        if (!localStorage.getItem("ageVerified")) {
+            ageModal.style.display = "flex";
+        }
+
+        // Cookies
         function acceptCookies() {
-            cookiesAccepted = true;
-            localStorage.setItem('cookieConsent', true);
-            document.getElementById('cookie-banner').style.display = 'none';
+            localStorage.setItem("cookiesAccepted", true);
+            cookieBanner.style.display = "none";
         }
 
         function declineCookies() {
-            cookiesAccepted = false;
-            localStorage.removeItem('cookieConsent');
-            document.getElementById('cookie-banner').style.display = 'none';
+            localStorage.setItem("cookiesAccepted", false);
+            cookieBanner.style.display = "none";
         }
 
+        if (!localStorage.getItem("cookiesAccepted")) {
+            cookieBanner.style.display = "block";
+        }
+
+        // Cart Functionality
         function addToCart(name, price) {
             cart.push({ name, price });
-            if (cookiesAccepted) {
-                saveCart();
+            updateCart();
+            if (localStorage.getItem("cookiesAccepted") === "true") {
+                localStorage.setItem("cart", JSON.stringify(cart));
             }
-            updateCartUI();
-        }
-
-        function saveCart() {
-            localStorage.setItem('cart', JSON.stringify(cart));
-        }
-
-        function loadCart() {
-            const savedCart = localStorage.getItem('cart');
-            if (savedCart) {
-                cart = JSON.parse(savedCart);
-                updateCartUI();
-            }
-        }
-
-        function updateCartUI() {
-            const cartItems = document.getElementById('cart-items');
-            cartItems.innerHTML = '';
-            cart.forEach((item, index) => {
-                const li = document.createElement('li');
-                li.innerHTML = `${item.name} - €${item.price.toFixed(2)} <button onclick="removeFromCart(${index})">Šalinti</button>`;
-                cartItems.appendChild(li);
-            });
         }
 
         function removeFromCart(index) {
             cart.splice(index, 1);
-            if (cookiesAccepted) {
-                saveCart();
+            updateCart();
+            if (localStorage.getItem("cookiesAccepted") === "true") {
+                localStorage.setItem("cart", JSON.stringify(cart));
             }
-            updateCartUI();
+        }
+
+        function updateCart() {
+            const cartItems = document.getElementById("cart-items");
+            const cartTotal = document.getElementById("cart-total");
+
+            cartItems.innerHTML = "";
+            let total = 0;
+
+            cart.forEach((item, index) => {
+                total += item.price;
+                const li = document.createElement("li");
+                li.textContent = `${item.name} - €${item.price.toFixed(2)}`;
+                const removeButton = document.createElement("button");
+                removeButton.textContent = "Pašalinti";
+                removeButton.onclick = () => removeFromCart(index);
+                li.appendChild(removeButton);
+                cartItems.appendChild(li);
+            });
+
+            cartTotal.textContent = total.toFixed(2);
         }
 
         function toggleCart() {
-            const cart = document.getElementById('cart');
-            cart.style.display = cart.style.display === 'block' ? 'none' : 'block';
+            cartModal.style.display = cartModal.style.display === "block" ? "none" : "block";
         }
 
-        function confirmAge() {
-            document.getElementById('age-modal').style.display = 'none';
+        function checkout() {
+            alert("Užsakymas patvirtintas!");
+            cart = [];
+            updateCart();
+            if (localStorage.getItem("cookiesAccepted") === "true") {
+                localStorage.removeItem("cart");
+            }
         }
 
-        document.getElementById('age-modal').style.display = 'flex';
+        // Persistent Cart
+        if (localStorage.getItem("cookiesAccepted") === "true" && localStorage.getItem("cart")) {
+            cart = JSON.parse(localStorage.getItem("cart"));
+            updateCart();
+        }
     </script>
 </body>
 </html>
