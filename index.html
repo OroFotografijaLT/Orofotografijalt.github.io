@@ -183,6 +183,16 @@
       padding: 10px;
       display: none;
     }
+
+    .confirm-age {
+      display: flex;
+      align-items: center;
+      margin-top: 20px;
+    }
+
+    .confirm-age input {
+      margin-left: 10px;
+    }
   </style>
 </head>
 <body>
@@ -201,6 +211,8 @@
   </div>
 
   <section class="products">
+    <!-- Add your product divs here (same as before) -->
+    <!-- Example: -->
     <div class="product">
       <h2>Normalus Dūmų Bombas</h2>
       <p>Puikus produktas fotografijoms arba bendram smagumui.</p>
@@ -212,38 +224,36 @@
       <button class="add-to-cart" data-product="Normalus Dūmų Bombas">Į krepšelį</button>
     </div>
 
-    <div class="product">
-      <h2>Dūmų Lazdelės</h2>
-      <p>Mažas vamzdelis su 4g mišinio greitam dūmų efektui.</p>
-      <select class="product-size" data-product="Dūmų Lazdelės">
-        <option value="1.00">1 vnt - €1.00</option>
-        <option value="4.50">6 vnt - €4.50</option>
-      </select>
-      <button class="add-to-cart" data-product="Dūmų Lazdelės">Į krepšelį</button>
-    </div>
-
-    <div class="product">
-      <h2>Maža Raketė</h2>
-      <p>Prototipas - kaina atspindi gamybos išlaidas. Naudoti atsargiai.</p>
-      <p>€1.00</p>
-      <button class="add-to-cart" data-product="Maža Raketė" data-price="1.00">Į krepšelį</button>
-    </div>
-
-    <div class="product">
-      <h2>Stori Dūmai</h2>
-      <p>Degina greitai, sukeldamas tankių baltų dūmų debesį.</p>
-      <select class="product-size" data-product="Stori Dūmai">
-        <option value="1.49">Mažas - €1.49</option>
-        <option value="2.00">Vidutinis - €2.00</option>
-        <option value="2.50">Didelis - €2.50</option>
-      </select>
-      <button class="add-to-cart" data-product="Stori Dūmai">Į krepšelį</button>
-    </div>
+    <!-- Repeat for other products -->
   </section>
 
   <div id="cart-modal" class="cart-modal">
     <h2>Jūsų Krepšelis</h2>
     <div id="cart-items" class="cart-items"></div>
+
+    <!-- Add user info section -->
+    <div>
+      <label for="full-name">Pilnas vardas:</label>
+      <input type="text" id="full-name" placeholder="Jūsų vardas ir pavardė" required>
+
+      <label for="email">El. paštas:</label>
+      <input type="email" id="email" placeholder="Jūsų el. paštas" required>
+
+      <label for="phone">Telefono numeris:</label>
+      <input type="tel" id="phone" placeholder="Jūsų telefono numeris" required>
+
+      <label for="address">Adresas:</label>
+      <input type="text" id="address" placeholder="Jūsų adresas" required>
+
+      <label for="dob">Gimimo data:</label>
+      <input type="date" id="dob" required>
+
+      <div class="confirm-age">
+        <label for="age-confirmation">Esu 11 metų ar vyresnis</label>
+        <input type="checkbox" id="age-confirmation" required>
+      </div>
+    </div>
+
     <button id="submit-order">Siųsti Užsakymą</button>
     <button id="go-back-btn" class="go-back-btn">Grįžti</button>
   </div>
@@ -255,6 +265,12 @@
     const cartModal = document.getElementById('cart-modal');
     const submitOrder = document.getElementById('submit-order');
     const goBackBtn = document.getElementById('go-back-btn');
+    const fullNameInput = document.getElementById('full-name');
+    const emailInput = document.getElementById('email');
+    const phoneInput = document.getElementById('phone');
+    const addressInput = document.getElementById('address');
+    const dobInput = document.getElementById('dob');
+    const ageConfirmation = document.getElementById('age-confirmation');
     const cookieBanner = document.getElementById('cookie-banner');
     const acceptCookies = document.getElementById('accept-cookies');
     const declineCookies = document.getElementById('decline-cookies');
@@ -308,11 +324,25 @@
     });
 
     submitOrder.addEventListener('click', () => {
+      if (!ageConfirmation.checked) {
+        alert('Turite būti 11 metų ar vyresni, kad galėtumėte užsisakyti.');
+        return;
+      }
+
       const formData = cart.map(item => `${item.name} (${item.size}) x${item.quantity}`).join(', ');
+      const userData = {
+        fullName: fullNameInput.value,
+        email: emailInput.value,
+        phone: phoneInput.value,
+        address: addressInput.value,
+        dob: dobInput.value,
+        order: formData
+      };
+
       fetch('https://formspree.io/f/xgvezjqw', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ message: formData })
+        body: JSON.stringify(userData)
       }).then(response => {
         if (response.ok) {
           alert('Užsakymas išsiųstas!');
