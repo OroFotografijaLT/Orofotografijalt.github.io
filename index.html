@@ -337,15 +337,6 @@
       document.getElementById('cart-modal').style.display = 'none';
     });
 
-    // Form submission
-    document.getElementById('cart-form').addEventListener('submit', (e) => {
-      e.preventDefault();
-      // Formspree will handle the notification
-      cart = [];
-      updateCart();
-      document.getElementById('cart-modal').style.display = 'none';
-    });
-
     // Cookie Consent Logic
     if (localStorage.getItem('cookiesAccepted')) {
       document.getElementById('cookie-banner').style.display = 'none';
@@ -362,6 +353,15 @@
       localStorage.setItem('cookiesAccepted', 'false');
       document.getElementById('cookie-banner').style.display = 'none';
     });
+
+    // Form submission
+    document.getElementById('cart-form').addEventListener('submit', (e) => {
+      e.preventDefault();
+      cart = [];
+      updateCart();
+      document.getElementById('cart-modal').style.display = 'none';
+    });
   </script>
+
 </body>
 </html>
