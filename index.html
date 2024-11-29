@@ -203,6 +203,7 @@
   <section class="products">
     <div class="product">
       <h2>Normalus Dūmų Bombas</h2>
+      <p>Puikus produktas fotografijoms arba bendram smagumui.</p>
       <select class="product-size" data-product="Normalus Dūmų Bombas">
         <option value="1.49">Small - €1.49</option>
         <option value="1.99">Medium - €1.99</option>
@@ -213,6 +214,7 @@
 
     <div class="product">
       <h2>Dūmų Lazdelės</h2>
+      <p>Mažas vamzdelis su 4g mišinio greitam dūmų efektui.</p>
       <select class="product-size" data-product="Dūmų Lazdelės">
         <option value="1.00">1 vnt - €1.00</option>
         <option value="4.50">6 vnt - €4.50</option>
@@ -222,12 +224,14 @@
 
     <div class="product">
       <h2>Maža Raketė</h2>
-      <p>Prototype - €1.00</p>
+      <p>Prototipas - kaina atspindi gamybos išlaidas. Naudoti atsargiai.</p>
+      <p>€1.00</p>
       <button class="add-to-cart" data-product="Maža Raketė" data-price="1.00">Į krepšelį</button>
     </div>
 
     <div class="product">
       <h2>Stori Dūmai</h2>
+      <p>Degina greitai, sukeldamas tankių baltų dūmų debesį.</p>
       <select class="product-size" data-product="Stori Dūmai">
         <option value="1.49">Mažas - €1.49</option>
         <option value="2.00">Vidutinis - €2.00</option>
@@ -237,7 +241,6 @@
     </div>
   </section>
 
-  <!-- Cart Modal -->
   <div id="cart-modal" class="cart-modal">
     <h2>Jūsų Krepšelis</h2>
     <div id="cart-items" class="cart-items"></div>
@@ -262,24 +265,24 @@
       });
     }
 
-    function addToCart(name, size, price) {
-      const existingItem = cart.find(item => item.name === name && item.size === size);
+    function addToCart(product, size, price) {
+      const existingItem = cart.find(item => item.name === product && item.size === size);
       if (existingItem) {
         existingItem.quantity++;
       } else {
-        cart.push({ name, size, price, quantity: 1 });
+        cart.push({ name: product, size: size, price: price, quantity: 1 });
       }
       updateCart();
     }
 
-    document.querySelectorAll('.add-to-cart').forEach(button => {
+    const addToCartButtons = document.querySelectorAll('.add-to-cart');
+    addToCartButtons.forEach(button => {
       button.addEventListener('click', () => {
         const productName = button.dataset.product;
         const sizeSelect = button.previousElementSibling;
         const selectedSize = sizeSelect ? sizeSelect.value : null;
         const selectedPrice = sizeSelect ? parseFloat(sizeSelect.options[sizeSelect.selectedIndex].value) : parseFloat(button.dataset.price);
-
-        addToCart(productName, selectedSize || "N/A", selectedPrice);
+        addToCart(productName, selectedSize || 'N/A', selectedPrice);
       });
     });
 
