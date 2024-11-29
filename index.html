@@ -5,22 +5,155 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>Airo Store</title>
-  <link rel="stylesheet" href="styles.css">
+  <style>
+    /* Resetting basic styles */
+    body, html {
+      margin: 0;
+      padding: 0;
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f4;
+      color: #333;
+    }
+
+    /* Navbar */
+    .navbar {
+      background-color: #333;
+      color: white;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px;
+    }
+
+    .navbar a {
+      color: white;
+      text-decoration: none;
+      font-size: 24px;
+    }
+
+    .cart {
+      font-size: 16px;
+    }
+
+    /* Cookie Banner */
+    .cookie-banner {
+      position: fixed;
+      bottom: 0;
+      width: 100%;
+      background-color: #333;
+      color: white;
+      text-align: center;
+      padding: 10px;
+      display: none;
+    }
+
+    /* Products Section */
+    .products {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-around;
+      margin: 20px;
+    }
+
+    .product {
+      background-color: white;
+      border-radius: 8px;
+      border: 1px solid #ddd;
+      padding: 15px;
+      margin: 10px;
+      width: 280px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      text-align: center;
+    }
+
+    .product img {
+      width: 100%;
+      height: auto;
+      border-radius: 5px;
+    }
+
+    .product h2 {
+      margin: 10px 0;
+    }
+
+    .product p {
+      margin: 10px 0;
+    }
+
+    .add-to-cart {
+      background-color: #4CAF50;
+      color: white;
+      padding: 10px;
+      border: none;
+      cursor: pointer;
+      border-radius: 5px;
+      margin-top: 10px;
+      transition: background-color 0.3s;
+    }
+
+    .add-to-cart:hover {
+      background-color: #45a049;
+    }
+
+    .cart-modal {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.8);
+      color: white;
+      display: none;
+      padding: 20px;
+      overflow-y: auto;
+    }
+
+    .cart-modal .cart-items {
+      margin-bottom: 20px;
+    }
+
+    .cart-modal input, .cart-modal select {
+      width: 100%;
+      padding: 10px;
+      margin: 5px 0;
+      border-radius: 5px;
+      border: 1px solid #ddd;
+    }
+
+    .cart-modal button {
+      background-color: #4CAF50;
+      color: white;
+      padding: 10px;
+      border: none;
+      cursor: pointer;
+      border-radius: 5px;
+      margin-top: 10px;
+      width: 100%;
+      font-size: 16px;
+    }
+
+    .cart-modal button:hover {
+      background-color: #45a049;
+    }
+  </style>
 </head>
 <body>
 
   <!-- Cookie Banner -->
   <div id="cookie-banner" class="cookie-banner">
-    <p>This site uses cookies to improve your experience. <button id="accept-cookies">Accept</button> <button id="decline-cookies">Decline</button></p>
+    <p>This site uses cookies to improve your experience. 
+      <button id="accept-cookies">Accept</button> 
+      <button id="decline-cookies">Decline</button>
+    </p>
   </div>
 
   <!-- Navbar -->
-  <nav class="navbar">
+  <div class="navbar">
     <a href="#">Airo Store</a>
     <div class="cart">
       <a href="#" id="cart-icon">Cart (0)</a>
     </div>
-  </nav>
+  </div>
 
   <!-- Product List -->
   <section class="products">
@@ -98,6 +231,76 @@
     </form>
   </div>
 
-  <script src="scripts.js"></script>
+  <script>
+    // Cookie consent management
+    document.getElementById('accept-cookies').addEventListener('click', () => {
+      document.getElementById('cookie-banner').style.display = 'none';
+      localStorage.setItem('cookies-accepted', 'true');
+    });
+
+    document.getElementById('decline-cookies').addEventListener('click', () => {
+      document.getElementById('cookie-banner').style.display = 'none';
+    });
+
+    if (localStorage.getItem('cookies-accepted')) {
+      document.getElementById('cookie-banner').style.display = 'none';
+    }
+
+    // Shopping Cart functionality
+    let cart = [];
+
+    function updateCart() {
+      let cartItems = document.getElementById('cart-items');
+      cartItems.innerHTML = '';
+      let total = 0;
+      cart.forEach(item => {
+        let itemElement = document.createElement('div');
+        itemElement.innerHTML = `
+          <p>${item.name} - €${item.price}</p>
+          <p>Quantity: ${item.quantity}</p>
+          <button onclick="removeItem('${item.name}')">Remove</button>
+        `;
+        cartItems.appendChild(itemElement);
+        total += item.price * item.quantity;
+      });
+
+      document.getElementById('cart-icon').textContent = `Cart (${cart.length})`;
+    }
+
+    function addToCart(product, price) {
+      let existingItem = cart.find(item => item.name === product);
+      if (existingItem) {
+        existingItem.quantity++;
+      } else {
+        cart.push({ name: product, price: parseFloat(price), quantity: 1 });
+      }
+      updateCart();
+    }
+
+    function removeItem(productName) {
+      cart = cart.filter(item => item.name !== productName);
+      updateCart();
+    }
+
+    // Cart button listener
+    document.querySelectorAll('.add-to-cart').forEach(button => {
+      button.addEventListener('click', () => {
+        addToCart(button.getAttribute('data-product'), button.getAttribute('data-price'));
+      });
+    });
+
+    // Cart modal
+    document.getElementById('cart-icon').addEventListener('click', () => {
+      document.getElementById('cart-modal').style.display = 'block';
+    });
+
+    document.getElementById('cart-form').addEventListener('submit', (e) => {
+      e.preventDefault();
+      alert('Order submitted!');
+      cart = [];
+      updateCart();
+      document.getElementById('cart-modal').style.display = 'none';
+    });
+  </script>
 </body>
 </html>
