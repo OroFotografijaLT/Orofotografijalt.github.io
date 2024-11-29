@@ -38,6 +38,15 @@
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         }
 
+        .product h3 {
+            margin: 10px 0;
+            color: #0066cc;
+        }
+
+        .product p {
+            margin: 10px 0;
+        }
+
         select {
             padding: 8px;
             margin-bottom: 10px;
@@ -60,75 +69,79 @@
 
         .cart-icon {
             position: fixed;
-            top: 20px;
-            right: 20px;
-            background-color: #0066cc;
-            color: white;
-            padding: 15px;
-            border-radius: 50%;
-            cursor: pointer;
+            top: 10px;
+            right: 10px;
             font-size: 24px;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
+            cursor: pointer;
+            color: white;
+            background: #0066cc;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .cart {
+            display: none;
+            position: fixed;
+            top: 50px;
+            right: 10px;
+            background: #f0f8ff;
+            border: 1px solid #0066cc;
+            padding: 15px;
+            border-radius: 10px;
+            width: 300px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
             z-index: 1000;
         }
 
-        .cart-modal {
-            position: fixed;
-            top: 0;
-            right: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.5);
+        .cart h2 {
+            font-size: 1.2em;
+            margin: 0 0 10px;
+            color: #0066cc;
+        }
+
+        .cart ul {
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .cart li {
+            margin: 5px 0;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .cart li button {
+            background: #ff6666;
+            border: none;
+            padding: 5px;
+            color: white;
+            border-radius: 3px;
+            cursor: pointer;
+        }
+
+        .cart li button:hover {
+            background: #cc0000;
+        }
+
+        .notification {
             display: none;
-            justify-content: center;
-            align-items: center;
-            z-index: 999;
-        }
-
-        .cart-container {
-            background: white;
-            border-radius: 10px;
-            padding: 20px;
-            width: 90%;
-            max-width: 500px;
-            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
-            overflow-y: auto;
-            max-height: 80%;
-        }
-
-        form input,
-        form select {
-            width: 100%;
-            margin-bottom: 10px;
-            padding: 10px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            font-size: 14px;
-        }
-
-        form button {
-            background-color: #0066cc;
+            position: fixed;
+            bottom: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #0066cc;
             color: white;
             padding: 10px 20px;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
+            border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
         }
 
-        .btn-close {
-            background-color: #ccc;
-            color: #333;
-            padding: 10px 20px;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            margin-top: 10px;
-        }
-
-        .btn-close:hover {
-            background-color: #aaa;
-        }
-
+        /* Cookie Consent Banner */
         .cookie-banner {
             position: fixed;
             bottom: 0;
@@ -137,7 +150,6 @@
             color: white;
             text-align: center;
             padding: 10px;
-            display: none;
         }
 
         .cookie-banner button {
@@ -150,6 +162,11 @@
             cursor: pointer;
         }
 
+        .cookie-banner button:hover {
+            background: #ccc;
+        }
+
+        /* Age Confirmation Modal */
         .age-modal {
             position: fixed;
             top: 0;
@@ -172,24 +189,18 @@
             width: 90%;
         }
 
-        .notification {
-            position: fixed;
-            top: 20px;
-            left: 50%;
-            transform: translateX(-50%);
-            background: #4CAF50;
+        .age-modal button {
+            margin-top: 10px;
+            background-color: #0066cc;
             color: white;
             padding: 10px 20px;
-            border-radius: 5px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-            z-index: 1000;
-            display: none;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
         }
     </style>
 </head>
 <body>
-    <div class="notification" id="notification">Prekė sėkmingai pridėta į krepšelį!</div>
-
     <div class="age-modal" id="age-modal">
         <div>
             <h2>Amžiaus patvirtinimas</h2>
@@ -200,128 +211,115 @@
 
     <header>
         <h1>Airo Store</h1>
-        <p>Pirotechnikos parduotuvė</p>
     </header>
 
     <div id="products">
         <div class="product">
-            <h3>Dūmų bomba (paprasta)</h3>
-            <p>Tobulas produktas nuotraukoms ar bendram smagumui.</p>
+            <h3>Dūmų bomba</h3>
+            <p>Tobulas nuotraukoms ar bendram smagumui.</p>
             <select id="smoke-bomb-size">
                 <option value="1.00">Maža - €1.00</option>
                 <option value="1.50">Vidutinė - €1.50</option>
-                <option value="1.99">Originali - €1.99</option>
+                <option value="1.99">Didelė - €1.99</option>
             </select>
-            <button class="btn" onclick="addToCart('Dūmų bomba', parseFloat(document.getElementById('smoke-bomb-size').value))">Įdėti į krepšelį</button>
+            <button class="btn" onclick="addToCart('Dūmų bomba', parseFloat(document.getElementById('smoke-bomb-size').value))">Į krepšelį</button>
         </div>
-        <div class="product">
-            <h3>Dūmų lazdos</h3>
-            <p>Maža tūbelė su 4g mišinio greitam dūmų išleidimui.</p>
-            <select id="smoke-stix-size">
-                <option value="1.00">Vienetinis - €1.00</option>
-                <option value="4.50">Pakuotė (6) - €4.50</option>
-            </select>
-            <button class="btn" onclick="addToCart('Dūmų lazdos', parseFloat(document.getElementById('smoke-stix-size').value))">Įdėti į krepšelį</button>
-        </div>
-        <div class="product">
-            <h3>Maža raketa</h3>
-            <p>Prototipas. Naudojama tik gamybos sąnaudoms padengti.</p>
-            <p>Kaina: €1.00</p>
-            <button class="btn" onclick="addToCart('Maža raketa', 1.00)">Įdėti į krepšelį</button>
-        </div>
-        <div class="product">
-            <h3>Storos dūmų bombos</h3>
-            <p>Degina greitai, sukuria storą baltų dūmų debesį.</p>
-            <select id="thick-smoke-size">
-                <option value="1.49">Maža - €1.49</option>
-                <option value="1.99">Vidutinė - €1.99</option>
-                <option value="2.49">Didelė - €2.49</option>
-            </select>
-            <button class="btn" onclick="addToCart('Storos dūmų bombos', parseFloat(document.getElementById('thick-smoke-size').value))">Įdėti į krepšelį</button>
-        </div>
+        <!-- Add other products here -->
     </div>
 
-    <div class="cart-icon" id="cart-icon">
-        🛒
-    </div>
+    <div class="cart-icon" onclick="toggleCart()">🛒</div>
 
-    <div class="cart-modal" id="cart-modal">
-        <div class="cart-container">
-            <h2>Krepšelis</h2>
-            <div id="cart-items"></div>
-            <button class="btn-close" onclick="closeCart()">Uždaryti</button>
-        </div>
+    <div class="cart" id="cart">
+        <h2>Krepšelis</h2>
+        <ul id="cart-items"></ul>
+        <form id="order-form">
+            <label for="full-name">Vardas:</label>
+            <input type="text" id="full-name" required>
+            <button onclick="submitCart()">Order!</button>
+        </form>
     </div>
 
     <div class="cookie-banner" id="cookie-banner">
-        <p>Mes naudojame slapukus, kad pagerintume jūsų patirtį. Norėdami tęsti, sutikite su mūsų naudojimo sąlygomis.</p>
+        <p>Svetainė naudoja slapukus. Ar sutinkate?</p>
         <button onclick="acceptCookies()">Sutinku</button>
+        <button onclick="declineCookies()">Nesutinku</button>
     </div>
 
     <script>
-        // Cart and Notification Handling
-        let cart = JSON.parse(localStorage.getItem('cart')) || [];
-        const cartItemsContainer = document.getElementById('cart-items');
-        const cartModal = document.getElementById('cart-modal');
-        const notification = document.getElementById('notification');
-        const cartIcon = document.getElementById('cart-icon');
-        
-        function updateCart() {
-            cartItemsContainer.innerHTML = '';
-            cart.forEach(item => {
-                const itemElement = document.createElement('div');
-                itemElement.innerHTML = `${item.name} - €${item.price.toFixed(2)} <button onclick="removeFromCart('${item.name}')">Remove</button>`;
-                cartItemsContainer.appendChild(itemElement);
-            });
+        let cart = [];
+        let cookiesAccepted = false;
+
+        window.onload = function () {
+            const hasCookieConsent = localStorage.getItem('cookieConsent');
+            if (hasCookieConsent) {
+                cookiesAccepted = true;
+                loadCart();
+                document.getElementById('cookie-banner').style.display = 'none';
+            } else {
+                document.getElementById('cookie-banner').style.display = 'block';
+            }
+        };
+
+        function acceptCookies() {
+            cookiesAccepted = true;
+            localStorage.setItem('cookieConsent', true);
+            document.getElementById('cookie-banner').style.display = 'none';
+        }
+
+        function declineCookies() {
+            cookiesAccepted = false;
+            localStorage.removeItem('cookieConsent');
+            document.getElementById('cookie-banner').style.display = 'none';
         }
 
         function addToCart(name, price) {
             cart.push({ name, price });
+            if (cookiesAccepted) {
+                saveCart();
+            }
+            updateCartUI();
+        }
+
+        function saveCart() {
             localStorage.setItem('cart', JSON.stringify(cart));
-            updateCart();
-            notification.style.display = 'block';
-            setTimeout(() => {
-                notification.style.display = 'none';
-            }, 2000);
         }
 
-        function removeFromCart(name) {
-            cart = cart.filter(item => item.name !== name);
-            localStorage.setItem('cart', JSON.stringify(cart));
-            updateCart();
+        function loadCart() {
+            const savedCart = localStorage.getItem('cart');
+            if (savedCart) {
+                cart = JSON.parse(savedCart);
+                updateCartUI();
+            }
         }
 
-        function openCart() {
-            cartModal.style.display = 'flex';
+        function updateCartUI() {
+            const cartItems = document.getElementById('cart-items');
+            cartItems.innerHTML = '';
+            cart.forEach((item, index) => {
+                const li = document.createElement('li');
+                li.innerHTML = `${item.name} - €${item.price.toFixed(2)} <button onclick="removeFromCart(${index})">Šalinti</button>`;
+                cartItems.appendChild(li);
+            });
         }
 
-        function closeCart() {
-            cartModal.style.display = 'none';
+        function removeFromCart(index) {
+            cart.splice(index, 1);
+            if (cookiesAccepted) {
+                saveCart();
+            }
+            updateCartUI();
         }
 
-        // Cookie Consent Banner
-        if (!localStorage.getItem('cookiesAccepted')) {
-            document.getElementById('cookie-banner').style.display = 'block';
-        }
-
-        function acceptCookies() {
-            localStorage.setItem('cookiesAccepted', true);
-            document.getElementById('cookie-banner').style.display = 'none';
-        }
-
-        // Age Verification Modal
-        if (!localStorage.getItem('ageVerified')) {
-            document.getElementById('age-modal').style.display = 'flex';
+        function toggleCart() {
+            const cart = document.getElementById('cart');
+            cart.style.display = cart.style.display === 'block' ? 'none' : 'block';
         }
 
         function confirmAge() {
-            localStorage.setItem('ageVerified', true);
             document.getElementById('age-modal').style.display = 'none';
         }
 
-        // Cart Icon Click
-        cartIcon.onclick = openCart;
-        window.onload = updateCart;
+        document.getElementById('age-modal').style.display = 'flex';
     </script>
 </body>
 </html>
