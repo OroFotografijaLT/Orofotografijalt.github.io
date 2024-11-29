@@ -211,27 +211,57 @@
   </div>
 
   <section class="products">
-    <!-- Add your product divs here (same as before) -->
-    <!-- Example: -->
+    <!-- Product 1: Smoke Bomb (Normal) -->
     <div class="product">
-      <h2>Normalus Dūmų Bombas</h2>
+      <h2>Dūmų Bombas (Normalus)</h2>
       <p>Puikus produktas fotografijoms arba bendram smagumui.</p>
-      <select class="product-size" data-product="Normalus Dūmų Bombas">
+      <select class="product-size" data-product="Dūmų Bombas (Normalus)">
         <option value="1.49">Small - €1.49</option>
         <option value="1.99">Medium - €1.99</option>
         <option value="3.00">Large - €3.00</option>
       </select>
-      <button class="add-to-cart" data-product="Normalus Dūmų Bombas">Į krepšelį</button>
+      <button class="add-to-cart" data-product="Dūmų Bombas (Normalus)">Į krepšelį</button>
     </div>
 
-    <!-- Repeat for other products -->
+    <!-- Product 2: Smoke Stix -->
+    <div class="product">
+      <h2>Dūmų Stiksai</h2>
+      <p>Mažas vamzdelis su 4 gramais mišinio, geras greitam dūmų išsiskyrimui.</p>
+      <select class="product-size" data-product="Dūmų Stiksai">
+        <option value="1.00">1 vnt - €1.00</option>
+        <option value="4.50">Pack of 6 - €4.50</option>
+      </select>
+      <button class="add-to-cart" data-product="Dūmų Stiksai">Į krepšelį</button>
+    </div>
+
+    <!-- Product 3: Small Rocket -->
+    <div class="product">
+      <h2>Mažas Raketa</h2>
+      <p>Dar prototipo stadijoje, kaina yra gamybos kaina (1.00 EUR).</p>
+      <select class="product-size" data-product="Mažas Raketa">
+        <option value="1.00">Prototipas - €1.00</option>
+      </select>
+      <button class="add-to-cart" data-product="Mažas Raketa">Į krepšelį</button>
+    </div>
+
+    <!-- Product 4: Thick Smoke Bomb -->
+    <div class="product">
+      <h2>Storas Dūmų Bombas</h2>
+      <p>Greitai dega ir sukelia storą baltą dūmų debesį.</p>
+      <select class="product-size" data-product="Storas Dūmų Bombas">
+        <option value="1.49">Small - €1.49</option>
+        <option value="2.00">Medium - €2.00</option>
+        <option value="2.50">Large - €2.50</option>
+      </select>
+      <button class="add-to-cart" data-product="Storas Dūmų Bombas">Į krepšelį</button>
+    </div>
   </section>
 
   <div id="cart-modal" class="cart-modal">
     <h2>Jūsų Krepšelis</h2>
     <div id="cart-items" class="cart-items"></div>
 
-    <!-- Add user info section -->
+    <!-- User info section -->
     <div>
       <label for="full-name">Pilnas vardas:</label>
       <input type="text" id="full-name" placeholder="Jūsų vardas ir pavardė" required>
@@ -249,31 +279,47 @@
       <input type="date" id="dob" required>
 
       <div class="confirm-age">
-        <label for="age-confirmation">Esu 11 metų ar vyresnis</label>
+        <label for="age-confirmation">Esu 11 metų ar vyresnis:</label>
         <input type="checkbox" id="age-confirmation" required>
       </div>
     </div>
 
-    <button id="submit-order">Siųsti Užsakymą</button>
-    <button id="go-back-btn" class="go-back-btn">Grįžti</button>
+    <button id="submit-order">Pateikti užsakymą</button>
+    <button class="go-back-btn" id="go-back-btn">Grįžti</button>
   </div>
 
   <script>
-    const cart = JSON.parse(localStorage.getItem('cart')) || [];
-    const cartItems = document.getElementById('cart-items');
-    const cartIcon = document.getElementById('cart-icon');
+    let cart = JSON.parse(localStorage.getItem('cart')) || [];
+
     const cartModal = document.getElementById('cart-modal');
+    const cartIcon = document.getElementById('cart-icon');
+    const cartItems = document.getElementById('cart-items');
     const submitOrder = document.getElementById('submit-order');
     const goBackBtn = document.getElementById('go-back-btn');
+    const ageConfirmation = document.getElementById('age-confirmation');
     const fullNameInput = document.getElementById('full-name');
     const emailInput = document.getElementById('email');
     const phoneInput = document.getElementById('phone');
     const addressInput = document.getElementById('address');
     const dobInput = document.getElementById('dob');
-    const ageConfirmation = document.getElementById('age-confirmation');
+
+    // Cookie functionality
     const cookieBanner = document.getElementById('cookie-banner');
     const acceptCookies = document.getElementById('accept-cookies');
     const declineCookies = document.getElementById('decline-cookies');
+
+    if (!localStorage.getItem('cookiesAccepted')) {
+      cookieBanner.style.display = 'block';
+    }
+
+    acceptCookies.addEventListener('click', () => {
+      localStorage.setItem('cookiesAccepted', 'true');
+      cookieBanner.style.display = 'none';
+    });
+
+    declineCookies.addEventListener('click', () => {
+      cookieBanner.style.display = 'none';
+    });
 
     function updateCart() {
       cartItems.innerHTML = '';
@@ -354,19 +400,6 @@
           alert('Įvyko klaida, bandykite dar kartą.');
         }
       });
-    });
-
-    if (!localStorage.getItem('cookiesAccepted')) {
-      cookieBanner.style.display = 'block';
-    }
-
-    acceptCookies.addEventListener('click', () => {
-      localStorage.setItem('cookiesAccepted', 'true');
-      cookieBanner.style.display = 'none';
-    });
-
-    declineCookies.addEventListener('click', () => {
-      cookieBanner.style.display = 'none';
     });
 
     updateCart();
