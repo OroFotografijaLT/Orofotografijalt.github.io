@@ -28,11 +28,6 @@
       font-size: 24px;
     }
 
-    .cart {
-      font-size: 18px;
-      position: relative;
-    }
-
     .cart-icon {
       display: flex;
       justify-content: center;
@@ -132,30 +127,6 @@
       background-color: #d32f2f;
     }
 
-    .cart-modal input, .cart-modal select {
-      width: 100%;
-      padding: 10px;
-      margin: 5px 0;
-      border-radius: 5px;
-      border: 1px solid #ddd;
-    }
-
-    .cart-modal button {
-      background-color: #007bff;
-      color: white;
-      padding: 10px;
-      border: none;
-      cursor: pointer;
-      border-radius: 5px;
-      margin-top: 10px;
-      width: 100%;
-      font-size: 16px;
-    }
-
-    .cart-modal button:hover {
-      background-color: #0056b3;
-    }
-
     .go-back-btn {
       background-color: #f44336;
       color: white;
@@ -172,37 +143,9 @@
     .go-back-btn:hover {
       background-color: #e53935;
     }
-
-    .cookie-banner {
-      position: fixed;
-      bottom: 0;
-      width: 100%;
-      background-color: #333;
-      color: white;
-      text-align: center;
-      padding: 10px;
-      display: none;
-    }
-
-    .confirm-age {
-      display: flex;
-      align-items: center;
-      margin-top: 20px;
-    }
-
-    .confirm-age input {
-      margin-left: 10px;
-    }
   </style>
 </head>
 <body>
-  <div id="cookie-banner" class="cookie-banner">
-    <p>Ši svetainė naudoja slapukus, kad pagerintų jūsų patirtį.
-      <button id="accept-cookies">Sutinku</button>
-      <button id="decline-cookies">Ne ačiū</button>
-    </p>
-  </div>
-
   <div class="navbar">
     <a href="#">Airo Store</a>
     <div class="cart">
@@ -211,11 +154,10 @@
   </div>
 
   <section class="products">
-    <!-- Product 1: Smoke Bomb (Normal) -->
     <div class="product">
       <h2>Dūmų Bomba (Normali)</h2>
       <p>Puikus produktas fotografijoms arba bendram smagumui.</p>
-      <select class="product-size" data-product="Dūmų Bombas (Normalus)">
+      <select>
         <option value="1.49">Maža - €1.49</option>
         <option value="1.99">Vidutiniška - €1.99</option>
         <option value="3.00">Didelė - €3.00</option>
@@ -223,197 +165,112 @@
       <button class="add-to-cart" data-product="Dūmų Bomba (Normali)">Į krepšelį</button>
     </div>
 
-    <!-- Product 2: Smoke Stix -->
     <div class="product">
       <h2>Dūmų Stiksai</h2>
       <p>Mažas vamzdelis su 4 gramais mišinio, geras greitam dūmų išsiskyrimui.</p>
-      <select class="product-size" data-product="Dūmų Stiksai">
+      <select>
         <option value="1.00">1 vnt - €1.00</option>
         <option value="4.50">Pakuotė 6 vnt - €4.50</option>
       </select>
       <button class="add-to-cart" data-product="Dūmų Stiksai">Į krepšelį</button>
     </div>
 
-    <!-- Product 3: Small Rocket -->
     <div class="product">
       <h2>Maža Raketa</h2>
       <p>Dar prototipo stadijoje, kaina yra gamybos kaina (1.00 EUR).</p>
-      <select class="product-size" data-product="Mažas Raketa">
+      <select>
         <option value="1.00">Prototipas - €1.00</option>
       </select>
       <button class="add-to-cart" data-product="Maža Raketa">Į krepšelį</button>
     </div>
 
-    <!-- Product 4: Thick Smoke Bomb -->
     <div class="product">
       <h2>Storų Dūmų Bomba</h2>
       <p>Greitai dega ir sukelia storą baltą dūmų debesį.</p>
-      <select class="product-size" data-product="Storas Dūmų Bombas">
+      <select>
         <option value="1.49">Maža - €1.49</option>
         <option value="2.00">Vidutiniška - €2.00</option>
         <option value="2.50">Didelė - €2.50</option>
       </select>
       <button class="add-to-cart" data-product="Storų Dūmų Bomba">Į krepšelį</button>
     </div>
-    
-    <!-- Product 5: Fire spinner -->
+
     <div class="product">
-      <h2>Liepsnos spineris</h2>
+      <h2>Liepsnos Spineris</h2>
       <p>Greitai dega sukasi ir, arba pašoka su raudona liepsna.</p>
-      <select class="product-size" data-product="Storas Dūmų Bombas">
+      <select>
         <option value="2.49">Normali - €2.49</option>
       </select>
-      <button class="add-to-cart" data-product="Liepsnos spineris">Į krepšelį</button>
+      <button class="add-to-cart" data-product="Liepsnos Spineris">Į krepšelį</button>
     </div>
-    
   </section>
 
   <div id="cart-modal" class="cart-modal">
     <h2>Jūsų Krepšelis</h2>
-    <div id="cart-items" class="cart-items"></div>
-
-    <!-- User info section -->
-    <div>
-      <label for="full-name">Pilnas vardas:</label>
-      <input type="text" id="full-name" placeholder="Jūsų vardas ir pavardė" required>
-
-      <label for="email">El. paštas:</label>
-      <input type="email" id="email" placeholder="Jūsų el. paštas" required>
-
-      <label for="phone">Telefono numeris:</label>
-      <input type="tel" id="phone" placeholder="Jūsų telefono numeris" required>
-
-      <label for="address">Adresas:</label>
-      <input type="text" id="address" placeholder="Jūsų adresas" required>
-
-      <label for="dob">Gimimo data:</label>
-      <input type="date" id="dob" required>
-
-      <div class="confirm-age">
-        <label for="age-confirmation">Esu 11 metų ar vyresnis:</label>
-        <input type="checkbox" id="age-confirmation" required>
-      </div>
-    </div>
-
-    <button id="submit-order">Pateikti užsakymą</button>
-    <button class="go-back-btn" id="go-back-btn">Grįžti</button>
+    <div id="cart-items"></div>
+    <button id="go-back-btn" class="go-back-btn">Grįžti</button>
   </div>
 
   <script>
-    let cart = JSON.parse(localStorage.getItem('cart')) || [];
-
+    const cart = [];
     const cartModal = document.getElementById('cart-modal');
     const cartIcon = document.getElementById('cart-icon');
     const cartItems = document.getElementById('cart-items');
-    const submitOrder = document.getElementById('submit-order');
     const goBackBtn = document.getElementById('go-back-btn');
-    const ageConfirmation = document.getElementById('age-confirmation');
-    const fullNameInput = document.getElementById('full-name');
-    const emailInput = document.getElementById('email');
-    const phoneInput = document.getElementById('phone');
-    const addressInput = document.getElementById('address');
-    const dobInput = document.getElementById('dob');
 
-    // Cookie functionality
-    const cookieBanner = document.getElementById('cookie-banner');
-    const acceptCookies = document.getElementById('accept-cookies');
-    const declineCookies = document.getElementById('decline-cookies');
-
-    if (!localStorage.getItem('cookiesAccepted')) {
-      cookieBanner.style.display = 'block';
-    }
-
-    acceptCookies.addEventListener('click', () => {
-      localStorage.setItem('cookiesAccepted', 'true');
-      cookieBanner.style.display = 'none';
-    });
-
-    declineCookies.addEventListener('click', () => {
-      cookieBanner.style.display = 'none';
-    });
-
-    function updateCart() {
-      cartItems.innerHTML = '';
-      cart.forEach((item, index) => {
-        const itemDiv = document.createElement('div');
-        itemDiv.classList.add('cart-item');
-        itemDiv.innerHTML = 
-          <span>${item.name} (${item.size}) x${item.quantity} - €${(item.price * item.quantity).toFixed(2)}</span>
-          <button class="remove-item-btn" onclick="removeFromCart(${index})">Salinti</button>
-        ;
-        cartItems.appendChild(itemDiv);
-      });
-    }
-
-    function addToCart(product, size, price) {
-      const existingItem = cart.find(item => item.name === product && item.size === size);
-      if (existingItem) {
-        existingItem.quantity++;
-      } else {
-        cart.push({ name: product, size: size, price: price, quantity: 1 });
-      }
-      updateCart();
-      localStorage.setItem('cart', JSON.stringify(cart));
-    }
-
-    function removeFromCart(index) {
-      cart.splice(index, 1);
-      updateCart();
-      localStorage.setItem('cart', JSON.stringify(cart));
-    }
-
-    document.querySelectorAll('.add-to-cart').forEach(button => {
-      button.addEventListener('click', () => {
-        const productName = button.dataset.product;
-        const sizeSelect = button.previousElementSibling;
-        const selectedSize = sizeSelect ? sizeSelect.value : 'N/A';
-        const selectedPrice = parseFloat(sizeSelect ? sizeSelect.options[sizeSelect.selectedIndex].value : button.dataset.price);
-        addToCart(productName, selectedSize, selectedPrice);
-      });
-    });
-
+    // Open/close the cart modal
     cartIcon.addEventListener('click', () => {
-      cartModal.style.display = 'block';
+      cartModal.style.display = cartModal.style.display === 'block' ? 'none' : 'block';
+      updateCart();
     });
 
     goBackBtn.addEventListener('click', () => {
       cartModal.style.display = 'none';
     });
 
-    submitOrder.addEventListener('click', () => {
-      if (!ageConfirmation.checked) {
-        alert('Turite būti 11 metų ar vyresni, kad galėtumėte užsisakyti.');
-        return;
-      }
+    document.querySelectorAll('.add-to-cart').forEach(button => {
+      button.addEventListener('click', () => {
+        const productName = button.dataset.product;
+        const price = parseFloat(button.previousElementSibling.value);
+        const existingItem = cart.find(item => item.name === productName && item.price === price);
 
-      const formData = cart.map(item => ${item.name} (${item.size}) x${item.quantity}).join(', ');
-      const userData = {
-        fullName: fullNameInput.value,
-        email: emailInput.value,
-        phone: phoneInput.value,
-        address: addressInput.value,
-        dob: dobInput.value,
-        order: formData
-      };
-
-      fetch('https://formspree.io/f/xgvezjqw', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(userData)
-      }).then(response => {
-        if (response.ok) {
-          alert('Užsakymas išsiųstas!');
-          cart.length = 0;
-          localStorage.removeItem('cart');
-          updateCart();
-          cartModal.style.display = 'none';
+        if (existingItem) {
+          existingItem.quantity++;
         } else {
-          alert('Įvyko klaida, bandykite dar kartą.');
+          cart.push({ name: productName, price, quantity: 1 });
         }
+
+        alert(`${productName} pridėta į krepšelį!`);
+        updateCart();
       });
     });
 
-    updateCart();
+    function updateCart() {
+      cartItems.innerHTML = '';
+
+      if (cart.length === 0) {
+        cartItems.innerHTML = '<p>Krepšelis yra tuščias.</p>';
+        return;
+      }
+
+      cart.forEach((item, index) => {
+        const itemDiv = document.createElement('div');
+        itemDiv.className = 'cart-item';
+        itemDiv.innerHTML = `
+          <span>${item.name} (${item.quantity}) - €${(item.price * item.quantity).toFixed(2)}</span>
+          <button class="remove-item-btn" data-index="${index}">Pašalinti</button>
+        `;
+        cartItems.appendChild(itemDiv);
+      });
+
+      document.querySelectorAll('.remove-item-btn').forEach(button => {
+        button.addEventListener('click', () => {
+          const index = parseInt(button.dataset.index);
+          cart.splice(index, 1);
+          updateCart();
+        });
+      });
+    }
   </script>
 </body>
-</html> 
+</html>
