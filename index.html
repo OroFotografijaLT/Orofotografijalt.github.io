@@ -9,144 +9,267 @@
       margin: 0;
       padding: 0;
       font-family: Arial, sans-serif;
-      background-color: #f5f5f5;
+      background-color: #f0f4f8;
       color: #333;
+    }
+
+    .navbar {
+      background-color: #007bff;
+      color: white;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px;
+    }
+
+    .navbar a {
+      color: white;
+      text-decoration: none;
+      font-size: 24px;
+    }
+
+    .cart {
+      font-size: 18px;
+      position: relative;
+    }
+
+    .cart-icon {
       display: flex;
       justify-content: center;
       align-items: center;
-      height: 100vh;
-    }
-
-    .store-container {
-      text-align: center;
-      padding: 20px;
-      border: 1px solid #ccc;
-      background: white;
-      border-radius: 8px;
-      width: 90%;
-      max-width: 400px;
-      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-    }
-
-    .store-container h1 {
-      font-size: 24px;
-      margin-bottom: 20px;
-    }
-
-    .store-container button {
-      margin: 10px 0;
-      padding: 10px 20px;
-      font-size: 16px;
-      border: none;
-      border-radius: 4px;
       background-color: #007bff;
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
       color: white;
+      font-size: 20px;
       cursor: pointer;
+      transition: background-color 0.3s ease;
     }
 
-    .store-container button:hover {
+    .cart-icon:hover {
       background-color: #0056b3;
     }
 
-    .input-field {
-      width: 100%;
+    .products {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-around;
+      margin: 20px;
+    }
+
+    .product {
+      background-color: white;
+      border-radius: 8px;
+      border: 1px solid #ddd;
+      padding: 15px;
+      margin: 10px;
+      width: 280px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      text-align: center;
+    }
+
+    .product h2, .product p {
       margin: 10px 0;
+    }
+
+    .product select {
+      margin-top: 10px;
+      padding: 5px;
+      border-radius: 5px;
+    }
+
+    .add-to-cart {
+      background-color: #007bff;
+      color: white;
       padding: 10px;
-      border: 1px solid #ccc;
-      border-radius: 4px;
+      border: none;
+      cursor: pointer;
+      border-radius: 5px;
+      margin-top: 10px;
+      transition: background-color 0.3s;
+    }
+
+    .add-to-cart:hover {
+      background-color: #0056b3;
+    }
+
+    .cart-modal {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.8);
+      color: white;
+      display: none;
+      padding: 20px;
+      overflow-y: auto;
+    }
+
+    .cart-items {
+      margin-bottom: 20px;
+    }
+
+    .cart-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+
+    .cart-item .remove-item-btn {
+      background-color: #f44336;
+      color: white;
+      padding: 5px 10px;
+      font-size: 12px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    .cart-item .remove-item-btn:hover {
+      background-color: #d32f2f;
+    }
+
+    .cart-modal input, .cart-modal select {
+      width: 100%;
+      padding: 10px;
+      margin: 5px 0;
+      border-radius: 5px;
+      border: 1px solid #ddd;
+    }
+
+    .cart-modal button {
+      background-color: #007bff;
+      color: white;
+      padding: 10px;
+      border: none;
+      cursor: pointer;
+      border-radius: 5px;
+      margin-top: 10px;
+      width: 100%;
       font-size: 16px;
     }
 
+    .cart-modal button:hover {
+      background-color: #0056b3;
+    }
+
+    .go-back-btn {
+      background-color: #f44336;
+      color: white;
+      border: none;
+      padding: 10px;
+      border-radius: 5px;
+      cursor: pointer;
+      text-align: center;
+      font-size: 16px;
+      width: 100%;
+      transition: background-color 0.3s;
+    }
+
+    .go-back-btn:hover {
+      background-color: #e53935;
+    }
+
+    /* Premium Pop-Up */
     .premium-popup {
-      display: none;
       position: fixed;
       top: 50%;
       left: 50%;
       transform: translate(-50%, -50%);
-      background: white;
-      border-radius: 8px;
+      background-color: white;
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+      border-radius: 10px;
       padding: 20px;
-      width: 90%;
-      max-width: 400px;
-      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
       text-align: center;
+      display: none;
+      width: 300px;
+    }
+
+    .premium-popup h3 {
+      margin: 0 0 10px 0;
     }
 
     .premium-popup button {
-      background-color: #28a745;
+      margin: 10px 5px;
+      padding: 10px;
+      width: 120px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 16px;
     }
 
-    .futuristic-theme {
-      background-color: #1a1a2e;
-      color: #e94560;
-      font-family: 'Roboto', sans-serif;
+    .premium-btn {
+      background-color: #007bff;
+      color: white;
     }
 
-    .futuristic-theme button {
-      background-color: #16213e;
-      color: #e94560;
+    .premium-btn:hover {
+      background-color: #0056b3;
     }
 
-    .discount-badge {
-      color: #28a745;
-      font-size: 14px;
-      margin-left: 5px;
+    .no-thanks-btn {
+      background-color: #f44336;
+      color: white;
+    }
+
+    .no-thanks-btn:hover {
+      background-color: #d32f2f;
     }
   </style>
 </head>
 <body>
-  <div class="store-container">
-    <h1>Airo Store</h1>
-    <input type="text" class="input-field" placeholder="Vartotojo vardas">
-    <input type="password" class="input-field" placeholder="Slaptažodis">
-    <input type="password" class="input-field" placeholder="Pakartokite slaptažodį">
-    <button onclick="register()">Sukurti paskyrą</button>
-    <button onclick="login()">Prisijungti</button>
+  <div class="navbar">
+    <a href="#">Airo Store</a>
+    <div class="cart">
+      <div id="cart-icon" class="cart-icon">🛒</div>
+    </div>
   </div>
 
-  <div class="premium-popup" id="premium-popup">
-    <h2>Pavargote nuo dabartinio vaizdo?</h2>
-    <p>Perjunkite į **Premium**! Gaukite 7 dienų nemokamą bandomąjį laikotarpį ir 10% nuolaidą visoms prekėms.</p>
-    <button onclick="activatePremium()">Išbandyti dabar</button>
+  <section class="products">
+    <!-- Product List -->
+    <div class="product">
+      <h2>Example Product</h2>
+      <p>Example Description</p>
+      <select>
+        <option value="10.00">Small - €10.00</option>
+        <option value="20.00">Medium - €20.00</option>
+      </select>
+      <button class="add-to-cart">Add to Cart</button>
+    </div>
+    <!-- Add more products as needed -->
+  </section>
+
+  <div id="premium-popup" class="premium-popup">
+    <h3>Tired of what you see? Switch to Premium!</h3>
+    <button id="premium-btn" class="premium-btn">7-Day Free Trial</button>
+    <button id="no-thanks-btn" class="no-thanks-btn">No Thanks</button>
   </div>
 
   <script>
-    // Toggle Premium Popup
-    function showPremiumPopup() {
-      document.getElementById('premium-popup').style.display = 'block';
-    }
+    document.addEventListener("DOMContentLoaded", () => {
+      const premiumPopup = document.getElementById("premium-popup");
+      const premiumBtn = document.getElementById("premium-btn");
+      const noThanksBtn = document.getElementById("no-thanks-btn");
 
-    // Activate Premium
-    function activatePremium() {
-      document.body.classList.add('futuristic-theme');
-      alert('Sveikiname! Aktyvavote Premium bandomąjį laikotarpį.');
-      document.getElementById('premium-popup').style.display = 'none';
-
-      // Apply a 10% discount to all products (simulation)
-      const discountBadges = document.querySelectorAll('.discount-badge');
-      discountBadges.forEach(badge => badge.textContent = '-10%');
-    }
-
-    // Account Registration
-    function register() {
-      const username = document.querySelector('.input-field:nth-child(1)').value;
-      const password = document.querySelector('.input-field:nth-child(2)').value;
-      const repeatPassword = document.querySelector('.input-field:nth-child(3)').value;
-
-      if (!username || !password || password !== repeatPassword) {
-        alert('Įsitikinkite, kad visi laukai yra užpildyti teisingai.');
-        return;
+      if (!sessionStorage.getItem("premiumDismissed")) {
+        premiumPopup.style.display = "block";
       }
 
-      // Mock user registration
-      alert('Sėkmingai užregistruota! Prisijunkite.');
-    }
+      premiumBtn.addEventListener("click", () => {
+        sessionStorage.setItem("premiumActive", "true");
+        premiumPopup.style.display = "none";
+        alert("Premium activated! Enjoy your benefits.");
+      });
 
-    // Account Login
-    function login() {
-      alert('Prisijungimas sėkmingas!');
-      showPremiumPopup();
-    }
+      noThanksBtn.addEventListener("click", () => {
+        sessionStorage.setItem("premiumDismissed", "true");
+        premiumPopup.style.display = "none";
+      });
+    });
   </script>
 </body>
 </html>
