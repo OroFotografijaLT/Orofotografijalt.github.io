@@ -317,20 +317,22 @@
     });
 
     declineCookies.addEventListener('click', () => {
+      localStorage.setItem('cookiesAccepted', 'false');
       cookieBanner.style.display = 'none';
     });
 
-    function updateCart() {
-      cartItems.innerHTML = '';
-      cart.forEach((item, index) => {
-        const itemDiv = document.createElement('div');
-        itemDiv.classList.add('cart-item');
-        itemDiv.innerHTML = 
-          <span>${item.name} (${item.size}) x${item.quantity} - €${(item.price * item.quantity).toFixed(2)}</span>
-          <button class="remove-item-btn" onclick="removeFromCart(${index})">Salinti</button>;
-        cartItems.appendChild(itemDiv);
+    // Cart functionality
+    document.querySelectorAll('.add-to-cart').forEach(button => {
+      button.addEventListener('click', () => {
+        const productName = button.dataset.product;
+        const sizeSelect = button.previousElementSibling; // This is the <select> element
+        const selectedSize = sizeSelect ? sizeSelect.value : 'N/A';
+        const selectedPrice = parseFloat(sizeSelect ? sizeSelect.options[sizeSelect.selectedIndex].value : button.dataset.price);
+        
+        // Now add to the cart
+        addToCart(productName, selectedSize, selectedPrice);
       });
-    }
+    });
 
     function addToCart(product, size, price) {
       const existingItem = cart.find(item => item.name === product && item.size === size);
@@ -343,65 +345,60 @@
       localStorage.setItem('cart', JSON.stringify(cart));
     }
 
-    function removeFromCart(index) {
-      cart.splice(index, 1);
-      updateCart();
-      localStorage.setItem('cart', JSON.stringify(cart));
+    function updateCart() {
+      cartItems.innerHTML = '';
+      cart.forEach(item => {
+        const div = document.createElement('div');
+        div.classList.add('cart-item');
+        div.innerHTML = `
+          <p>${item.name} (${item.size}) - €${item.price} x ${item.quantity}</p>
+          <button class="remove-item-btn" data-product="${item.name}" data-size="${item.size}">Pašalinti</button>
+        `;
+        cartItems.appendChild(div);
+      });
+
+      document.querySelectorAll('.remove-item-btn').forEach(button => {
+        button.addEventListener('click', () => {
+          removeFromCart(button.dataset.product, button.dataset.size);
+        });
+      });
     }
 
-    document.querySelectorAll('.add-to-cart').forEach(button => {
-      button.addEventListener('click', () => {
-        const productName = button.dataset.product;
-        const sizeSelect = button.previousElementSibling;
-        const selectedSize = sizeSelect ? sizeSelect.value : 'N/A';
-        const selectedPrice = parseFloat(sizeSelect ? sizeSelect.options[sizeSelect.selectedIndex].value : button.dataset.price);
-        addToCart(productName, selectedSize, selectedPrice);
-      });
-    });
+    function removeFromCart(product, size) {
+      const itemIndex = cart.findIndex(item => item.name === product && item.size === size);
+      if (itemIndex !== -1) {
+        cart.splice(itemIndex, 1);
+        localStorage.setItem('cart', JSON.stringify(cart));
+        updateCart();
+      }
+    }
 
-    // Cart icon functionality
     cartIcon.addEventListener('click', () => {
-      cartModal.style.display = 'block';  // Show the cart modal
+      cartModal.style.display = 'block';
     });
 
     goBackBtn.addEventListener('click', () => {
-      cartModal.style.display = 'none';  // Hide the cart modal when the user clicks "Go back"
+      cartModal.style.display = 'none';
     });
 
     submitOrder.addEventListener('click', () => {
       if (!ageConfirmation.checked) {
-        alert('Turite būti 11 metų ar vyresni, kad galėtumėte užsisakyti.');
+        alert('Norint užsisakyti, turite patvirtinti, kad esate 11 metų ar vyresnis.');
         return;
       }
 
-      const formData = cart.map(item => ${item.name} (${item.size}) x${item.quantity}).join(', ');
-      const userData = {
-        fullName: fullNameInput.value,
-        email: emailInput.value,
-        phone: phoneInput.value,
-        address: addressInput.value,
-        dob: dobInput.value,
-        order: formData
-      };
+      if (!fullNameInput.value || !emailInput.value || !phoneInput.value || !addressInput.value || !dobInput.value) {
+        alert('Prašome užpildyti visus laukus!');
+        return;
+      }
 
-      fetch('https://formspree.io/f/xgvezjqw', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(userData)
-      }).then(response => {
-        if (response.ok) {
-          alert('Užsakymas išsiųstas!');
-          cart.length = 0;
-          localStorage.removeItem('cart');
-          updateCart();
-          cartModal.style.display = 'none';
-        } else {
-          alert('Įvyko klaida, bandykite dar kartą.');
-        }
-      });
+      // Proceed with order (here you could save it or send it to a server)
+      alert('Užsakymas atliktas!');
+      cart = [];
+      localStorage.setItem('cart', JSON.stringify(cart));
+      updateCart();
+      cartModal.style.display = 'none';
     });
-
-    updateCart();
   </script>
 </body>
-</html> 
+</html>
