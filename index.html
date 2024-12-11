@@ -67,6 +67,7 @@
       width: 280px;
       box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
       text-align: center;
+      flex: 1 0 300px;
     }
 
     .product h2, .product p {
@@ -193,6 +194,19 @@
     .confirm-age input {
       margin-left: 10px;
     }
+
+    @media (max-width: 768px) {
+      .product {
+        width: 90%;
+        margin: 10px auto;
+      }
+
+      .cart-icon {
+        font-size: 18px;
+        width: 40px;
+        height: 40px;
+      }
+    }
   </style>
 </head>
 <body>
@@ -215,7 +229,7 @@
     <div class="product">
       <h2>Dūmų Bomba (Normali)</h2>
       <p>Puikus produktas fotografijoms arba bendram smagumui.</p>
-      <select class="product-size" data-product="Dūmų Bombas (Normalus)">
+      <select class="product-size" data-product="Dūmų Bombas (Normali)">
         <option value="1.49">Maža - €1.49</option>
         <option value="1.99">Vidutiniška - €1.99</option>
         <option value="3.00">Didelė - €3.00</option>
@@ -234,7 +248,18 @@
       <button class="add-to-cart" data-product="Dūmų Stiksai">Į krepšelį</button>
     </div>
 
-    <!-- Product 3: Small Rocket -->
+    <!-- Product 3: Smoke Sticks Eco (New) -->
+    <div class="product">
+      <h2><span style="color: red;">Nauja!</span> Dūmų Stiksai Eco</h2>
+      <p>Degia kaip dūmų stiksai, tačiau palieka mažai arba visai jokios liekanos, ir yra pigesni, nes neturi knato.</p>
+      <select class="product-size" data-product="Dūmų Stiksai Eco">
+        <option value="0.90">1 vnt - €0.90</option>
+        <option value="4.40">Pakuotė 6 vnt - €4.40</option>
+      </select>
+      <button class="add-to-cart" data-product="Dūmų Stiksai Eco">Į krepšelį</button>
+    </div>
+
+    <!-- Product 4: Small Rocket -->
     <div class="product">
       <h2>Maža Raketa</h2>
       <p>Dar prototipo stadijoje, kaina yra gamybos kaina (1.00 EUR).</p>
@@ -244,7 +269,7 @@
       <button class="add-to-cart" data-product="Maža Raketa">Į krepšelį</button>
     </div>
 
-    <!-- Product 4: Thick Smoke Bomb -->
+    <!-- Product 5: Thick Smoke Bomb -->
     <div class="product">
       <h2>Storų Dūmų Bomba</h2>
       <p>Greitai dega ir sukelia storą baltą dūmų debesį.</p>
@@ -256,11 +281,11 @@
       <button class="add-to-cart" data-product="Storų Dūmų Bomba">Į krepšelį</button>
     </div>
     
-    <!-- Product 5: Fire spinner -->
+    <!-- Product 6: Fire spinner -->
     <div class="product">
       <h2>Liepsnos spineris</h2>
       <p>Greitai dega sukasi ir, arba pašoka su raudona liepsna.</p>
-      <select class="product-size" data-product="Storas Dūmų Bombas">
+      <select class="product-size" data-product="Liepsnos spineris">
         <option value="2.49">Normali - €2.49</option>
       </select>
       <button class="add-to-cart" data-product="Liepsnos spineris">Į krepšelį</button>
@@ -296,56 +321,8 @@
     const cartItems = document.getElementById('cart-items');
     const submitOrder = document.getElementById('submit-order');
     const goBackBtn = document.getElementById('go-back-btn');
-    const ageConfirmation = document.getElementById('age-confirmation');
-    const fullNameInput = document.getElementById('full-name');
-    const emailInput = document.getElementById('email');
-    const phoneInput = document.getElementById('phone');
-    const addressInput = document.getElementById('address');
-    const dobInput = document.getElementById('dob');
+    const orderForm = document.getElementById('order-form');
     const cartItemsHidden = document.getElementById('cart-items-hidden');
-
-    // Cookie functionality
-    const cookieBanner = document.getElementById('cookie-banner');
-    const acceptCookies = document.getElementById('accept-cookies');
-    const declineCookies = document.getElementById('decline-cookies');
-
-    if (!localStorage.getItem('cookiesAccepted')) {
-      cookieBanner.style.display = 'block';
-    }
-
-    acceptCookies.addEventListener('click', () => {
-      localStorage.setItem('cookiesAccepted', 'true');
-      cookieBanner.style.display = 'none';
-    });
-
-    declineCookies.addEventListener('click', () => {
-      localStorage.setItem('cookiesAccepted', 'false');
-      cookieBanner.style.display = 'none';
-    });
-
-    // Cart functionality
-    document.querySelectorAll('.add-to-cart').forEach(button => {
-      button.addEventListener('click', () => {
-        const productName = button.dataset.product;
-        const sizeSelect = button.previousElementSibling; // This is the <select> element
-        const selectedSize = sizeSelect ? sizeSelect.value : 'N/A';
-        const selectedPrice = parseFloat(sizeSelect ? sizeSelect.options[sizeSelect.selectedIndex].value : button.dataset.price);
-        
-        // Now add to the cart
-        addToCart(productName, selectedSize, selectedPrice);
-      });
-    });
-
-    function addToCart(product, size, price) {
-      const existingItem = cart.find(item => item.name === product && item.size === size);
-      if (existingItem) {
-        existingItem.quantity++;
-      } else {
-        cart.push({ name: product, size: size, price: price, quantity: 1 });
-      }
-      updateCart();
-      localStorage.setItem('cart', JSON.stringify(cart));
-    }
 
     function updateCart() {
       cartItems.innerHTML = '';
@@ -353,7 +330,7 @@
         const div = document.createElement('div');
         div.classList.add('cart-item');
         div.innerHTML = `
-          <p>${item.name} (${item.size}) - €${item.price} x ${item.quantity}</p>
+          <span>${item.name} - ${item.size} - €${item.price}</span>
           <button class="remove-item-btn" data-product="${item.name}" data-size="${item.size}">Pašalinti</button>
         `;
         cartItems.appendChild(div);
@@ -384,19 +361,35 @@
     });
 
     // Prepare the cart data to send via form
-    const orderForm = document.getElementById('order-form');
     orderForm.addEventListener('submit', (e) => {
       e.preventDefault();
-      
+
+      if (!document.getElementById('age-confirmation').checked) {
+        alert("Turite patvirtinti, kad esate 11 metų ar vyresnis.");
+        return;
+      }
+
       const cartData = JSON.stringify(cart);
       cartItemsHidden.value = cartData;
       orderForm.submit();
-      
+
       // Reset cart after order submission
       cart = [];
       localStorage.setItem('cart', JSON.stringify(cart));
       updateCart();
       cartModal.style.display = 'none';
+    });
+
+    // Add item to cart
+    document.querySelectorAll('.add-to-cart').forEach(button => {
+      button.addEventListener('click', () => {
+        const product = button.dataset.product;
+        const size = button.previousElementSibling.value;
+        const price = parseFloat(size);
+        cart.push({ name: product, size, price });
+        localStorage.setItem('cart', JSON.stringify(cart));
+        updateCart();
+      });
     });
   </script>
 </body>
