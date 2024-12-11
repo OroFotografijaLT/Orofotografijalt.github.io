@@ -277,14 +277,15 @@
       <input type="checkbox" id="age-confirmation">
     </div>
 
-    <div id="order-form">
-      <input id="full-name" type="text" placeholder="Pilnas vardas" required>
-      <input id="email" type="email" placeholder="El. paštas" required>
-      <input id="phone" type="tel" placeholder="Telefono numeris" required>
-      <input id="address" type="text" placeholder="Adresas" required>
-      <input id="dob" type="date" required>
-      <button id="submit-order">Užsakyti</button>
-    </div>
+    <form id="order-form" action="https://formspree.io/f/xgvezjqw" method="POST">
+      <input type="text" name="full-name" id="full-name" placeholder="Pilnas vardas" required>
+      <input type="email" name="email" id="email" placeholder="El. paštas" required>
+      <input type="tel" name="phone" id="phone" placeholder="Telefono numeris" required>
+      <input type="text" name="address" id="address" placeholder="Adresas" required>
+      <input type="date" name="dob" id="dob" required>
+      <input type="hidden" name="cart-items" id="cart-items-hidden">
+      <button type="submit">Užsakyti</button>
+    </form>
   </div>
 
   <script>
@@ -301,6 +302,7 @@
     const phoneInput = document.getElementById('phone');
     const addressInput = document.getElementById('address');
     const dobInput = document.getElementById('dob');
+    const cartItemsHidden = document.getElementById('cart-items-hidden');
 
     // Cookie functionality
     const cookieBanner = document.getElementById('cookie-banner');
@@ -381,19 +383,16 @@
       cartModal.style.display = 'none';
     });
 
-    submitOrder.addEventListener('click', () => {
-      if (!ageConfirmation.checked) {
-        alert('Norint užsisakyti, turite patvirtinti, kad esate 11 metų ar vyresnis.');
-        return;
-      }
-
-      if (!fullNameInput.value || !emailInput.value || !phoneInput.value || !addressInput.value || !dobInput.value) {
-        alert('Prašome užpildyti visus laukus!');
-        return;
-      }
-
-      // Proceed with order (here you could save it or send it to a server)
-      alert('Užsakymas atliktas!');
+    // Prepare the cart data to send via form
+    const orderForm = document.getElementById('order-form');
+    orderForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      
+      const cartData = JSON.stringify(cart);
+      cartItemsHidden.value = cartData;
+      orderForm.submit();
+      
+      // Reset cart after order submission
       cart = [];
       localStorage.setItem('cart', JSON.stringify(cart));
       updateCart();
