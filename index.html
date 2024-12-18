@@ -3,26 +3,46 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Smartwatch Health Dashboard</title>
+  <title>Zeo Fit+ (Custom)</title>
   <link rel="stylesheet" href="style.css">
   <link rel="manifest" href="manifest.json">
 </head>
 <body>
-  <h1>Smartwatch Health Dashboard</h1>
-  <div id="status">Status: <span id="connection-status">Not Connected</span></div>
+  <header>
+    <h1>Zeo Fit+</h1>
+    <p>Your custom smartwatch companion</p>
+  </header>
 
-  <button id="connect-btn">Connect to Watch</button>
-  <button id="disconnect-btn" disabled>Disconnect</button>
-
-  <div id="confirmation-message" class="hidden">
-    Please confirm the connection on your watch.
+  <!-- Connection Status -->
+  <div id="status-section">
+    <h2>Status</h2>
+    <p>Status: <span id="connection-status">Not Connected</span></p>
+    <button id="connect-btn">Connect to Watch</button>
+    <button id="disconnect-btn" disabled>Disconnect</button>
   </div>
 
+  <!-- Health Dashboard -->
   <div id="health-dashboard" class="hidden">
-    <h2>Health Data</h2>
+    <h2>Health Dashboard</h2>
     <p>Heart Rate: <span id="heart-rate">--</span> bpm</p>
     <p>Steps: <span id="steps">--</span></p>
+    <p>Calories Burned: <span id="calories">--</span> kcal</p>
     <p>Battery: <span id="battery-level">--</span>%</p>
+  </div>
+
+  <!-- Firmware Upload -->
+  <div id="firmware-section" class="hidden">
+    <h2>Firmware Upload</h2>
+    <input type="file" id="firmware-file" />
+    <button id="upload-firmware-btn" disabled>Upload Firmware</button>
+  </div>
+
+  <!-- Custom Settings -->
+  <div id="settings-section" class="hidden">
+    <h2>Custom Settings</h2>
+    <p>Watch Display Brightness:</p>
+    <input type="range" id="brightness" min="1" max="100" value="50">
+    <button id="save-settings-btn">Save Settings</button>
   </div>
 
   <script src="script.js"></script>
