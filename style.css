@@ -2,6 +2,7 @@ body {
   font-family: Arial, sans-serif;
   text-align: center;
   padding: 20px;
+  background-color: #f9f9f9;
 }
 
 button {
@@ -11,6 +12,19 @@ button {
   cursor: pointer;
 }
 
-input[type="file"] {
-  margin: 10px;
+.hidden {
+  display: none;
+}
+
+#health-dashboard {
+  margin-top: 20px;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  background-color: #fff;
+}
+
+#status {
+  margin-bottom: 20px;
+  font-weight: bold;
 }
