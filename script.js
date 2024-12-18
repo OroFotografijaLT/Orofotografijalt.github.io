@@ -1,75 +1,90 @@
-// Get UI elements
 const connectBtn = document.getElementById('connect-btn');
 const disconnectBtn = document.getElementById('disconnect-btn');
 const connectionStatus = document.getElementById('connection-status');
-const confirmationMessage = document.getElementById('confirmation-message');
 const healthDashboard = document.getElementById('health-dashboard');
-const heartRateDisplay = document.getElementById('heart-rate');
-const stepsDisplay = document.getElementById('steps');
-const batteryDisplay = document.getElementById('battery-level');
+const firmwareSection = document.getElementById('firmware-section');
+const settingsSection = document.getElementById('settings-section');
+const uploadFirmwareBtn = document.getElementById('upload-firmware-btn');
+const firmwareFileInput = document.getElementById('firmware-file');
 
-let device, server, confirmed = false;
+let device, server, healthService, batteryService, isConnected = false;
 
-// Handle Connect Button Click
+// Connect to the smartwatch
 connectBtn.addEventListener('click', async () => {
   try {
-    // Request Bluetooth device
     device = await navigator.bluetooth.requestDevice({
       acceptAllDevices: true,
       optionalServices: ['heart_rate', 'battery_service', 'step_counter']
     });
 
-    // Connect to GATT Server
     server = await device.gatt.connect();
+    isConnected = true;
+
+    // Update status
     connectionStatus.textContent = `Connected to ${device.name}`;
-    confirmationMessage.classList.remove('hidden');
-
-    // Wait for watch confirmation (simulate delay)
-    setTimeout(() => {
-      if (confirm(`Confirm connection to ${device.name} on your watch?`)) {
-        confirmed = true;
-        confirmationMessage.classList.add('hidden');
-        healthDashboard.classList.remove('hidden');
-        fetchHealthData();
-      } else {
-        alert('Connection not confirmed. Disconnecting...');
-        disconnect();
-      }
-    }, 3000);
-
-    // Enable disconnect button
+    healthDashboard.classList.remove('hidden');
+    firmwareSection.classList.remove('hidden');
+    settingsSection.classList.remove('hidden');
     disconnectBtn.disabled = false;
     connectBtn.disabled = true;
 
+    // Confirm connection from the watch
+    alert('Please confirm the connection on your smartwatch.');
+    fetchHealthData();
   } catch (error) {
-    console.error('Bluetooth error:', error);
-    alert('Failed to connect to the smartwatch.');
+    console.error(error);
+    alert('Failed to connect. Please try again.');
   }
 });
 
-// Handle Disconnect Button Click
+// Disconnect from the smartwatch
 disconnectBtn.addEventListener('click', () => {
-  disconnect();
-});
-
-// Disconnect Logic
-function disconnect() {
   if (device && device.gatt.connected) {
     device.gatt.disconnect();
+    isConnected = false;
   }
   connectionStatus.textContent = 'Not Connected';
-  confirmationMessage.classList.add('hidden');
   healthDashboard.classList.add('hidden');
+  firmwareSection.classList.add('hidden');
+  settingsSection.classList.add('hidden');
   connectBtn.disabled = false;
   disconnectBtn.disabled = true;
-}
+});
 
-// Fetch Health Data (simulated)
+// Fetch health data
 async function fetchHealthData() {
-  if (!confirmed) return;
+  if (!isConnected) return;
 
-  // Simulate fetching heart rate, steps, and battery level
-  heartRateDisplay.textContent = Math.floor(Math.random() * 40) + 60; // Random heart rate
-  stepsDisplay.textContent = Math.floor(Math.random() * 10000); // Random steps
-  batteryDisplay.textContent = Math.floor(Math.random() * 100); // Random battery level
+  try {
+    healthService = await server.getPrimaryService('heart_rate');
+    batteryService = await server.getPrimaryService('battery_service');
+
+    const heartRateChar = await healthService.getCharacteristic('heart_rate_measurement');
+    const batteryChar = await batteryService.getCharacteristic('battery_level');
+
+    const heartRateValue = await heartRateChar.readValue();
+    const batteryValue = await batteryChar.readValue();
+
+    document.getElementById('heart-rate').textContent = heartRateValue.getUint8(0);
+    document.getElementById('battery-level').textContent = batteryValue.getUint8(0);
+  } catch (error) {
+    console.error('Failed to fetch health data:', error);
+  }
 }
+
+// Upload firmware
+uploadFirmwareBtn.addEventListener('click', async () => {
+  const file = firmwareFileInput.files[0];
+  if (!file) {
+    alert('Please select a firmware file.');
+    return;
+  }
+
+  alert(`Firmware ${file.name} ready for upload!`);
+});
+
+// Save settings
+document.getElementById('save-settings-btn').addEventListener('click', () => {
+  const brightness = document.getElementById('brightness').value;
+  alert(`Saved brightness: ${brightness}%`);
+});
