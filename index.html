@@ -3,15 +3,28 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Smartwatch Manager</title>
+  <title>Smartwatch Health Dashboard</title>
   <link rel="stylesheet" href="style.css">
   <link rel="manifest" href="manifest.json">
 </head>
 <body>
-  <h1>Smartwatch Manager</h1>
+  <h1>Smartwatch Health Dashboard</h1>
+  <div id="status">Status: <span id="connection-status">Not Connected</span></div>
+
   <button id="connect-btn">Connect to Watch</button>
-  <button id="upload-firmware-btn" disabled>Upload Firmware</button>
-  <input type="file" id="firmware-file" disabled>
+  <button id="disconnect-btn" disabled>Disconnect</button>
+
+  <div id="confirmation-message" class="hidden">
+    Please confirm the connection on your watch.
+  </div>
+
+  <div id="health-dashboard" class="hidden">
+    <h2>Health Data</h2>
+    <p>Heart Rate: <span id="heart-rate">--</span> bpm</p>
+    <p>Steps: <span id="steps">--</span></p>
+    <p>Battery: <span id="battery-level">--</span>%</p>
+  </div>
+
   <script src="script.js"></script>
 </body>
 </html>
