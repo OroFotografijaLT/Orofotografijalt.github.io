@@ -89,12 +89,29 @@ async function fetchHealthData() {
   }
 }
 
-// Firmware upload
-uploadFirmwareBtn.addEventListener('click', async () => {
-  const file = firmwareFileInput.files[0];
-  if (!file) {
-    alert('Please select a firmware file.');
-    return;
-  }
-  alert(`Firmware ${file.name} ready for upload!`);
+document.getElementById('firmwareUploadForm').addEventListener('submit', function(event) {
+    event.preventDefault(); // Prevent the form from submitting normally
+    let formData = new FormData();
+    let firmwareFile = document.getElementById('firmware').files[0];
+    
+    if (firmwareFile) {
+        formData.append('firmware', firmwareFile);
+        document.getElementById('uploadStatus').innerText = "Uploading...";
+
+        fetch('https://api.github.com/repos/<your-username>/SpongeMovePro_CustomFirmware/releases/latest', {
+            method: 'POST',
+            body: formData
+        }).then(response => {
+            if (response.ok) {
+                document.getElementById('uploadStatus').innerText = "Firmware uploaded successfully!";
+            } else {
+                document.getElementById('uploadStatus').innerText = "Failed to upload firmware.";
+            }
+        }).catch(error => {
+            document.getElementById('uploadStatus').innerText = "Error occurred during upload.";
+            console.error(error);
+        });
+    } else {
+        document.getElementById('uploadStatus').innerText = "Please select a file to upload.";
+    }
 });
