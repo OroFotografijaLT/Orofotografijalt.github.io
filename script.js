@@ -1,39 +1,39 @@
 const connectBtn = document.getElementById('connect-btn');
 const disconnectBtn = document.getElementById('disconnect-btn');
 const connectionStatus = document.getElementById('connection-status');
-const healthDashboard = document.getElementById('health-dashboard');
-const firmwareSection = document.getElementById('firmware-section');
-const settingsSection = document.getElementById('settings-section');
+const dashboard = document.getElementById('dashboard');
+const firmwareUpload = document.getElementById('firmware-upload');
 const uploadFirmwareBtn = document.getElementById('upload-firmware-btn');
 const firmwareFileInput = document.getElementById('firmware-file');
 
-let device, server, healthService, batteryService, isConnected = false;
+let device, server, isConnected = false;
 
 // Connect to the smartwatch
 connectBtn.addEventListener('click', async () => {
   try {
     device = await navigator.bluetooth.requestDevice({
       acceptAllDevices: true,
-      optionalServices: ['heart_rate', 'battery_service', 'step_counter']
+      optionalServices: ['heart_rate', 'battery_service', 'device_information']
     });
 
     server = await device.gatt.connect();
     isConnected = true;
 
-    // Update status
+    // Confirm on the watch
+    const confirmation = confirm(`Connected to ${device.name}. Confirm on your smartwatch.`);
+    if (!confirmation) {
+      throw new Error('User canceled connection.');
+    }
+
     connectionStatus.textContent = `Connected to ${device.name}`;
-    healthDashboard.classList.remove('hidden');
-    firmwareSection.classList.remove('hidden');
-    settingsSection.classList.remove('hidden');
+    dashboard.classList.remove('hidden');
+    firmwareUpload.classList.remove('hidden');
     disconnectBtn.disabled = false;
     connectBtn.disabled = true;
-
-    // Confirm connection from the watch
-    alert('Please confirm the connection on your smartwatch.');
     fetchHealthData();
   } catch (error) {
-    console.error(error);
-    alert('Failed to connect. Please try again.');
+    console.error('Connection failed:', error);
+    connectionStatus.textContent = 'Failed to connect. Retry.';
   }
 });
 
@@ -44,9 +44,8 @@ disconnectBtn.addEventListener('click', () => {
     isConnected = false;
   }
   connectionStatus.textContent = 'Not Connected';
-  healthDashboard.classList.add('hidden');
-  firmwareSection.classList.add('hidden');
-  settingsSection.classList.add('hidden');
+  dashboard.classList.add('hidden');
+  firmwareUpload.classList.add('hidden');
   connectBtn.disabled = false;
   disconnectBtn.disabled = true;
 });
@@ -56,10 +55,10 @@ async function fetchHealthData() {
   if (!isConnected) return;
 
   try {
-    healthService = await server.getPrimaryService('heart_rate');
-    batteryService = await server.getPrimaryService('battery_service');
+    const heartRateService = await server.getPrimaryService('heart_rate');
+    const batteryService = await server.getPrimaryService('battery_service');
 
-    const heartRateChar = await healthService.getCharacteristic('heart_rate_measurement');
+    const heartRateChar = await heartRateService.getCharacteristic('heart_rate_measurement');
     const batteryChar = await batteryService.getCharacteristic('battery_level');
 
     const heartRateValue = await heartRateChar.readValue();
@@ -81,10 +80,4 @@ uploadFirmwareBtn.addEventListener('click', async () => {
   }
 
   alert(`Firmware ${file.name} ready for upload!`);
-});
-
-// Save settings
-document.getElementById('save-settings-btn').addEventListener('click', () => {
-  const brightness = document.getElementById('brightness').value;
-  alert(`Saved brightness: ${brightness}%`);
 });
