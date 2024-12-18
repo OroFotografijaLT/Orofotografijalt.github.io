@@ -2,29 +2,46 @@ body {
   font-family: Arial, sans-serif;
   text-align: center;
   padding: 20px;
-  background-color: #f9f9f9;
+  background-color: #f4f4f4;
+}
+
+header {
+  background-color: #0078d4;
+  color: white;
+  padding: 20px;
 }
 
 button {
   padding: 10px 20px;
   margin: 10px;
   font-size: 16px;
+  border: none;
+  border-radius: 5px;
+  background-color: #0078d4;
+  color: white;
   cursor: pointer;
+}
+
+button:disabled {
+  background-color: #ccc;
+}
+
+#health-dashboard,
+#firmware-section,
+#settings-section {
+  margin-top: 20px;
+  padding: 15px;
+  background-color: white;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  display: inline-block;
+  text-align: left;
 }
 
 .hidden {
   display: none;
 }
 
-#health-dashboard {
-  margin-top: 20px;
-  padding: 10px;
-  border: 1px solid #ccc;
-  border-radius: 8px;
-  background-color: #fff;
-}
-
-#status {
-  margin-bottom: 20px;
-  font-weight: bold;
+input[type="range"] {
+  width: 80%;
 }
