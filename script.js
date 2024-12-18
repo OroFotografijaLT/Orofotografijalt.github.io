@@ -1,15 +1,45 @@
-document.getElementById('connect-btn').addEventListener('click', async () => {
+// Get UI elements
+const connectBtn = document.getElementById('connect-btn');
+const disconnectBtn = document.getElementById('disconnect-btn');
+const connectionStatus = document.getElementById('connection-status');
+const confirmationMessage = document.getElementById('confirmation-message');
+const healthDashboard = document.getElementById('health-dashboard');
+const heartRateDisplay = document.getElementById('heart-rate');
+const stepsDisplay = document.getElementById('steps');
+const batteryDisplay = document.getElementById('battery-level');
+
+let device, server, confirmed = false;
+
+// Handle Connect Button Click
+connectBtn.addEventListener('click', async () => {
   try {
-    const device = await navigator.bluetooth.requestDevice({
+    // Request Bluetooth device
+    device = await navigator.bluetooth.requestDevice({
       acceptAllDevices: true,
-      optionalServices: ['battery_service', 'device_information']
+      optionalServices: ['heart_rate', 'battery_service', 'step_counter']
     });
 
-    console.log('Connected to:', device.name);
-    alert(`Connected to ${device.name}`);
+    // Connect to GATT Server
+    server = await device.gatt.connect();
+    connectionStatus.textContent = `Connected to ${device.name}`;
+    confirmationMessage.classList.remove('hidden');
 
-    document.getElementById('upload-firmware-btn').disabled = false;
-    document.getElementById('firmware-file').disabled = false;
+    // Wait for watch confirmation (simulate delay)
+    setTimeout(() => {
+      if (confirm(`Confirm connection to ${device.name} on your watch?`)) {
+        confirmed = true;
+        confirmationMessage.classList.add('hidden');
+        healthDashboard.classList.remove('hidden');
+        fetchHealthData();
+      } else {
+        alert('Connection not confirmed. Disconnecting...');
+        disconnect();
+      }
+    }, 3000);
+
+    // Enable disconnect button
+    disconnectBtn.disabled = false;
+    connectBtn.disabled = true;
 
   } catch (error) {
     console.error('Bluetooth error:', error);
@@ -17,23 +47,29 @@ document.getElementById('connect-btn').addEventListener('click', async () => {
   }
 });
 
-document.getElementById('upload-firmware-btn').addEventListener('click', async () => {
-  const fileInput = document.getElementById('firmware-file');
-  const file = fileInput.files[0];
-
-  if (!file) {
-    alert('Please select a firmware file first!');
-    return;
-  }
-
-  try {
-    const data = await file.arrayBuffer();
-    console.log('Firmware size:', data.byteLength);
-
-    alert('Firmware ready to send! (Further implementation required)');
-
-  } catch (error) {
-    console.error('Upload failed:', error);
-    alert('Failed to upload firmware.');
-  }
+// Handle Disconnect Button Click
+disconnectBtn.addEventListener('click', () => {
+  disconnect();
 });
+
+// Disconnect Logic
+function disconnect() {
+  if (device && device.gatt.connected) {
+    device.gatt.disconnect();
+  }
+  connectionStatus.textContent = 'Not Connected';
+  confirmationMessage.classList.add('hidden');
+  healthDashboard.classList.add('hidden');
+  connectBtn.disabled = false;
+  disconnectBtn.disabled = true;
+}
+
+// Fetch Health Data (simulated)
+async function fetchHealthData() {
+  if (!confirmed) return;
+
+  // Simulate fetching heart rate, steps, and battery level
+  heartRateDisplay.textContent = Math.floor(Math.random() * 40) + 60; // Random heart rate
+  stepsDisplay.textContent = Math.floor(Math.random() * 10000); // Random steps
+  batteryDisplay.textContent = Math.floor(Math.random() * 100); // Random battery level
+}
