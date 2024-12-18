@@ -1,4 +1,5 @@
 const connectBtn = document.getElementById('connect-btn');
+const unpairBtn = document.getElementById('unpair-btn');
 const disconnectBtn = document.getElementById('disconnect-btn');
 const connectionStatus = document.getElementById('connection-status');
 const dashboard = document.getElementById('dashboard');
@@ -11,6 +12,7 @@ let device, server, isConnected = false;
 // Connect to the smartwatch
 connectBtn.addEventListener('click', async () => {
   try {
+    // Allow the user to select a device
     device = await navigator.bluetooth.requestDevice({
       acceptAllDevices: true,
       optionalServices: ['heart_rate', 'battery_service', 'device_information']
@@ -19,21 +21,17 @@ connectBtn.addEventListener('click', async () => {
     server = await device.gatt.connect();
     isConnected = true;
 
-    // Confirm on the watch
-    const confirmation = confirm(`Connected to ${device.name}. Confirm on your smartwatch.`);
-    if (!confirmation) {
-      throw new Error('User canceled connection.');
-    }
-
-    connectionStatus.textContent = `Connected to ${device.name}`;
+    connectionStatus.textContent = `Status: Connected to ${device.name}`;
     dashboard.classList.remove('hidden');
     firmwareUpload.classList.remove('hidden');
     disconnectBtn.disabled = false;
+    unpairBtn.disabled = false;
     connectBtn.disabled = true;
+
     fetchHealthData();
   } catch (error) {
     console.error('Connection failed:', error);
-    connectionStatus.textContent = 'Failed to connect. Retry.';
+    connectionStatus.textContent = 'Status: Connection Failed';
   }
 });
 
@@ -43,11 +41,31 @@ disconnectBtn.addEventListener('click', () => {
     device.gatt.disconnect();
     isConnected = false;
   }
-  connectionStatus.textContent = 'Not Connected';
+  connectionStatus.textContent = 'Status: Not Connected';
   dashboard.classList.add('hidden');
   firmwareUpload.classList.add('hidden');
   connectBtn.disabled = false;
   disconnectBtn.disabled = true;
+});
+
+// Unpair the smartwatch
+unpairBtn.addEventListener('click', async () => {
+  try {
+    const devices = await navigator.bluetooth.getDevices();
+    for (const d of devices) {
+      if (d.name === device.name) {
+        console.log(`Unpairing ${d.name}`);
+        await d.gatt.disconnect();
+      }
+    }
+    connectionStatus.textContent = `Status: ${device.name} Unpaired`;
+    unpairBtn.disabled = true;
+    disconnectBtn.disabled = true;
+    connectBtn.disabled = false;
+  } catch (error) {
+    console.error('Failed to unpair:', error);
+    connectionStatus.textContent = 'Status: Unpair Failed';
+  }
 });
 
 // Fetch health data
@@ -71,13 +89,12 @@ async function fetchHealthData() {
   }
 }
 
-// Upload firmware
+// Firmware upload
 uploadFirmwareBtn.addEventListener('click', async () => {
   const file = firmwareFileInput.files[0];
   if (!file) {
     alert('Please select a firmware file.');
     return;
   }
-
   alert(`Firmware ${file.name} ready for upload!`);
 });
