@@ -1,51 +1,55 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Zeo Fit+</title>
-  <link rel="stylesheet" href="style.css">
-  <link rel="manifest" href="manifest.json">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sponge Move Pro - Custom Firmware Upload</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            background-color: #f4f7f6;
+            color: #333;
+        }
+        h1 {
+            color: #4b8df8;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        input[type="file"] {
+            margin-bottom: 20px;
+        }
+        button {
+            padding: 10px 20px;
+            background-color: #4b8df8;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #357bde;
+        }
+    </style>
 </head>
 <body>
-  <header>
-    <h1>Zeo Fit+</h1>
-    <p>Smartwatch Companion App</p>
-  </header>
-
-  <!-- Connection Section -->
-  <div id="connection-section">
-    <h2>Connect to Your Watch</h2>
-    <p id="connection-status">Status: Not Connected</p>
-    <button id="connect-btn">Connect</button>
-    <button id="unpair-btn" disabled>Unpair</button>
-    <button id="disconnect-btn" disabled>Disconnect</button>
-  </div>
-
-  <!-- Dashboard Section -->
-  <div id="dashboard" class="hidden">
-    <h2>Health Data</h2>
-    <div class="data-item">
-      <span>Heart Rate:</span> <span id="heart-rate">--</span> bpm
+    <div class="container">
+        <h1>Sponge Move Pro - Upload Custom Firmware</h1>
+        <p>Upload your custom firmware to the device.</p>
+        <form id="firmwareUploadForm" enctype="multipart/form-data">
+            <label for="firmware">Choose Firmware File (ZIP):</label>
+            <input type="file" id="firmware" name="firmware" accept=".zip" required>
+            <button type="submit">Upload Firmware</button>
+        </form>
+        <p id="uploadStatus"></p>
     </div>
-    <div class="data-item">
-      <span>Steps:</span> <span id="steps">--</span>
-    </div>
-    <div class="data-item">
-      <span>Calories Burned:</span> <span id="calories">--</span> kcal
-    </div>
-    <div class="data-item">
-      <span>Battery Level:</span> <span id="battery-level">--</span>%
-    </div>
-  </div>
 
-  <!-- Firmware Upload Section -->
-  <div id="firmware-upload" class="hidden">
-    <h2>Upload Custom Firmware</h2>
-    <input type="file" id="firmware-file" />
-    <button id="upload-firmware-btn" disabled>Upload Firmware</button>
-  </div>
-
-  <script src="script.js"></script>
+    <script src="firmware_upload.js"></script>
 </body>
 </html>
