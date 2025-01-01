@@ -71,9 +71,9 @@
     }
     #map {
       height: 400px;
+      width: 100%; /* Make map take up full width */
       border-radius: 10px;
       margin-top: 20px;
-      position: relative;
     }
     .leaflet-control-zoom {
       position: absolute;
@@ -94,6 +94,15 @@
     .leaflet-control-zoom-in:hover,
     .leaflet-control-zoom-out:hover {
       background-color: #45a049;
+    }
+
+    @media (max-width: 768px) {
+      header h1 {
+        font-size: 1.8rem;
+      }
+      .content {
+        padding: 15px;
+      }
     }
   </style>
 </head>
@@ -154,9 +163,9 @@
     <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
     <script>
       var map = L.map('map', {
-        zoomControl: false, // Disable default zoom control
+        zoomControl: true, // Enable zoom control
         scrollWheelZoom: false, // Disable scroll zoom
-        dragging: true, // Enable dragging
+        dragging: false, // Disable dragging to prevent moving the map
       }).setView([54.9395, 23.9012], 13);
 
       L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
