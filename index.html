@@ -1,55 +1,139 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sponge Move Pro - Custom Firmware Upload</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            padding: 20px;
-            background-color: #f4f7f6;
-            color: #333;
-        }
-        h1 {
-            color: #4b8df8;
-        }
-        .container {
-            max-width: 600px;
-            margin: 0 auto;
-            padding: 20px;
-            background-color: #fff;
-            border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0,0,0,0.1);
-        }
-        input[type="file"] {
-            margin-bottom: 20px;
-        }
-        button {
-            padding: 10px 20px;
-            background-color: #4b8df8;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-        button:hover {
-            background-color: #357bde;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Aerial Photography Services</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background: linear-gradient(to bottom, #0f2027, #203a43, #2c5364);
+      color: white;
+    }
+    header {
+      text-align: center;
+      padding: 20px;
+      background: #1f2937;
+    }
+    header h1 {
+      margin: 0;
+      font-size: 2.5rem;
+    }
+    .content {
+      max-width: 900px;
+      margin: auto;
+      padding: 20px;
+    }
+    .pricing {
+      margin: 20px 0;
+      font-size: 1.2rem;
+    }
+    .gallery {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 10px;
+    }
+    .gallery img {
+      width: 100%;
+      border-radius: 10px;
+    }
+    form {
+      background: #1f2937;
+      padding: 20px;
+      border-radius: 10px;
+      margin-top: 20px;
+    }
+    form label {
+      display: block;
+      margin: 10px 0 5px;
+    }
+    form input, form select, form button {
+      width: 100%;
+      padding: 10px;
+      margin: 5px 0;
+      border: none;
+      border-radius: 5px;
+    }
+    form button {
+      background: #4caf50;
+      color: white;
+      font-size: 1rem;
+      cursor: pointer;
+    }
+    form button:hover {
+      background: #45a049;
+    }
+    footer {
+      text-align: center;
+      margin: 20px 0;
+    }
+    iframe {
+      margin-top: 20px;
+      width: 100%;
+      height: 300px;
+      border: 0;
+    }
+  </style>
 </head>
 <body>
-    <div class="container">
-        <h1>Sponge Move Pro - Upload Custom Firmware</h1>
-        <p>Upload your custom firmware to the device.</p>
-        <form id="firmwareUploadForm" enctype="multipart/form-data">
-            <label for="firmware">Choose Firmware File (ZIP):</label>
-            <input type="file" id="firmware" name="firmware" accept=".zip" required>
-            <button type="submit">Upload Firmware</button>
-        </form>
-        <p id="uploadStatus"></p>
+  <header>
+    <h1>Aerial Photography by a Young Enthusiast</h1>
+    <p>Quality drone shots at unbeatable prices!</p>
+  </header>
+
+  <div class="content">
+    <div class="pricing">
+      <p>📸 **5-7 photos for just €10!**</p>
+      <p>📍 For an additional €5, specify **any height and angle** of your choice!</p>
     </div>
 
-    <script src="firmware_upload.js"></script>
+    <div class="gallery">
+      <img src="https://via.placeholder.com/250" alt="Sample Photo 1">
+      <img src="https://via.placeholder.com/250" alt="Sample Photo 2">
+      <img src="https://via.placeholder.com/250" alt="Sample Photo 3">
+      <img src="https://via.placeholder.com/250" alt="Sample Photo 4">
+      <img src="https://via.placeholder.com/250" alt="Sample Photo 5">
+    </div>
+
+    <form action="https://formspree.io/f/xgvezjqw" method="POST">
+      <h3>Order Your Photos</h3>
+      <label for="name">Full Name</label>
+      <input type="text" id="name" name="name" required>
+      
+      <label for="email">Email</label>
+      <input type="email" id="email" name="email" required>
+      
+      <label for="sms">Phone Number (SMS)</label>
+      <input type="tel" id="sms" name="sms" required>
+      
+      <label for="contact">Preferred Contact Way</label>
+      <select id="contact" name="contact">
+        <option value="email">Email</option>
+        <option value="sms">SMS</option>
+      </select>
+      
+      <label for="address">Address</label>
+      <input type="text" id="address" name="address" required>
+      
+      <label>
+        <input type="checkbox" name="confirmation" required>
+        I have read and understood that this work will be done by a 13-year-old.
+      </label>
+      
+      <button type="submit">Submit Order</button>
+    </form>
+
+    <iframe 
+      src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d2311.2633478979977!2d23.9012362!3d54.9394879!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x46e722d1f85faef9%3A0x400d18c51b33150!2s%C5%A0ilainiai%2C%20Kaunas%2C%20Lithuania!5e0!3m2!1sen!2sus!4v1606744070986!5m2!1sen!2sus" 
+      allowfullscreen=""
+      loading="lazy"></iframe>
+
+    <footer>
+      <p>Contact us: +370 635 22 540</p>
+      <p>Service area: 5 km radius around Šilainiai, Kaunas</p>
+    </footer>
+  </div>
 </body>
 </html>
