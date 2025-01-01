@@ -34,10 +34,15 @@
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
       gap: 10px;
+      margin-bottom: 30px;
     }
     .gallery img {
       width: 100%;
       border-radius: 10px;
+      transition: transform 0.3s;
+    }
+    .gallery img:hover {
+      transform: scale(1.1);
     }
     form {
       background: #1f2937;
@@ -69,32 +74,6 @@
       text-align: center;
       margin: 20px 0;
     }
-    #map {
-      height: 400px;
-      width: 100%; /* Make map take up full width */
-      border-radius: 10px;
-      margin-top: 20px;
-    }
-    .leaflet-control-zoom {
-      position: absolute;
-      top: 10px;
-      right: 10px;
-      background: rgba(0, 0, 0, 0.5);
-      border-radius: 5px;
-    }
-    .leaflet-control-zoom-in,
-    .leaflet-control-zoom-out {
-      color: white;
-      font-size: 20px;
-      background-color: #4caf50;
-      border: none;
-      cursor: pointer;
-      padding: 5px;
-    }
-    .leaflet-control-zoom-in:hover,
-    .leaflet-control-zoom-out:hover {
-      background-color: #45a049;
-    }
 
     @media (max-width: 768px) {
       header h1 {
@@ -109,7 +88,7 @@
 <body>
   <header>
     <h1>Aerofotografija Jaunuolio Akimis</h1>
-    <p>Aukštos kokybės drono fotografijos ir vaizdo įrašai už patrauklią kainą!!!</p>
+    <p>Aukštos kokybės drono fotografijos ir vaizdo įrašai už patrauklią kainą!</p>
   </header>
 
   <div class="content">
@@ -128,6 +107,7 @@
       <img src="https://via.placeholder.com/250" alt="Nuotrauka 3">
       <img src="https://via.placeholder.com/250" alt="Nuotrauka 4">
       <img src="https://via.placeholder.com/250" alt="Nuotrauka 5">
+      <img src="https://via.placeholder.com/250" alt="Nuotrauka 6">
     </div>
 
     <form action="https://formspree.io/f/xgvezjqw" method="POST">
@@ -157,34 +137,6 @@
       
       <button type="submit">Pateikti Užsakymą</button>
     </form>
-
-    <!-- OpenStreetMap Embed -->
-    <div id="map"></div>
-    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
-    <script>
-      var map = L.map('map', {
-        zoomControl: true, // Enable zoom control
-        scrollWheelZoom: false, // Disable scroll zoom
-        dragging: false, // Disable dragging to prevent moving the map
-      }).setView([54.9395, 23.9012], 13);
-
-      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        attribution: '© OpenStreetMap contributors'
-      }).addTo(map);
-
-      // Add a 5km radius circle
-      L.circle([54.9395, 23.9012], {
-        color: 'blue',
-        fillColor: '#3f51b5',
-        fillOpacity: 0.5,
-        radius: 5000
-      }).addTo(map);
-
-      // Adding zoom control with custom design
-      L.control.zoom({
-        position: 'topright'
-      }).addTo(map);
-    </script>
 
     <footer>
       <p>Kontaktai: +370 635 22 540</p>
