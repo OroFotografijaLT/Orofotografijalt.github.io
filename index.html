@@ -69,10 +69,8 @@
       text-align: center;
       margin: 20px 0;
     }
-    iframe {
-      width: 100%;
+    #map {
       height: 400px;
-      border: none;
       border-radius: 10px;
       margin-top: 20px;
     }
@@ -94,25 +92,65 @@
       <p>🎥 **1080p vaizdo įrašas (5 min)** – €6</p>
     </div>
 
-   <div id="map" style="height: 400px; border-radius: 10px;"></div>
-<script>
-  function initMap() {
-    var map = L.map('map').setView([54.9395, 23.9012], 13);
+    <div class="gallery">
+      <img src="https://via.placeholder.com/250" alt="Nuotrauka 1">
+      <img src="https://via.placeholder.com/250" alt="Nuotrauka 2">
+      <img src="https://via.placeholder.com/250" alt="Nuotrauka 3">
+      <img src="https://via.placeholder.com/250" alt="Nuotrauka 4">
+      <img src="https://via.placeholder.com/250" alt="Nuotrauka 5">
+    </div>
 
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-      attribution: '© OpenStreetMap contributors'
-    }).addTo(map);
+    <form action="https://formspree.io/f/xgvezjqw" method="POST">
+      <h3>Užsakykite Paslaugas</h3>
+      <label for="name">Vardas ir Pavardė</label>
+      <input type="text" id="name" name="name" required>
+      
+      <label for="email">El. Paštas</label>
+      <input type="email" id="email" name="email" required>
+      
+      <label for="sms">Telefono Numeris (SMS)</label>
+      <input type="tel" id="sms" name="sms" required>
+      
+      <label for="contact">Pageidaujamas Kontaktavimo Būdas</label>
+      <select id="contact" name="contact">
+        <option value="email">El. Paštas</option>
+        <option value="sms">SMS</option>
+      </select>
+      
+      <label for="address">Adresas</label>
+      <input type="text" id="address" name="address" required>
+      
+      <label>
+        <input type="checkbox" name="confirmation" required>
+        Patvirtinu, kad perskaičiau ir supratau, jog darbas bus atliktas 13-mečio.
+      </label>
+      
+      <button type="submit">Pateikti Užsakymą</button>
+    </form>
 
-    // Add a 5km radius circle
-    L.circle([54.9395, 23.9012], {
-      color: 'blue',
-      fillColor: '#3f51b5',
-      fillOpacity: 0.5,
-      radius: 5000
-    }).addTo(map);
-  }
+    <!-- OpenStreetMap Embed -->
+    <div id="map"></div>
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+    <script>
+      var map = L.map('map').setView([54.9395, 23.9012], 13);
 
-  initMap();
-</script>
-<link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
-<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '© OpenStreetMap contributors'
+      }).addTo(map);
+
+      // Add a 5km radius circle
+      L.circle([54.9395, 23.9012], {
+        color: 'blue',
+        fillColor: '#3f51b5',
+        fillOpacity: 0.5,
+        radius: 5000
+      }).addTo(map);
+    </script>
+
+    <footer>
+      <p>Kontaktai: +370 635 22 540</p>
+      <p>Aptarnavimo zona: 5 km spinduliu aplink Šilainius, Kaunas</p>
+    </footer>
+  </div>
+</body>
+</html>
