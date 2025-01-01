@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="lt">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Aerial Photography Services</title>
+  <title>Aerofotografija</title>
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -69,71 +69,97 @@
       text-align: center;
       margin: 20px 0;
     }
-    iframe {
+    #map {
+      height: 400px;
       margin-top: 20px;
-      width: 100%;
-      height: 300px;
-      border: 0;
+      border-radius: 10px;
     }
   </style>
 </head>
 <body>
   <header>
-    <h1>Aerial Photography by a Young Enthusiast</h1>
-    <p>Quality drone shots at unbeatable prices!</p>
+    <h1>Aerofotografija Jaunuolio Akimis</h1>
+    <p>Aukštos kokybės drono fotografijos ir vaizdo įrašai už patrauklią kainą!</p>
   </header>
 
   <div class="content">
     <div class="pricing">
-      <p>📸 **5-7 photos for just €10!**</p>
-      <p>📍 For an additional €5, specify **any height and angle** of your choice!</p>
+      <p>📸 **5-7 nuotraukos už €10!**</p>
+      <p>📍 Už papildomus €5 – **nuotraukos iš bet kokio aukščio ir kampo**!</p>
+      <p>🎥 **Cinematinis vaizdo įrašas (2-3 min)** – €10</p>
+      <p>🎥 **Vaizdo įrašas (5-7 min)** – €15</p>
+      <p>🎥 **2.7K vaizdo įrašas (10 min)** – €10</p>
+      <p>🎥 **1080p vaizdo įrašas (5 min)** – €6</p>
     </div>
 
     <div class="gallery">
-      <img src="https://via.placeholder.com/250" alt="Sample Photo 1">
-      <img src="https://via.placeholder.com/250" alt="Sample Photo 2">
-      <img src="https://via.placeholder.com/250" alt="Sample Photo 3">
-      <img src="https://via.placeholder.com/250" alt="Sample Photo 4">
-      <img src="https://via.placeholder.com/250" alt="Sample Photo 5">
+      <img src="https://via.placeholder.com/250" alt="Nuotrauka 1">
+      <img src="https://via.placeholder.com/250" alt="Nuotrauka 2">
+      <img src="https://via.placeholder.com/250" alt="Nuotrauka 3">
+      <img src="https://via.placeholder.com/250" alt="Nuotrauka 4">
+      <img src="https://via.placeholder.com/250" alt="Nuotrauka 5">
     </div>
 
     <form action="https://formspree.io/f/xgvezjqw" method="POST">
-      <h3>Order Your Photos</h3>
-      <label for="name">Full Name</label>
+      <h3>Užsakykite Paslaugas</h3>
+      <label for="name">Vardas ir Pavardė</label>
       <input type="text" id="name" name="name" required>
       
-      <label for="email">Email</label>
+      <label for="email">El. Paštas</label>
       <input type="email" id="email" name="email" required>
       
-      <label for="sms">Phone Number (SMS)</label>
+      <label for="sms">Telefono Numeris (SMS)</label>
       <input type="tel" id="sms" name="sms" required>
       
-      <label for="contact">Preferred Contact Way</label>
+      <label for="contact">Pageidaujamas Kontaktavimo Būdas</label>
       <select id="contact" name="contact">
-        <option value="email">Email</option>
+        <option value="email">El. Paštas</option>
         <option value="sms">SMS</option>
       </select>
       
-      <label for="address">Address</label>
+      <label for="address">Adresas</label>
       <input type="text" id="address" name="address" required>
       
       <label>
         <input type="checkbox" name="confirmation" required>
-        I have read and understood that this work will be done by a 13-year-old.
+        Patvirtinu, kad perskaičiau ir supratau, jog darbas bus atliktas 13-mečio.
       </label>
       
-      <button type="submit">Submit Order</button>
+      <button type="submit">Pateikti Užsakymą</button>
     </form>
 
-    <iframe 
-      src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d2311.2633478979977!2d23.9012362!3d54.9394879!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x46e722d1f85faef9%3A0x400d18c51b33150!2s%C5%A0ilainiai%2C%20Kaunas%2C%20Lithuania!5e0!3m2!1sen!2sus!4v1606744070986!5m2!1sen!2sus" 
-      allowfullscreen=""
-      loading="lazy"></iframe>
+    <div id="map"></div>
 
     <footer>
-      <p>Contact us: +370 635 22 540</p>
-      <p>Service area: 5 km radius around Šilainiai, Kaunas</p>
+      <p>Kontaktai: +370 635 22 540</p>
+      <p>Aptarnavimo zona: 5 km spinduliu aplink Šilainius, Kaunas</p>
     </footer>
   </div>
+
+  <script>
+    function initMap() {
+      const silainiai = { lat: 54.9394879, lng: 23.9012362 };
+      const map = new google.maps.Map(document.getElementById("map"), {
+        center: silainiai,
+        zoom: 13,
+        language: "lt",
+        styles: [
+          { "featureType": "poi", "stylers": [{ "visibility": "off" }] },
+          { "featureType": "transit", "stylers": [{ "visibility": "off" }] }
+        ]
+      });
+      const circle = new google.maps.Circle({
+        strokeColor: "#0000FF",
+        strokeOpacity: 0.8,
+        strokeWeight: 2,
+        fillColor: "#0000FF",
+        fillOpacity: 0.35,
+        map: map,
+        center: silainiai,
+        radius: 5000,
+      });
+    }
+  </script>
+  <script async defer src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&callback=initMap"></script>
 </body>
 </html>
