@@ -73,6 +73,27 @@
       height: 400px;
       border-radius: 10px;
       margin-top: 20px;
+      position: relative;
+    }
+    .leaflet-control-zoom {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      background: rgba(0, 0, 0, 0.5);
+      border-radius: 5px;
+    }
+    .leaflet-control-zoom-in,
+    .leaflet-control-zoom-out {
+      color: white;
+      font-size: 20px;
+      background-color: #4caf50;
+      border: none;
+      cursor: pointer;
+      padding: 5px;
+    }
+    .leaflet-control-zoom-in:hover,
+    .leaflet-control-zoom-out:hover {
+      background-color: #45a049;
     }
   </style>
 </head>
@@ -133,10 +154,9 @@
     <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
     <script>
       var map = L.map('map', {
-        zoomControl: false, // Disable zoom controls
+        zoomControl: false, // Disable default zoom control
         scrollWheelZoom: false, // Disable scroll zoom
-        doubleClickZoom: false, // Disable double-click zoom
-        dragging: false // Disable dragging
+        dragging: true, // Enable dragging
       }).setView([54.9395, 23.9012], 13);
 
       L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -149,6 +169,11 @@
         fillColor: '#3f51b5',
         fillOpacity: 0.5,
         radius: 5000
+      }).addTo(map);
+
+      // Adding zoom control with custom design
+      L.control.zoom({
+        position: 'topright'
       }).addTo(map);
     </script>
 
