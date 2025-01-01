@@ -69,10 +69,12 @@
       text-align: center;
       margin: 20px 0;
     }
-    #map {
+    iframe {
+      width: 100%;
       height: 400px;
-      margin-top: 20px;
+      border: none;
       border-radius: 10px;
+      margin-top: 20px;
     }
   </style>
 </head>
@@ -128,38 +130,16 @@
       <button type="submit">Pateikti Užsakymą</button>
     </form>
 
-    <div id="map"></div>
+    <!-- Embed Google Maps -->
+    <iframe 
+      src="https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d8033.259401002647!2d23.9012362!3d54.9394879!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zNTTCsDU2JzIxLjIiTiAyM8KwNTQnMDQuNSJF!5e0!3m2!1slt!2slt!4v1640055567639!5m2!1slt!2slt" 
+      allowfullscreen>
+    </iframe>
 
     <footer>
       <p>Kontaktai: +370 635 22 540</p>
       <p>Aptarnavimo zona: 5 km spinduliu aplink Šilainius, Kaunas</p>
     </footer>
   </div>
-
-  <script>
-    function initMap() {
-      const silainiai = { lat: 54.9394879, lng: 23.9012362 };
-      const map = new google.maps.Map(document.getElementById("map"), {
-        center: silainiai,
-        zoom: 13,
-        language: "lt",
-        styles: [
-          { "featureType": "poi", "stylers": [{ "visibility": "off" }] },
-          { "featureType": "transit", "stylers": [{ "visibility": "off" }] }
-        ]
-      });
-      const circle = new google.maps.Circle({
-        strokeColor: "#0000FF",
-        strokeOpacity: 0.8,
-        strokeWeight: 2,
-        fillColor: "#0000FF",
-        fillOpacity: 0.35,
-        map: map,
-        center: silainiai,
-        radius: 5000,
-      });
-    }
-  </script>
-  <script async defer src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&callback=initMap"></script>
 </body>
 </html>
