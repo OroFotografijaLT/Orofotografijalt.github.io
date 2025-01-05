@@ -38,44 +38,22 @@
       margin: auto;
       padding: 20px;
     }
-    .pricing {
-      margin: 20px 0;
-      font-size: 1.2rem;
-    }
-    .pricing p {
-      margin: 10px 0;
-      line-height: 1.5;
-    }
-    .gallery {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-      gap: 15px;
-      margin-bottom: 30px;
-    }
-    .gallery img {
-      width: 100%;
-      border-radius: 10px;
-      transition: transform 0.3s;
-    }
-    .gallery img:hover {
-      transform: scale(1.1);
-    }
-    form {
+    .form-container {
       background: #1f2937;
       padding: 20px;
       border-radius: 10px;
       margin-top: 20px;
     }
-    form h3 {
+    .form-container h3 {
       margin-bottom: 10px;
       font-size: 1.5rem;
     }
-    form label {
+    .form-container label {
       display: block;
       margin: 10px 0 5px;
       font-weight: bold;
     }
-    form input, form select, form button {
+    .form-container input, .form-container button {
       width: 100%;
       padding: 10px;
       margin: 5px 0;
@@ -83,34 +61,49 @@
       border-radius: 5px;
       font-size: 1rem;
     }
-    form button {
+    .form-container button {
       background: #4caf50;
       color: white;
-      font-size: 1rem;
       cursor: pointer;
     }
-    form button:hover {
+    .form-container button:hover {
       background: #45a049;
     }
-    footer {
-      text-align: center;
-      margin: 20px 0;
-      font-size: 0.9rem;
+    .message {
+      margin-top: 10px;
+      padding: 10px;
+      border-radius: 5px;
+      font-size: 1rem;
+      display: none;
     }
-    footer p {
-      margin: 5px 0;
+    .message.success {
+      background: #4caf50;
+      color: white;
     }
-
-    @media (max-width: 768px) {
-      header h1 {
-        font-size: 1.8rem;
-      }
-      .content {
-        padding: 15px;
-      }
-      .offer-banner {
-        font-size: 1rem;
-      }
+    .message.error {
+      background: #f44336;
+      color: white;
+    }
+    .cookie-banner {
+      background: #1f2937;
+      color: white;
+      padding: 10px;
+      position: fixed;
+      bottom: 0;
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      z-index: 1000;
+    }
+    .cookie-banner button {
+      background: #4caf50;
+      color: white;
+      border: none;
+      padding: 5px 10px;
+      margin-left: 10px;
+      border-radius: 5px;
+      cursor: pointer;
     }
   </style>
 </head>
@@ -125,53 +118,54 @@
   </div>
 
   <div class="content">
-    <div class="pricing">
-      <p>📸 <b>5-7 nuotraukos už €10!</b></p>
-      <p>📍 Už papildomus €5 – <b>nuotraukos iš jūsų pasakyto aukščio ir kampo</b>!</p>
-      <p>🎥 <b>4K Cinematinis vaizdo įrašas (2-3 min)</b> – €10</p>
-      <p>🎥 <b>4K Vaizdo įrašas (5-7 min)</b> – €15</p>
-      <p>🎥 <b>2.7K vaizdo įrašas (10 min)</b> – €10</p>
-      <p>🎥 <b>1080p vaizdo įrašas (5 min)</b> – €4</p>
+    <div class="form-container">
+      <h3>Įveskite Kodą</h3>
+      <label for="redeem-code">Įveskite kodą:</label>
+      <input type="text" id="redeem-code" placeholder="Pvz., *0013*0010867393830">
+      <button onclick="redeemCode()">Naudoti Kodą</button>
+      <div id="message" class="message"></div>
     </div>
-
-    <div class="gallery">
-      <img src="nemunas.jpg" alt="Nuotrauka 1">
-      <img src="tik norfa.jpg" alt="Nuotrauka 2">
-      <img src="statybos.jpg" alt="Nuotrauka 3">
-    </div>
-
-    <form action="https://formspree.io/f/xgvezjqw" method="POST">
-      <h3>Užsakykite Paslaugas</h3>
-      <label for="name">Vardas ir Pavardė</label>
-      <input type="text" id="name" name="name" required>
-      
-      <label for="email">El. Paštas</label>
-      <input type="email" id="email" name="email" required>
-      
-      <label for="sms">Telefono Numeris (SMS)</label>
-      <input type="tel" id="sms" name="sms" required>
-      
-      <label for="contact">Pageidaujamas Kontaktavimo Būdas</label>
-      <select id="contact" name="contact">
-        <option value="email">El. Paštas</option>
-        <option value="sms">SMS</option>
-      </select>
-      
-      <label for="address">Adresas</label>
-      <input type="text" id="address" name="address" required>
-      
-      <label>
-        <input type="checkbox" name="confirmation" required>
-        Patvirtinu, kad perskaičiau ir supratau, jog darbas bus atliktas 13-mečio.
-      </label>
-      
-      <button type="submit">Pateikti Užsakymą</button>
-    </form>
   </div>
 
-  <footer>
-    <p>Kontaktai: +370 635 22 540</p>
-    <p>Aptarnavimo zona:+ - 5 km spinduliu aplink Šilainius, Kaunas</p>
-  </footer>
+  <div class="cookie-banner" id="cookie-banner">
+    <span>Ši svetainė naudoja slapukus jūsų patirčiai gerinti.</span>
+    <div>
+      <button onclick="setCookieConsent('all')">Sutikti su visais</button>
+      <button onclick="setCookieConsent('necessary')">Tik būtinus</button>
+      <button onclick="setCookieConsent('none')">Nesutinku</button>
+    </div>
+  </div>
+
+  <script>
+    const codes = {
+      '*0013*0010867393830': 10,
+      '*0013*0005934257860': 5,
+      '*0013*0015039275210': 15,
+      '*0013*0020202020240': 20
+    };
+
+    function redeemCode() {
+      const codeInput = document.getElementById('redeem-code').value.trim();
+      const message = document.getElementById('message');
+      if (codes[codeInput]) {
+        const amount = codes[codeInput];
+        delete codes[codeInput]; // Remove code after use
+        message.textContent = `✅ Sėkmingai pridėta €${amount} į jūsų sąskaitą!`;
+        message.className = 'message success';
+      } else {
+        message.textContent = '❌ Klaida: Neteisingas arba jau panaudotas kodas.';
+        message.className = 'message error';
+      }
+      message.style.display = 'block';
+    }
+
+    function setCookieConsent(level) {
+      const banner = document.getElementById('cookie-banner');
+      banner.style.display = 'none';
+      if (level === 'none') {
+        alert('Kodo įvedimas ir paskyrų kūrimas išjungtas.');
+      }
+    }
+  </script>
 </body>
 </html>
