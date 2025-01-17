@@ -1,177 +1,29 @@
 <!DOCTYPE html>
-<html lang="lt">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Aerofotografija</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      margin: 0;
-      padding: 0;
-      background: linear-gradient(to bottom, #0f2027, #203a43, #2c5364);
-      color: white;
-    }
-    header {
-      text-align: center;
-      padding: 20px;
-      background: #1f2937;
-    }
-    header h1 {
-      margin: 0;
-      font-size: 2.5rem;
-    }
-    header p {
-      margin-top: 10px;
-      font-size: 1.2rem;
-    }
-    .offer-banner {
-      background: #ffcc00;
-      color: black;
-      text-align: center;
-      padding: 10px;
-      font-size: 1.2rem;
-      font-weight: bold;
-    }
-    .content {
-      max-width: 900px;
-      margin: auto;
-      padding: 20px;
-    }
-    .pricing {
-      margin: 20px 0;
-      font-size: 1.2rem;
-    }
-    .pricing p {
-      margin: 10px 0;
-      line-height: 1.5;
-    }
-    .gallery {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-      gap: 15px;
-      margin-bottom: 30px;
-    }
-    .gallery img {
-      width: 100%;
-      border-radius: 10px;
-      transition: transform 0.3s;
-    }
-    .gallery img:hover {
-      transform: scale(1.1);
-    }
-    form {
-      background: #1f2937;
-      padding: 20px;
-      border-radius: 10px;
-      margin-top: 20px;
-    }
-    form h3 {
-      margin-bottom: 10px;
-      font-size: 1.5rem;
-    }
-    form label {
-      display: block;
-      margin: 10px 0 5px;
-      font-weight: bold;
-    }
-    form input, form select, form button {
-      width: 100%;
-      padding: 10px;
-      margin: 5px 0;
-      border: none;
-      border-radius: 5px;
-      font-size: 1rem;
-    }
-    form button {
-      background: #4caf50;
-      color: white;
-      font-size: 1rem;
-      cursor: pointer;
-    }
-    form button:hover {
-      background: #45a049;
-    }
-    footer {
-      text-align: center;
-      margin: 20px 0;
-      font-size: 0.9rem;
-    }
-    footer p {
-      margin: 5px 0;
-    }
-
-    @media (max-width: 768px) {
-      header h1 {
-        font-size: 1.8rem;
-      }
-      .content {
-        padding: 15px;
-      }
-      .offer-banner {
-        font-size: 1rem;
-      }
-    }
-  </style>
+  <title>Phone Parts Database</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <header>
-    <h1>Oro fotografija Jaunuolio Akimis</h1>
-    <p>Aukštos kokybės drono fotografijos ir vaizdo įrašai už patrauklią kainą!</p>
-  </header>
-
-  <div class="offer-banner">
-    🎉 Ribotam Laikotarpiu! Pirmiesiems 5 klientams visos paslaugos nemokamos! 🎉
-  </div>
-
-  <div class="content">
-    <div class="pricing">
-      <p>📸 <b>5-7 nuotraukos už €10!</b></p>
-      <p>📍 Už papildomus €5 – <b>nuotraukos iš jūsų pasakyto aukščio ir kampo</b>!</p>
-      <p>🎥 <b>4K Cinematinis vaizdo įrašas (2-3 min)</b> – €10</p>
-      <p>🎥 <b>4K Vaizdo įrašas (5-7 min)</b> – €15</p>
-      <p>🎥 <b>2.7K vaizdo įrašas (10 min)</b> – €10</p>
-      <p>🎥 <b>1080p vaizdo įrašas (5 min)</b> – €4</p>
-    </div>
-
-    <div class="gallery">
-      <img src="nemunas.jpg" alt="Nuotrauka 1">
-      <img src="tik norfa.jpg" alt="Nuotrauka 2">
-      <img src="statybos.jpg" alt="Nuotrauka 3">
-    </div>
-
-    <form action="https://formspree.io/f/xgvezjqw" method="POST">
-      <h3>Užsakykite Paslaugas</h3>
-      <label for="name">Vardas ir Pavardė</label>
-      <input type="text" id="name" name="name" required>
-      
-      <label for="email">El. Paštas</label>
-      <input type="email" id="email" name="email" required>
-      
-      <label for="sms">Telefono Numeris (SMS)</label>
-      <input type="tel" id="sms" name="sms" required>
-      
-      <label for="contact">Pageidaujamas Kontaktavimo Būdas</label>
-      <select id="contact" name="contact">
-        <option value="email">El. Paštas</option>
-        <option value="sms">SMS</option>
-      </select>
-      
-      <label for="address">Adresas</label>
-      <input type="text" id="address" name="address" required>
-      
-      <label>
-        <input type="checkbox" name="confirmation" required>
-        Patvirtinu, kad perskaičiau ir supratau, jog darbas bus atliktas 13-mečio.
-      </label>
-      
-      <button type="submit">Pateikti Užsakymą</button>
+  <div id="login-form">
+    <h1>Login</h1>
+    <form id="login">
+      <label for="username">Username:</label>
+      <input type="text" id="username" required>
+      <label for="password">Password:</label>
+      <input type="password" id="password" required>
+      <button type="submit">Login</button>
     </form>
   </div>
-
-  <footer>
-    <p>Kontaktai: +370 635 22 540</p>
-    <p>Aptarnavimo zona:+ - 5 km spinduliu aplink Šilainius, Kaunas</p>
-  </footer>
+  <div id="database" style="display:none;">
+    <h1>Phone Parts Database</h1>
+    <select id="device-select">
+      <option value="" disabled selected>Select a device</option>
+    </select>
+    <div id="part-details"></div>
+  </div>
+  <script src="script.js"></script>
 </body>
 </html>
