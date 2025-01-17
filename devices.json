@@ -1,31 +1,41 @@
 [
   {
-    "device": "Samsung Galaxy A10",
-    "parts": [
+    "category": "Phone",
+    "brand": "Samsung",
+    "devices": [
       {
-        "name": "Screen",
-        "original_price": "€60",
-        "alternative_price": "€45"
-      },
-      {
-        "name": "Battery",
-        "original_price": "€25",
-        "alternative_price": "€20"
+        "model": "Galaxy A10",
+        "parts": [
+          {
+            "name": "Screen",
+            "original_price": "€60",
+            "alternative_price": "€45",
+            "warning": "The quality might not be the same as the original."
+          },
+          {
+            "name": "Battery",
+            "original_price": "€25",
+            "alternative_price": "€20",
+            "warning": ""
+          }
+        ]
       }
     ]
   },
   {
-    "device": "Google Pixel",
-    "parts": [
+    "category": "Drone",
+    "brand": "DJI",
+    "devices": [
       {
-        "name": "Screen",
-        "original_price": "€80",
-        "alternative_price": "€70"
-      },
-      {
-        "name": "Battery",
-        "original_price": "€30",
-        "alternative_price": "€25"
+        "model": "Mini 4K",
+        "parts": [
+          {
+            "name": "Propeller",
+            "original_price": "€15",
+            "alternative_price": "€10",
+            "warning": "Cheaper alternatives may affect flight stability."
+          }
+        ]
       }
     ]
   }
