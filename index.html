@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Phone Parts Database</title>
+  <title>Parts Database</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -17,13 +17,27 @@
       <button type="submit">Login</button>
     </form>
   </div>
+
   <div id="database" style="display:none;">
-    <h1>Phone Parts Database</h1>
-    <select id="device-select">
-      <option value="" disabled selected>Select a device</option>
-    </select>
+    <h1>Parts Database</h1>
+    <div id="selectors">
+      <select id="category-select">
+        <option value="" disabled selected>Select Category</option>
+        <option value="Phone">Phone</option>
+        <option value="Tablet">Tablet</option>
+        <option value="Drone">Drone</option>
+        <option value="Computer">Computer</option>
+      </select>
+      <select id="brand-select" disabled>
+        <option value="" disabled selected>Select Brand</option>
+      </select>
+      <select id="part-select" disabled>
+        <option value="" disabled selected>Select Part</option>
+      </select>
+    </div>
     <div id="part-details"></div>
   </div>
+
   <script src="script.js"></script>
 </body>
 </html>
