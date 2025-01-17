@@ -1,0 +1,32 @@
+[
+  {
+    "device": "Samsung Galaxy A10",
+    "parts": [
+      {
+        "name": "Screen",
+        "original_price": "€60",
+        "alternative_price": "€45"
+      },
+      {
+        "name": "Battery",
+        "original_price": "€25",
+        "alternative_price": "€20"
+      }
+    ]
+  },
+  {
+    "device": "Google Pixel",
+    "parts": [
+      {
+        "name": "Screen",
+        "original_price": "€80",
+        "alternative_price": "€70"
+      },
+      {
+        "name": "Battery",
+        "original_price": "€30",
+        "alternative_price": "€25"
+      }
+    ]
+  }
+]
