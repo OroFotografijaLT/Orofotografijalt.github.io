@@ -6,35 +6,37 @@
   <title>Aerofotografija</title>
   <style>
     body {
-      font-family: Arial, sans-serif;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
       margin: 0;
       padding: 0;
-      background: linear-gradient(to bottom, #0f2027, #203a43, #2c5364);
+      background: linear-gradient(to bottom, #1e3a8a, #3b82f6, #93c5fd);
       color: white;
     }
     header {
       text-align: center;
-      padding: 20px;
-      background: #1f2937;
+      padding: 30px 20px;
+      background: #1e40af;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
     }
     header h1 {
       margin: 0;
-      font-size: 2.5rem;
+      font-size: 2.8rem;
     }
     header p {
       margin-top: 10px;
       font-size: 1.2rem;
     }
     .offer-banner {
-      background: #ffcc00;
-      color: black;
+      background: #facc15;
+      color: #1f2937;
       text-align: center;
-      padding: 10px;
+      padding: 15px;
       font-size: 1.2rem;
       font-weight: bold;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
     }
     .content {
-      max-width: 900px;
+      max-width: 1100px;
       margin: auto;
       padding: 20px;
     }
@@ -55,16 +57,18 @@
     .gallery img {
       width: 100%;
       border-radius: 10px;
-      transition: transform 0.3s;
+      transition: transform 0.3s, box-shadow 0.3s;
     }
     .gallery img:hover {
-      transform: scale(1.1);
+      transform: scale(1.05);
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
     }
     form {
-      background: #1f2937;
+      background: #1e40af;
       padding: 20px;
       border-radius: 10px;
       margin-top: 20px;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
     }
     form h3 {
       margin-bottom: 10px;
@@ -84,26 +88,28 @@
       font-size: 1rem;
     }
     form button {
-      background: #4caf50;
+      background: #22c55e;
       color: white;
       font-size: 1rem;
       cursor: pointer;
+      transition: background 0.3s;
     }
     form button:hover {
-      background: #45a049;
+      background: #16a34a;
     }
     footer {
       text-align: center;
-      margin: 20px 0;
+      padding: 20px 10px;
+      background: #1e3a8a;
       font-size: 0.9rem;
+      box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.2);
     }
     footer p {
       margin: 5px 0;
     }
-
     @media (max-width: 768px) {
       header h1 {
-        font-size: 1.8rem;
+        font-size: 2rem;
       }
       .content {
         padding: 15px;
@@ -121,7 +127,7 @@
   </header>
 
   <div class="offer-banner">
-    🎉 Ribotam Laikotarpiu! Pirmiesiems 5 klientams visos paslaugos nemokamos! 🎉
+    🎉 Ribotam Laikotarpiui! Pirmiesiems 5 klientams visos paslaugos nemokamos! 🎉
   </div>
 
   <div class="content">
@@ -167,11 +173,17 @@
       
       <button type="submit">Pateikti Užsakymą</button>
     </form>
+
+    <div style="margin-top: 20px; text-align: center;">
+      <a href="https://docs.google.com/forms/d/e/1FAIpQLSeQ2G2snJXhXM479lPHztG8BSpLH7aRW34J6cabiT_qarDCQw/viewform?usp=sf_link" target="_blank" style="text-decoration: none; color: #facc15; font-weight: bold;">
+        🛠️ Pateikti Remonto Užklausą
+      </a>
+    </div>
   </div>
 
   <footer>
     <p>Kontaktai: +370 635 22 540</p>
-    <p>Aptarnavimo zona:+ - 5 km spinduliu aplink Šilainius, Kaunas</p>
+    <p>Aptarnavimo zona: 5 km spinduliu aplink Šilainius, Kaunas</p>
   </footer>
 </body>
 </html>
