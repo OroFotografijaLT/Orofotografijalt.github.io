@@ -14,26 +14,24 @@
     }
     header {
       text-align: center;
-      padding: 30px 20px;
+      padding: 20px;
       background: #1e40af;
       box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
     }
-    header h1 {
-      margin: 0;
-      font-size: 2.8rem;
-    }
-    header p {
-      margin-top: 10px;
-      font-size: 1.2rem;
-    }
-    .offer-banner {
-      background: #facc15;
-      color: #1f2937;
+    nav {
+      background: #162d63;
+      padding: 10px;
       text-align: center;
-      padding: 15px;
-      font-size: 1.2rem;
-      font-weight: bold;
-      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+    }
+    nav a {
+      color: white;
+      text-decoration: none;
+      margin: 0 15px;
+      font-size: 1.1rem;
+      transition: color 0.3s;
+    }
+    nav a:hover {
+      color: #facc15;
     }
     .content {
       max-width: 1100px;
@@ -43,10 +41,6 @@
     .pricing {
       margin: 20px 0;
       font-size: 1.2rem;
-    }
-    .pricing p {
-      margin: 10px 0;
-      line-height: 1.5;
     }
     .gallery {
       display: grid;
@@ -70,19 +64,15 @@
       margin-top: 20px;
       box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
     }
-    form h3 {
-      margin-bottom: 10px;
-      font-size: 1.5rem;
-    }
-    form label {
+    form label, form h3 {
       display: block;
-      margin: 10px 0 5px;
-      font-weight: bold;
+      margin-bottom: 10px;
+      font-size: 1.2rem;
     }
     form input, form select, form button {
       width: 100%;
       padding: 10px;
-      margin: 5px 0;
+      margin-bottom: 15px;
       border: none;
       border-radius: 5px;
       font-size: 1rem;
@@ -97,41 +87,55 @@
     form button:hover {
       background: #16a34a;
     }
+    .contact-button {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background: #22c55e;
+      color: white;
+      padding: 15px 20px;
+      border-radius: 50px;
+      text-decoration: none;
+      font-size: 1.1rem;
+      font-weight: bold;
+      transition: background 0.3s;
+    }
+    .contact-button:hover {
+      background: #16a34a;
+    }
     footer {
       text-align: center;
-      padding: 20px 10px;
+      padding: 20px;
       background: #1e3a8a;
       font-size: 0.9rem;
       box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.2);
-    }
-    footer p {
-      margin: 5px 0;
     }
     @media (max-width: 768px) {
       header h1 {
         font-size: 2rem;
       }
-      .content {
-        padding: 15px;
-      }
-      .offer-banner {
+      nav a {
         font-size: 1rem;
+        margin: 0 10px;
       }
     }
   </style>
 </head>
 <body>
+
   <header>
     <h1>Oro fotografija Jaunuolio Akimis</h1>
     <p>Aukštos kokybės drono fotografijos ir vaizdo įrašai už patrauklią kainą!</p>
   </header>
 
-  <div class="offer-banner">
-    🎉 Ribotam Laikotarpiui! Pirmiesiems 5 klientams visos paslaugos nemokamos! 🎉
-  </div>
+  <nav>
+    <a href="#pricing">Kainos</a>
+    <a href="#gallery">Galerija</a>
+    <a href="#order">Užsakyti</a>
+  </nav>
 
   <div class="content">
-    <div class="pricing">
+    <div id="pricing" class="pricing">
       <p>📸 <b>5-7 nuotraukos už €10!</b></p>
       <p>📍 Už papildomus €5 – <b>nuotraukos iš jūsų pasakyto aukščio ir kampo</b>!</p>
       <p>🎥 <b>4K Cinematinis vaizdo įrašas (2-3 min)</b> – €10</p>
@@ -140,13 +144,13 @@
       <p>🎥 <b>1080p vaizdo įrašas (5 min)</b> – €4</p>
     </div>
 
-    <div class="gallery">
+    <div id="gallery" class="gallery">
       <img src="nemunas.jpg" alt="Nuotrauka 1">
       <img src="tik norfa.jpg" alt="Nuotrauka 2">
       <img src="statybos.jpg" alt="Nuotrauka 3">
     </div>
 
-    <form action="https://formspree.io/f/xgvezjqw" method="POST">
+    <form id="order" action="https://formspree.io/f/xgvezjqw" method="POST">
       <h3>Užsakykite Paslaugas</h3>
       <label for="name">Vardas ir Pavardė</label>
       <input type="text" id="name" name="name" required>
@@ -174,17 +178,22 @@
       <button type="submit">Pateikti Užsakymą</button>
     </form>
 
-   <div style="margin-top: 20px; text-align: center;">
-  <a href="https://docs.google.com/forms/d/e/1FAIpQLSdVOeugjZrQjX68uABWOndHIqn5uwPzyVJDGtbx--ckeGGiJA/viewform?usp=dialog" 
-     target="_blank" 
-     style="display: inline-block; background-color: #22c55e; color: white; padding: 15px 30px; font-size: 1.2rem; font-weight: bold; border-radius: 10px; text-decoration: none; transition: background 0.3s;">
-    🛠️ Pateikti Remonto Užklausą
-  </a>
-</div>
+    <div style="margin-top: 20px; text-align: center;">
+      <a href="https://docs.google.com/forms/d/e/1FAIpQLSdVOeugjZrQjX68uABWOndHIqn5uwPzyVJDGtbx--ckeGGiJA/viewform?usp=dialog" 
+         target="_blank" 
+         style="display: inline-block; background-color: #22c55e; color: white; padding: 15px 30px; font-size: 1.2rem; font-weight: bold; border-radius: 10px; text-decoration: none; transition: background 0.3s;">
+        🛠️ Pateikti Remonto Užklausą
+      </a>
+    </div>
+
+  </div>
+
+  <a href="tel:+37063522540" class="contact-button">📞 Skambinti</a>
 
   <footer>
     <p>Kontaktai: +370 635 22 540</p>
     <p>Aptarnavimo zona: +-5 km spinduliu aplink Šilainius, Kaunas</p>
   </footer>
+
 </body>
 </html>
