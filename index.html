@@ -18,106 +18,38 @@
       background: #1e40af;
       box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
     }
-    nav {
-      background: #162d63;
-      padding: 10px;
-      text-align: center;
-    }
-    nav a {
-      color: white;
-      text-decoration: none;
-      margin: 0 15px;
-      font-size: 1.1rem;
-      transition: color 0.3s;
-    }
-    nav a:hover {
-      color: #facc15;
-    }
-    .content {
-      max-width: 1100px;
-      margin: auto;
-      padding: 20px;
-    }
-    .pricing {
-      margin: 20px 0;
-      font-size: 1.2rem;
-    }
-    .gallery {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-      gap: 15px;
-      margin-bottom: 30px;
-    }
-    .gallery img {
-      width: 100%;
-      border-radius: 10px;
-      transition: transform 0.3s, box-shadow 0.3s;
-    }
-    .gallery img:hover {
-      transform: scale(1.05);
-      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
-    }
-    form {
-      background: #1e40af;
-      padding: 20px;
-      border-radius: 10px;
-      margin-top: 20px;
-      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
-    }
-    form label, form h3 {
-      display: block;
-      margin-bottom: 10px;
-      font-size: 1.2rem;
-    }
-    form input, form select, form button {
-      width: 100%;
-      padding: 10px;
+    .error-message {
+      color: #ff4d4d;
+      font-size: 1rem;
+      margin-top: -10px;
       margin-bottom: 15px;
-      border: none;
-      border-radius: 5px;
-      font-size: 1rem;
+      display: none;
     }
-    form button {
-      background: #22c55e;
-      color: white;
-      font-size: 1rem;
-      cursor: pointer;
-      transition: background 0.3s;
-    }
-    form button:hover {
-      background: #16a34a;
-    }
-    .contact-button {
+    .cookie-banner {
       position: fixed;
-      bottom: 20px;
-      right: 20px;
-      background: #22c55e;
+      bottom: 0;
+      width: 100%;
+      background: rgba(30, 58, 138, 0.95);
       color: white;
-      padding: 15px 20px;
-      border-radius: 50px;
-      text-decoration: none;
-      font-size: 1.1rem;
-      font-weight: bold;
-      transition: background 0.3s;
-    }
-    .contact-button:hover {
-      background: #16a34a;
-    }
-    footer {
       text-align: center;
-      padding: 20px;
-      background: #1e3a8a;
-      font-size: 0.9rem;
-      box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.2);
+      padding: 15px;
+      font-size: 1.1rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
     }
-    @media (max-width: 768px) {
-      header h1 {
-        font-size: 2rem;
-      }
-      nav a {
-        font-size: 1rem;
-        margin: 0 10px;
-      }
+    .cookie-banner button {
+      background: #22c55e;
+      border: none;
+      color: white;
+      padding: 10px 20px;
+      font-size: 1rem;
+      margin-left: 15px;
+      cursor: pointer;
+      border-radius: 5px;
+    }
+    .cookie-banner button:hover {
+      background: #16a34a;
     }
   </style>
 </head>
@@ -128,29 +60,8 @@
     <p>Aukštos kokybės drono fotografijos ir vaizdo įrašai už patrauklią kainą!</p>
   </header>
 
-  <nav>
-    <a href="#pricing">Kainos</a>
-    <a href="#gallery">Galerija</a>
-    <a href="#order">Užsakyti</a>
-  </nav>
-
   <div class="content">
-    <div id="pricing" class="pricing">
-      <p>📸 <b>5-7 nuotraukos už €10!</b></p>
-      <p>📍 Už papildomus €5 – <b>nuotraukos iš jūsų pasakyto aukščio ir kampo</b>!</p>
-      <p>🎥 <b>4K Cinematinis vaizdo įrašas (2-3 min)</b> – €10</p>
-      <p>🎥 <b>4K Vaizdo įrašas (5-7 min)</b> – €15</p>
-      <p>🎥 <b>2.7K vaizdo įrašas (10 min)</b> – €10</p>
-      <p>🎥 <b>1080p vaizdo įrašas (5 min)</b> – €4</p>
-    </div>
-
-    <div id="gallery" class="gallery">
-      <img src="nemunas.jpg" alt="Nuotrauka 1">
-      <img src="tik norfa.jpg" alt="Nuotrauka 2">
-      <img src="statybos.jpg" alt="Nuotrauka 3">
-    </div>
-
-    <form id="order" action="https://formspree.io/f/xgvezjqw" method="POST">
+    <form id="orderForm">
       <h3>Užsakykite Paslaugas</h3>
       <label for="name">Vardas ir Pavardė</label>
       <input type="text" id="name" name="name" required>
@@ -158,11 +69,12 @@
       <label for="email">El. Paštas</label>
       <input type="email" id="email" name="email" required>
       
-      <label for="sms">Telefono Numeris </label>
+      <label for="sms">Telefono Numeris</label>
       <input type="tel" id="sms" name="sms" required>
       
       <label for="contact">Pageidaujamas Kontaktavimo Būdas</label>
-      <select id="contact" name="contact">
+      <select id="contact" name="contact" required>
+        <option value="">Pasirinkite...</option>
         <option value="email">El. Paštas</option>
         <option value="sms">SMS</option>
       </select>
@@ -171,29 +83,45 @@
       <input type="text" id="address" name="address" required>
       
       <label>
-        <input type="checkbox" name="confirmation" required>
+        <input type="checkbox" id="confirmation" name="confirmation" required>
         Patvirtinu, kad perskaičiau ir supratau, jog darbas bus atliktas 13-mečio.
       </label>
       
+      <p class="error-message" id="error-message">⚠️ Prašome užpildyti visus laukus arba pasirinkti parinktį.</p>
+      
       <button type="submit">Pateikti Užsakymą</button>
     </form>
-
-    <div style="margin-top: 20px; text-align: center;">
-      <a href="https://docs.google.com/forms/d/e/1FAIpQLSdVOeugjZrQjX68uABWOndHIqn5uwPzyVJDGtbx--ckeGGiJA/viewform?usp=dialog" 
-         target="_blank" 
-         style="display: inline-block; background-color: #22c55e; color: white; padding: 15px 30px; font-size: 1.2rem; font-weight: bold; border-radius: 10px; text-decoration: none; transition: background 0.3s;">
-        🛠️ Pateikti Remonto Užklausą
-      </a>
-    </div>
-
   </div>
 
-  <a href="tel:+37063522540" class="contact-button">📞 Skambinti</a>
+  <!-- Cookie Banner -->
+  <div class="cookie-banner" id="cookie-banner">
+    Ši svetainė naudoja slapukus, kad užtikrintų geriausią patirtį. 
+    <button onclick="acceptCookies()">Sutinku</button>
+  </div>
 
-  <footer>
-    <p>Kontaktai: +370 635 22 540</p>
-    <p>Aptarnavimo zona: +-5 km spinduliu aplink Šilainius, Kaunas</p>
-  </footer>
+  <script>
+    document.getElementById("orderForm").addEventListener("submit", function(event) {
+      let isValid = true;
+      const requiredFields = ["name", "email", "sms", "contact", "address", "confirmation"];
+      
+      requiredFields.forEach(field => {
+        let element = document.getElementById(field);
+        if (!element || (element.type === "checkbox" && !element.checked) || (element.value.trim() === "")) {
+          isValid = false;
+        }
+      });
+
+      if (!isValid) {
+        event.preventDefault();
+        document.getElementById("error-message").style.display = "block";
+      }
+    });
+
+    function acceptCookies() {
+      document.getElementById("cookie-banner").style.display = "none";
+      document.cookie = "cookieConsent=true; path=/; max-age=31536000"; // 1 year
+    }
+  </script>
 
 </body>
 </html>
