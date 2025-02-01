@@ -18,6 +18,75 @@
       background: #1e40af;
       box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
     }
+    nav {
+      background: #162d63;
+      padding: 10px;
+      text-align: center;
+    }
+    nav a {
+      color: white;
+      text-decoration: none;
+      margin: 0 15px;
+      font-size: 1.1rem;
+      transition: color 0.3s;
+    }
+    nav a:hover {
+      color: #facc15;
+    }
+    .content {
+      max-width: 1100px;
+      margin: auto;
+      padding: 20px;
+    }
+    .pricing {
+      margin: 20px 0;
+      font-size: 1.2rem;
+    }
+    .gallery {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 15px;
+      margin-bottom: 30px;
+    }
+    .gallery img {
+      width: 100%;
+      border-radius: 10px;
+      transition: transform 0.3s, box-shadow 0.3s;
+    }
+    .gallery img:hover {
+      transform: scale(1.05);
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+    }
+    form {
+      background: #1e40af;
+      padding: 20px;
+      border-radius: 10px;
+      margin-top: 20px;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+    }
+    form label, form h3 {
+      display: block;
+      margin-bottom: 10px;
+      font-size: 1.2rem;
+    }
+    form input, form select, form textarea, form button {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 15px;
+      border: none;
+      border-radius: 5px;
+      font-size: 1rem;
+    }
+    form button {
+      background: #22c55e;
+      color: white;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+    form button:hover {
+      background: #16a34a;
+    }
     .error-message {
       color: #ff4d4d;
       font-size: 1rem;
@@ -25,6 +94,30 @@
       margin-bottom: 15px;
       display: none;
     }
+    .contact-button {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background: #22c55e;
+      color: white;
+      padding: 15px 20px;
+      border-radius: 50px;
+      text-decoration: none;
+      font-size: 1.1rem;
+      font-weight: bold;
+      transition: background 0.3s;
+    }
+    .contact-button:hover {
+      background: #16a34a;
+    }
+    footer {
+      text-align: center;
+      padding: 20px;
+      background: #1e3a8a;
+      font-size: 0.9rem;
+      box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.2);
+    }
+    /* Cookie banner for reviews */
     .cookie-banner {
       position: fixed;
       bottom: 0;
@@ -34,9 +127,8 @@
       text-align: center;
       padding: 15px;
       font-size: 1.1rem;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
+      display: none;
+      z-index: 1000;
     }
     .cookie-banner button {
       background: #22c55e;
@@ -60,7 +152,31 @@
     <p>Aukštos kokybės drono fotografijos ir vaizdo įrašai už patrauklią kainą!</p>
   </header>
 
+  <nav>
+    <a href="#pricing">Kainos</a>
+    <a href="#gallery">Galerija</a>
+    <a href="#order">Užsakyti</a>
+    <a href="#review">Atsiliepimai</a>
+  </nav>
+
   <div class="content">
+    <!-- Pricing and Gallery remain unchanged -->
+    <div id="pricing" class="pricing">
+      <p>📸 <b>5-7 nuotraukos už €10!</b></p>
+      <p>📍 Už papildomus €5 – <b>nuotraukos iš jūsų pasakyto aukščio ir kampo</b>!</p>
+      <p>🎥 <b>4K Cinematinis vaizdo įrašas (2-3 min)</b> – €10</p>
+      <p>🎥 <b>4K Vaizdo įrašas (5-7 min)</b> – €15</p>
+      <p>🎥 <b>2.7K vaizdo įrašas (10 min)</b> – €10</p>
+      <p>🎥 <b>1080p vaizdo įrašas (5 min)</b> – €4</p>
+    </div>
+
+    <div id="gallery" class="gallery">
+      <img src="nemunas.jpg" alt="Nuotrauka 1">
+      <img src="tik norfa.jpg" alt="Nuotrauka 2">
+      <img src="statybos.jpg" alt="Nuotrauka 3">
+    </div>
+
+    <!-- Order Form with Lithuanian error message -->
     <form id="orderForm">
       <h3>Užsakykite Paslaugas</h3>
       <label for="name">Vardas ir Pavardė</label>
@@ -87,40 +203,102 @@
         Patvirtinu, kad perskaičiau ir supratau, jog darbas bus atliktas 13-mečio.
       </label>
       
-      <p class="error-message" id="error-message">⚠️ Prašome užpildyti visus laukus arba pasirinkti parinktį.</p>
+      <p class="error-message" id="order-error">⚠️ Prašome užpildyti visus laukus arba pasirinkti parinktį.</p>
       
       <button type="submit">Pateikti Užsakymą</button>
     </form>
+
+    <!-- Review Section (for photography and repairs) -->
+    <form id="reviewForm">
+      <h3 id="review">Atsiliepimai</h3>
+      <label for="reviewType">Paslaugos tipas</label>
+      <select id="reviewType" name="reviewType" required>
+        <option value="">Pasirinkite...</option>
+        <option value="photography">Fotografija</option>
+        <option value="repairs">Remontas</option>
+      </select>
+      
+      <label for="reviewText">Jūsų atsiliepimas</label>
+      <textarea id="reviewText" name="reviewText" rows="4" required></textarea>
+      
+      <p class="error-message" id="review-error">⚠️ Prašome užpildyti visus laukus.</p>
+      
+      <button type="submit">Pateikti Atsiliepimą</button>
+    </form>
   </div>
 
-  <!-- Cookie Banner -->
+  <a href="tel:+37063522540" class="contact-button">📞 Skambinti</a>
+
+  <footer>
+    <p>Kontaktai: +370 635 22 540</p>
+    <p>Aptarnavimo zona: +-5 km spinduliu aplink Šilainius, Kaunas</p>
+  </footer>
+
+  <!-- Cookie Banner (for reviews) -->
   <div class="cookie-banner" id="cookie-banner">
-    Ši svetainė naudoja slapukus, kad užtikrintų geriausią patirtį. 
+    Ši svetainė naudoja slapukus, kad būtų galima sekti atsiliepimų pateikimą.
     <button onclick="acceptCookies()">Sutinku</button>
   </div>
 
   <script>
+    // Order form validation
     document.getElementById("orderForm").addEventListener("submit", function(event) {
-      let isValid = true;
-      const requiredFields = ["name", "email", "sms", "contact", "address", "confirmation"];
+      let valid = true;
+      const requiredIds = ["name", "email", "sms", "contact", "address"];
       
-      requiredFields.forEach(field => {
-        let element = document.getElementById(field);
-        if (!element || (element.type === "checkbox" && !element.checked) || (element.value.trim() === "")) {
-          isValid = false;
+      requiredIds.forEach(id => {
+        const el = document.getElementById(id);
+        if (!el.value.trim()) {
+          valid = false;
         }
       });
-
-      if (!isValid) {
+      // Checkbox check:
+      if (!document.getElementById("confirmation").checked) {
+        valid = false;
+      }
+      if (!valid) {
         event.preventDefault();
-        document.getElementById("error-message").style.display = "block";
+        document.getElementById("order-error").style.display = "block";
       }
     });
 
+    // Review form validation and cookie check to prevent duplicate submissions.
+    document.getElementById("reviewForm").addEventListener("submit", function(event) {
+      // If the review was already submitted (cookie exists), prevent another submission.
+      if (document.cookie.indexOf("reviewSubmitted=true") !== -1) {
+        event.preventDefault();
+        alert("Jūs jau pateikėte atsiliepimą.");
+        return;
+      }
+      let valid = true;
+      const requiredIds = ["reviewType", "reviewText"];
+      requiredIds.forEach(id => {
+        const el = document.getElementById(id);
+        if (!el.value.trim()) {
+          valid = false;
+        }
+      });
+      if (!valid) {
+        event.preventDefault();
+        document.getElementById("review-error").style.display = "block";
+      } else {
+        // On successful submission, set a cookie to avoid duplicate reviews.
+        document.cookie = "reviewSubmitted=true; path=/; max-age=31536000"; // 1 year
+      }
+    });
+
+    // Show cookie banner for reviews if not already accepted
+    function checkCookieConsent() {
+      if (document.cookie.indexOf("cookieConsentReviews=true") === -1) {
+        document.getElementById("cookie-banner").style.display = "flex";
+      }
+    }
     function acceptCookies() {
       document.getElementById("cookie-banner").style.display = "none";
-      document.cookie = "cookieConsent=true; path=/; max-age=31536000"; // 1 year
+      document.cookie = "cookieConsentReviews=true; path=/; max-age=31536000"; // 1 year
     }
+    // On page load, check for cookie consent for reviews
+    window.onload = checkCookieConsent;
   </script>
 
 </body>
