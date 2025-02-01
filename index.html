@@ -69,7 +69,7 @@
       margin-bottom: 10px;
       font-size: 1.2rem;
     }
-    form input, form select, form textarea, form button {
+    form input, form select, form button {
       width: 100%;
       padding: 10px;
       margin-bottom: 15px;
@@ -86,13 +86,6 @@
     }
     form button:hover {
       background: #16a34a;
-    }
-    .error-message {
-      color: #ff4d4d;
-      font-size: 1rem;
-      margin-top: -10px;
-      margin-bottom: 15px;
-      display: none;
     }
     .contact-button {
       position: fixed;
@@ -117,31 +110,14 @@
       font-size: 0.9rem;
       box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.2);
     }
-    /* Cookie banner for reviews */
-    .cookie-banner {
-      position: fixed;
-      bottom: 0;
-      width: 100%;
-      background: rgba(30, 58, 138, 0.95);
-      color: white;
-      text-align: center;
-      padding: 15px;
-      font-size: 1.1rem;
-      display: none;
-      z-index: 1000;
-    }
-    .cookie-banner button {
-      background: #22c55e;
-      border: none;
-      color: white;
-      padding: 10px 20px;
-      font-size: 1rem;
-      margin-left: 15px;
-      cursor: pointer;
-      border-radius: 5px;
-    }
-    .cookie-banner button:hover {
-      background: #16a34a;
+    @media (max-width: 768px) {
+      header h1 {
+        font-size: 2rem;
+      }
+      nav a {
+        font-size: 1rem;
+        margin: 0 10px;
+      }
     }
   </style>
 </head>
@@ -156,11 +132,9 @@
     <a href="#pricing">Kainos</a>
     <a href="#gallery">Galerija</a>
     <a href="#order">Užsakyti</a>
-    <a href="#review">Atsiliepimai</a>
   </nav>
 
   <div class="content">
-    <!-- Pricing and Gallery remain unchanged -->
     <div id="pricing" class="pricing">
       <p>📸 <b>5-7 nuotraukos už €10!</b></p>
       <p>📍 Už papildomus €5 – <b>nuotraukos iš jūsų pasakyto aukščio ir kampo</b>!</p>
@@ -176,8 +150,7 @@
       <img src="statybos.jpg" alt="Nuotrauka 3">
     </div>
 
-    <!-- Order Form with Lithuanian error message -->
-    <form id="orderForm">
+    <form id="order" action="https://formspree.io/f/xgvezjqw" method="POST">
       <h3>Užsakykite Paslaugas</h3>
       <label for="name">Vardas ir Pavardė</label>
       <input type="text" id="name" name="name" required>
@@ -185,12 +158,11 @@
       <label for="email">El. Paštas</label>
       <input type="email" id="email" name="email" required>
       
-      <label for="sms">Telefono Numeris</label>
+      <label for="sms">Telefono Numeris </label>
       <input type="tel" id="sms" name="sms" required>
       
       <label for="contact">Pageidaujamas Kontaktavimo Būdas</label>
-      <select id="contact" name="contact" required>
-        <option value="">Pasirinkite...</option>
+      <select id="contact" name="contact">
         <option value="email">El. Paštas</option>
         <option value="sms">SMS</option>
       </select>
@@ -199,32 +171,21 @@
       <input type="text" id="address" name="address" required>
       
       <label>
-        <input type="checkbox" id="confirmation" name="confirmation" required>
+        <input type="checkbox" name="confirmation" required>
         Patvirtinu, kad perskaičiau ir supratau, jog darbas bus atliktas 13-mečio.
       </label>
-      
-      <p class="error-message" id="order-error">⚠️ Prašome užpildyti visus laukus arba pasirinkti parinktį.</p>
       
       <button type="submit">Pateikti Užsakymą</button>
     </form>
 
-    <!-- Review Section (for photography and repairs) -->
-    <form id="reviewForm">
-      <h3 id="review">Atsiliepimai</h3>
-      <label for="reviewType">Paslaugos tipas</label>
-      <select id="reviewType" name="reviewType" required>
-        <option value="">Pasirinkite...</option>
-        <option value="photography">Fotografija</option>
-        <option value="repairs">Remontas</option>
-      </select>
-      
-      <label for="reviewText">Jūsų atsiliepimas</label>
-      <textarea id="reviewText" name="reviewText" rows="4" required></textarea>
-      
-      <p class="error-message" id="review-error">⚠️ Prašome užpildyti visus laukus.</p>
-      
-      <button type="submit">Pateikti Atsiliepimą</button>
-    </form>
+    <div style="margin-top: 20px; text-align: center;">
+      <a href="https://docs.google.com/forms/d/e/1FAIpQLSdVOeugjZrQjX68uABWOndHIqn5uwPzyVJDGtbx--ckeGGiJA/viewform?usp=dialog" 
+         target="_blank" 
+         style="display: inline-block; background-color: #22c55e; color: white; padding: 15px 30px; font-size: 1.2rem; font-weight: bold; border-radius: 10px; text-decoration: none; transition: background 0.3s;">
+        🛠️ Pateikti Remonto Užklausą
+      </a>
+    </div>
+
   </div>
 
   <a href="tel:+37063522540" class="contact-button">📞 Skambinti</a>
@@ -233,73 +194,6 @@
     <p>Kontaktai: +370 635 22 540</p>
     <p>Aptarnavimo zona: +-5 km spinduliu aplink Šilainius, Kaunas</p>
   </footer>
-
-  <!-- Cookie Banner (for reviews) -->
-  <div class="cookie-banner" id="cookie-banner">
-    Ši svetainė naudoja slapukus, kad būtų galima sekti atsiliepimų pateikimą.
-    <button onclick="acceptCookies()">Sutinku</button>
-  </div>
-
-  <script>
-    // Order form validation
-    document.getElementById("orderForm").addEventListener("submit", function(event) {
-      let valid = true;
-      const requiredIds = ["name", "email", "sms", "contact", "address"];
-      
-      requiredIds.forEach(id => {
-        const el = document.getElementById(id);
-        if (!el.value.trim()) {
-          valid = false;
-        }
-      });
-      // Checkbox check:
-      if (!document.getElementById("confirmation").checked) {
-        valid = false;
-      }
-      if (!valid) {
-        event.preventDefault();
-        document.getElementById("order-error").style.display = "block";
-      }
-    });
-
-    // Review form validation and cookie check to prevent duplicate submissions.
-    document.getElementById("reviewForm").addEventListener("submit", function(event) {
-      // If the review was already submitted (cookie exists), prevent another submission.
-      if (document.cookie.indexOf("reviewSubmitted=true") !== -1) {
-        event.preventDefault();
-        alert("Jūs jau pateikėte atsiliepimą.");
-        return;
-      }
-      let valid = true;
-      const requiredIds = ["reviewType", "reviewText"];
-      requiredIds.forEach(id => {
-        const el = document.getElementById(id);
-        if (!el.value.trim()) {
-          valid = false;
-        }
-      });
-      if (!valid) {
-        event.preventDefault();
-        document.getElementById("review-error").style.display = "block";
-      } else {
-        // On successful submission, set a cookie to avoid duplicate reviews.
-        document.cookie = "reviewSubmitted=true; path=/; max-age=31536000"; // 1 year
-      }
-    });
-
-    // Show cookie banner for reviews if not already accepted
-    function checkCookieConsent() {
-      if (document.cookie.indexOf("cookieConsentReviews=true") === -1) {
-        document.getElementById("cookie-banner").style.display = "flex";
-      }
-    }
-    function acceptCookies() {
-      document.getElementById("cookie-banner").style.display = "none";
-      document.cookie = "cookieConsentReviews=true; path=/; max-age=31536000"; // 1 year
-    }
-    // On page load, check for cookie consent for reviews
-    window.onload = checkCookieConsent;
-  </script>
 
 </body>
 </html>
