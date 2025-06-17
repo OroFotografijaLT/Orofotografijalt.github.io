@@ -1,309 +1,287 @@
 <!DOCTYPE html>
 <html lang="lt">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>OroFotografija</title>
-  <style>
-    /* Your existing styles plus these additions */
-    .price-estimate {
-      font-weight: bold;
-      font-size: 1.3rem;
-      margin-top: 10px;
-      color: #facc15;
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Aerial Videography Price Calculator</title>
+<style>
+  /* Reset and base */
+  * {
+    box-sizing: border-box;
+  }
+  body {
+    font-family: Arial, sans-serif;
+    margin: 0; padding: 0;
+    background: #f9f9f9;
+    color: #222;
+    line-height: 1.4;
+  }
+  header {
+    background: #005f73;
+    color: #fff;
+    padding: 1rem;
+    text-align: center;
+  }
+  header h1 {
+    margin: 0 0 0.25rem;
+    font-size: 1.5rem;
+  }
+  header p {
+    margin: 0;
+    font-size: 1rem;
+    font-weight: 300;
+  }
+  main {
+    max-width: 600px;
+    margin: 1rem auto;
+    padding: 1rem;
+    background: #fff;
+    border-radius: 6px;
+    box-shadow: 0 0 12px rgba(0,0,0,0.1);
+  }
+  /* Language toggle */
+  #langSwitch {
+    position: fixed;
+    top: 1rem;
+    right: 1rem;
+    background: #0a9396;
+    color: #fff;
+    border: none;
+    border-radius: 20px;
+    padding: 0.4rem 1rem;
+    font-size: 0.9rem;
+    cursor: pointer;
+    z-index: 1000;
+  }
+  form {
+    display: grid;
+    gap: 1rem;
+  }
+  label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 0.25rem;
+  }
+  input[type="text"],
+  input[type="email"],
+  input[type="number"],
+  select {
+    width: 100%;
+    padding: 0.5rem;
+    font-size: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+  input[type="checkbox"] {
+    margin-right: 0.5rem;
+    vertical-align: middle;
+  }
+  .checkbox-label {
+    display: flex;
+    align-items: center;
+    font-weight: normal;
+  }
+  /* Price display */
+  #priceEstimate {
+    margin-top: 1rem;
+    font-size: 1.25rem;
+    font-weight: bold;
+    text-align: center;
+    color: #005f73;
+  }
+  /* Responsive text sizing */
+  @media (min-width: 480px) {
+    header h1 {
+      font-size: 2rem;
     }
-    .language-switch {
-      position: fixed;
-      top: 10px;
-      right: 10px;
-      background: #1e40af;
-      color: white;
-      border: none;
-      padding: 5px 10px;
-      border-radius: 5px;
-      cursor: pointer;
-      font-size: 0.9rem;
+    main {
+      padding: 2rem;
     }
-  </style>
+    #priceEstimate {
+      font-size: 1.5rem;
+    }
+  }
+</style>
 </head>
 <body>
-  <button class="language-switch" id="langSwitch">English</button>
 
-  <header>
-    <h1 id="header-title">Oro fotografija Jaunuolio Akimis</h1>
-    <p id="header-subtitle">Aukštos kokybės drono fotografijos ir vaizdo įrašai už patrauklią kainą!</p>
-  </header>
+<button id="langSwitch">English</button>
 
-  <nav>
-    <a href="#pricing" id="nav-pricing">Kainos</a>
-    <a href="#gallery" id="nav-gallery">Galerija</a>
-    <a href="#order" id="nav-order">Užsakyti</a>
-  </nav>
+<header>
+  <h1 id="header-title">Oro filmavimo kainos skaičiuoklė</h1>
+  <p id="header-subtitle">Greita ir tiksli kaina už Jūsų užsakymą</p>
+</header>
 
-  <div class="content">
-    <div id="pricing" class="pricing">
-      <p>📸 <b>5-7 nuotraukos už €10!</b></p>
-      <p>📍 Už papildomus €5 – <b>nuotraukos iš jūsų pasakyto aukščio ir kampo</b>!</p>
-      <p>🎥 <b>4K Cinematinis vaizdo įrašas (2-3 min)</b> – €10</p>
-      <p>🎥 <b>4K Vaizdo įrašas (5-7 min)</b> – €15</p>
-      <p>🎥 <b>2.7K vaizdo įrašas (10 min)</b> – €10</p>
-      <p>🎥 <b>1080p vaizdo įrašas (5 min)</b> – €4</p>
-      <p><i>Kainos derinamos vietoje.</i></p>
-    </div>
-
-    <div id="gallery" class="gallery">
-      <img src="nemunas.jpg" alt="Nuotrauka 1" />
-      <img src="tik norfa.jpg" alt="Nuotrauka 2" />
-      <img src="statybos.jpg" alt="Nuotrauka 3" />
-    </div>
-
-    <form
-      id="order"
-      action="https://formspree.io/f/xgvezjqw"
-      method="POST"
-      onsubmit="return validateForm()"
-    >
-      <h3 id="form-title">Užsakykite Paslaugas</h3>
-
-      <label for="name" id="label-name">Vardas ir Pavardė</label>
+<main>
+  <form id="orderForm" autocomplete="off">
+    <div>
+      <label id="label-name" for="name">Vardas</label>
       <input type="text" id="name" name="name" required />
-
-      <label for="email" id="label-email">El. Paštas</label>
-      <input type="email" id="email" name="email" required />
-
-      <label for="sms" id="label-sms">Telefono Numeris</label>
-      <input type="tel" id="sms" name="sms" required />
-
-      <label for="contact" id="label-contact">Pageidaujamas Kontaktavimo Būdas</label>
-      <select id="contact" name="contact">
-        <option value="email">El. Paštas</option>
-        <option value="sms">SMS</option>
-      </select>
-
-      <label for="address" id="label-address">Adresas</label>
-      <input type="text" id="address" name="address" required />
-
-      <label for="distance" id="label-distance">Atstumas iki vietos (km)</label>
-      <input
-        type="number"
-        id="distance"
-        name="distance"
-        min="0"
-        max="100"
-        step="0.1"
-        value="3"
-        required
-        oninput="updatePrice()"
-      />
-
-      <label for="duration" id="label-duration"
-        >Skrydžio laikas (min) <small>(max 40 min)</small></label
-      >
-      <input
-        type="number"
-        id="duration"
-        name="duration"
-        min="1"
-        max="40"
-        value="10"
-        required
-        oninput="updatePrice()"
-      />
-
-      <label for="quality" id="label-quality">Vaizdo kokybė</label>
-      <select id="quality" name="quality" onchange="updatePrice()">
-        <option value="1080p">1080p</option>
-        <option value="2.7k">2.7K</option>
-        <option value="4k" selected>4K</option>
-      </select>
-
-      <label>
-        <input
-          type="checkbox"
-          id="urgent"
-          name="urgent"
-          onchange="updatePrice()"
-        />
-        Prioritetinis (skubus) užsakymas (+€5)
-      </label>
-
-      <label>
-        <input
-          type="checkbox"
-          id="negotiable"
-          name="negotiable"
-          checked
-          disabled
-        />
-        Kainos derinamos vietoje
-      </label>
-
-      <label>
-        <input
-          type="checkbox"
-          name="confirmation"
-          required
-        />
-        Patvirtinu, kad perskaičiau ir supratau, jog darbas bus atliktas 13-mečio.
-      </label>
-
-      <div class="price-estimate" id="priceEstimate">Apskaičiuota kaina: €0.00</div>
-
-      <button type="submit">Pateikti Užsakymą</button>
-    </form>
-
-    <div style="margin-top: 20px; text-align: center;">
-      <a
-        href="https://docs.google.com/forms/d/e/1FAIpQLSdVOeugjZrQjX68uABWOndHIqn5uwPzyVJDGtbx--ckeGGiJA/viewform?usp=dialog"
-        target="_blank"
-        style="
-          display: inline-block;
-          background-color: #22c55e;
-          color: white;
-          padding: 15px 30px;
-          font-size: 1.2rem;
-          font-weight: bold;
-          border-radius: 10px;
-          text-decoration: none;
-          transition: background 0.3s;
-        "
-        >🛠️ Pateikti Remonto Užklausą</a
-      >
     </div>
-  </div>
 
-  <a href="tel:+37063522540" class="contact-button">📞 Skambinti</a>
+    <div>
+      <label id="label-email" for="email">El. paštas</label>
+      <input type="email" id="email" name="email" required />
+    </div>
 
-  <footer>
-    <p>Kontaktai: +370 635 22 540</p>
-    <p>Aptarnavimo zona: ±15 km spinduliu aplink Šilainius, Kaunas</p>
-  </footer>
+    <div>
+      <label id="label-sms" for="sms">Telefono numeris (SMS)</label>
+      <input type="text" id="sms" name="sms" pattern="^\+?\d{7,15}$" placeholder="+37012345678" />
+    </div>
 
-  <script>
-    const pricePerMin = {
+    <div>
+      <label id="label-contact" for="contact">Kontaktinis numeris</label>
+      <input type="text" id="contact" name="contact" />
+    </div>
+
+    <div>
+      <label id="label-address" for="address">Adresas</label>
+      <input type="text" id="address" name="address" />
+    </div>
+
+    <div>
+      <label id="label-distance" for="distance">Atstumas iki kliento (km)</label>
+      <input type="number" id="distance" name="distance" min="0" max="1000" step="0.1" value="0" />
+    </div>
+
+    <div>
+      <label id="label-duration" for="duration">Filmo trukmė (min)</label>
+      <input type="number" id="duration" name="duration" min="1" max="40" value="1" />
+    </div>
+
+    <div>
+      <label id="label-quality" for="quality">Filmavimo kokybė</label>
+      <select id="quality" name="quality">
+        <option value="1080p" selected>1080p Full HD</option>
+        <option value="2.7k">2.7K</option>
+        <option value="4k">4K</option>
+      </select>
+    </div>
+
+    <div class="checkbox-label">
+      <input type="checkbox" id="urgent" name="urgent" />
+      <label for="urgent" id="urgentLabel">Skubus užsakymas (+5 €)</label>
+    </div>
+
+    <div class="checkbox-label">
+      <input type="checkbox" id="negotiable" name="negotiable" checked disabled />
+      <label for="negotiable" id="negotiableLabel">Kaina derinama vietoje</label>
+    </div>
+
+    <div class="checkbox-label" style="font-size:0.9rem;">
+      <input type="checkbox" id="confirmation" name="confirmation" required />
+      <label for="confirmation" id="confirmationText">Patvirtinu, kad mano duomenys yra teisingi</label>
+    </div>
+  </form>
+
+  <div id="priceEstimate">Numatoma kaina: 0.00 €</div>
+</main>
+
+<script>
+  const texts = {
+    lt: {
+      headerTitle: "Oro filmavimo kainos skaičiuoklė",
+      headerSubtitle: "Greita ir tiksli kaina už Jūsų užsakymą",
+      labelName: "Vardas",
+      labelEmail: "El. paštas",
+      labelSms: "Telefono numeris (SMS)",
+      labelContact: "Kontaktinis numeris",
+      labelAddress: "Adresas",
+      labelDistance: "Atstumas iki kliento (km)",
+      labelDuration: "Filmo trukmė (min)",
+      labelQuality: "Filmavimo kokybė",
+      urgentLabel: "Skubus užsakymas (+5 €)",
+      negotiableLabel: "Kaina derinama vietoje",
+      confirmationText: "Patvirtinu, kad mano duomenys yra teisingi",
+      priceEstimatePrefix: "Numatoma kaina: ",
+    },
+    en: {
+      headerTitle: "Aerial Videography Price Calculator",
+      headerSubtitle: "Quick and accurate price for your order",
+      labelName: "Name",
+      labelEmail: "Email",
+      labelSms: "Phone number (SMS)",
+      labelContact: "Contact number",
+      labelAddress: "Address",
+      labelDistance: "Distance to client (km)",
+      labelDuration: "Film duration (min)",
+      labelQuality: "Filming quality",
+      urgentLabel: "Urgent order (+5 €)",
+      negotiableLabel: "Price negotiable on site",
+      confirmationText: "I confirm my data is correct",
+      priceEstimatePrefix: "Estimated price: ",
+    }
+  };
+
+  const langSwitchBtn = document.getElementById("langSwitch");
+  let currentLang = "lt";
+
+  langSwitchBtn.addEventListener("click", () => {
+    currentLang = currentLang === "lt" ? "en" : "lt";
+    switchLanguage(currentLang);
+    langSwitchBtn.textContent = currentLang === "lt" ? "English" : "Lietuvių";
+    updatePrice();
+  });
+
+  function switchLanguage(lang) {
+    const t = texts[lang];
+    document.getElementById("header-title").textContent = t.headerTitle;
+    document.getElementById("header-subtitle").textContent = t.headerSubtitle;
+    document.getElementById("label-name").textContent = t.labelName;
+    document.getElementById("label-email").textContent = t.labelEmail;
+    document.getElementById("label-sms").textContent = t.labelSms;
+    document.getElementById("label-contact").textContent = t.labelContact;
+    document.getElementById("label-address").textContent = t.labelAddress;
+    document.getElementById("label-distance").textContent = t.labelDistance;
+    document.getElementById("label-duration").textContent = t.labelDuration;
+    document.getElementById("label-quality").textContent = t.labelQuality;
+    document.querySelector('label[for="urgent"]').textContent = t.urgentLabel;
+    document.querySelector('label[for="negotiable"]').textContent = t.negotiableLabel;
+    document.querySelector('input[name="confirmation"]').parentNode.childNodes[2].nodeValue = " " + t.confirmationText;
+    document.getElementById("priceEstimate").textContent = t.priceEstimatePrefix + "0.00 €";
+  }
+
+  function updatePrice() {
+    const distance = parseFloat(document.getElementById("distance").value) || 0;
+    const duration = Math.min(Math.max(parseInt(document.getElementById("duration").value) || 1, 1), 40);
+    const quality = document.getElementById("quality").value;
+    const urgent = document.getElementById("urgent").checked;
+
+    // Price constants
+    const arrivalFreeKm = 3;
+    const arrivalPricePerKm = 0.14;
+
+    const qualityPrices = {
       "1080p": 0.8,
-      "2.7k": 1,
-      "4k": 1.5,
-    };
-    const urgentFee = 5;
-    const freeDistanceKm = 3;
-    const pricePerKm = 0.14;
-
-    function updatePrice() {
-      const distance = parseFloat(document.getElementById("distance").value) || 0;
-      const duration = parseInt(document.getElementById("duration").value) || 0;
-      const quality = document.getElementById("quality").value;
-      const urgent = document.getElementById("urgent").checked;
-
-      // Calculate arrival fee
-      const chargeableDistance = distance > freeDistanceKm ? distance - freeDistanceKm : 0;
-      const arrivalFee = chargeableDistance * pricePerKm;
-
-      // Calculate flight price (price per minute * duration)
-      const flightPrice = pricePerMin[quality] * duration;
-
-      // Total price
-      let total = arrivalFee + flightPrice;
-      if (urgent) total += urgentFee;
-
-      // Show price with two decimals
-      document.getElementById("priceEstimate").textContent =
-        `Apskaičiuota kaina: €${total.toFixed(2)}`;
-    }
-
-    // Initial price calculation on load
-    window.onload = () => {
-      updatePrice();
+      "2.7k": 1.0,
+      "4k": 1.5
     };
 
-    function validateForm() {
-      const duration = parseInt(document.getElementById("duration").value);
-      if (duration > 40) {
-        alert("Maksimalus skrydžio laikas yra 40 minučių.");
-        return false;
-      }
-      return true;
-    }
+    // Arrival fee calculation
+    const arrivalKm = distance > arrivalFreeKm ? distance - arrivalFreeKm : 0;
+    const arrivalFee = arrivalKm * arrivalPricePerKm;
 
-    // Language switch example (LT to EN)
-    const texts = {
-      lt: {
-        headerTitle: "Oro fotografija Jaunuolio Akimis",
-        headerSubtitle:
-          "Aukštos kokybės drono fotografijos ir vaizdo įrašai už patrauklią kainą!",
-        navPricing: "Kainos",
-        navGallery: "Galerija",
-        navOrder: "Užsakyti",
-        formTitle: "Užsakykite Paslaugas",
-        labelName: "Vardas ir Pavardė",
-        labelEmail: "El. Paštas",
-        labelSms: "Telefono Numeris",
-        labelContact: "Pageidaujamas Kontaktavimo Būdas",
-        labelAddress: "Adresas",
-        labelDistance: "Atstumas iki vietos (km)",
-        labelDuration: "Skrydžio laikas (min) (max 40 min)",
-        labelQuality: "Vaizdo kokybė",
-        urgentLabel: "Prioritetinis (skubus) užsakymas (+€5)",
-        negotiableLabel: "Kainos derinamos vietoje",
-        confirmationText:
-          "Patvirtinu, kad perskaičiau ir supratau, jog darbas bus atliktas 13-mečio.",
-        priceEstimatePrefix: "Apskaičiuota kaina: €",
-      },
-      en: {
-        headerTitle: "Aerial Photography Through Young Eyes",
-        headerSubtitle:
-          "High-quality drone photos and videos at attractive prices!",
-        navPricing: "Pricing",
-        navGallery: "Gallery",
-        navOrder: "Order",
-        formTitle: "Order Services",
-        labelName: "Full Name",
-        labelEmail: "Email",
-        labelSms: "Phone Number",
-        labelContact: "Preferred Contact Method",
-        labelAddress: "Address",
-        labelDistance: "Distance to Location (km)",
-        labelDuration: "Flight Duration (min) (max 40 min)",
-        labelQuality: "Video Quality",
-        urgentLabel: "Urgent (priority) order (+€5)",
-        negotiableLabel: "Prices negotiable on site",
-        confirmationText:
-          "I confirm I have read and understand that the work will be done by a 13-year-old.",
-        priceEstimatePrefix: "Estimated price: €",
-      },
-    };
+    // Flight fee calculation
+    const flightPricePerMin = qualityPrices[quality] || 0.8;
+    const flightFee = duration * flightPricePerMin;
 
-    const langSwitchBtn = document.getElementById("langSwitch");
-    let currentLang = "lt";
+    // Urgent fee
+    const urgentFee = urgent ? 5 : 0;
 
-    langSwitchBtn.addEventListener("click", () => {
-      currentLang = currentLang === "lt" ? "en" : "lt";
-      switchLanguage(currentLang);
-      langSwitchBtn.textContent = currentLang === "lt" ? "English" : "Lietuvių";
-      updatePrice();
-    });
+    const totalPrice = arrivalFee + flightFee + urgentFee;
 
-    function switchLanguage(lang) {
-      const t = texts[lang];
-      document.getElementById("header-title").textContent = t.headerTitle;
-      document.getElementById("header-subtitle").textContent = t.headerSubtitle;
-      document.getElementById("nav-pricing").textContent = t.navPricing;
-      document.getElementById("nav-gallery").textContent = t.navGallery;
-      document.getElementById("nav-order").textContent = t.navOrder;
-      document.getElementById("form-title").textContent = t.formTitle;
-      document.getElementById("label-name").textContent = t.labelName;
-      document.getElementById("label-email").textContent = t.labelEmail;
-      document.getElementById("label-sms").textContent = t.labelSms;
-      document.getElementById("label-contact").textContent = t.labelContact;
-      document.getElementById("label-address").textContent = t.labelAddress;
-      document.getElementById("label-distance").textContent = t.labelDistance;
-      document.getElementById("label-duration").textContent = t.labelDuration;
-      document.getElementById("label-quality").textContent = t.labelQuality;
-      document.querySelector('label[for="urgent"]').textContent = t.urgentLabel;
-      document.querySelector('label[for="negotiable"]').textContent = t.negotiableLabel;
-      document.querySelector('input[name="confirmation"]').parentNode.childNodes[2].nodeValue = t.confirmationText;
-      document.getElementById("priceEstimate").textContent = `${t.priceEstimatePrefix}0.00`;
-    }
-  </script>
+    const prefix = texts[currentLang].priceEstimatePrefix;
+
+    document.getElementById("priceEstimate").textContent = `${prefix}${totalPrice.toFixed(2)} €`;
+  }
+
+  // Update price on form changes
+  document.getElementById("orderForm").addEventListener("input", updatePrice);
+
+  // Initialize price and language on load
+  switchLanguage(currentLang);
+  updatePrice();
+</script>
+
 </body>
 </html>
