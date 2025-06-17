@@ -1,243 +1,309 @@
 <!DOCTYPE html>
 <html lang="lt">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>OroFotografija</title>
   <style>
-    body {
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      margin: 0;
-      padding: 0;
-      background: linear-gradient(to bottom, #1e3a8a, #3b82f6, #93c5fd);
-      color: white;
-    }
-    header {
-      text-align: center;
-      padding: 20px;
-      background: #1e40af;
-      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
-    }
-    nav {
-      background: #162d63;
-      padding: 10px;
-      text-align: center;
-    }
-    nav a {
-      color: white;
-      text-decoration: none;
-      margin: 0 15px;
-      font-size: 1.1rem;
-      transition: color 0.3s;
-    }
-    nav a:hover {
+    /* Your existing styles plus these additions */
+    .price-estimate {
+      font-weight: bold;
+      font-size: 1.3rem;
+      margin-top: 10px;
       color: #facc15;
     }
-    .content {
-      max-width: 1100px;
-      margin: auto;
-      padding: 20px;
-    }
-    .pricing {
-      margin: 20px 0;
-      font-size: 1.2rem;
-    }
-    .gallery {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-      gap: 15px;
-      margin-bottom: 30px;
-    }
-    .gallery img {
-      width: 100%;
-      border-radius: 10px;
-      transition: transform 0.3s, box-shadow 0.3s;
-    }
-    .gallery img:hover {
-      transform: scale(1.05);
-      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
-    }
-    form {
-      background: #1e40af;
-      padding: 20px;
-      border-radius: 10px;
-      margin-top: 20px;
-      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
-    }
-    form label, form h3 {
-      display: block;
-      margin-bottom: 10px;
-      font-size: 1.2rem;
-    }
-    form input, form select, form button {
-      width: 100%;
-      padding: 10px;
-      margin-bottom: 15px;
-      border: none;
-      border-radius: 5px;
-      font-size: 1rem;
-    }
-    form button {
-      background: #22c55e;
-      color: white;
-      font-size: 1rem;
-      cursor: pointer;
-      transition: background 0.3s;
-    }
-    form button:hover {
-      background: #16a34a;
-    }
-    .contact-button {
+    .language-switch {
       position: fixed;
-      bottom: 20px;
-      right: 20px;
-      background: #22c55e;
-      color: white;
-      padding: 15px 20px;
-      border-radius: 50px;
-      text-decoration: none;
-      font-size: 1.1rem;
-      font-weight: bold;
-      transition: background 0.3s;
-    }
-    .contact-button:hover {
-      background: #16a34a;
-    }
-    footer {
-      text-align: center;
-      padding: 20px;
-      background: #1e3a8a;
-      font-size: 0.9rem;
-      box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.2);
-    }
-    .lang-switcher {
-      position: absolute;
-      top: 20px;
-      right: 20px;
+      top: 10px;
+      right: 10px;
       background: #1e40af;
       color: white;
       border: none;
-      padding: 8px 12px;
+      padding: 5px 10px;
       border-radius: 5px;
       cursor: pointer;
+      font-size: 0.9rem;
     }
   </style>
-  <script>
-    function updatePrice() {
-      const basePrice = 0.08; // kaina už 1 km po 3 nemokamų km
-      const energyCostPerKm = 0.06; // įkrovimo kaina
-      const qualityMultiplier = { '4k': 3, '2.7k': 2, '1080p': 1 };
-
-      let distance = parseFloat(document.getElementById('distance').value);
-      let duration = parseFloat(document.getElementById('duration').value);
-      let quality = document.getElementById('quality').value;
-      let urgent = document.getElementById('urgent').checked;
-
-      let effectiveDistance = Math.max(0, distance - 3);
-      let travelCost = effectiveDistance * (basePrice + energyCostPerKm);
-      let videoCost = duration * qualityMultiplier[quality];
-      let total = travelCost + videoCost;
-      if (urgent) total += 5;
-
-      document.getElementById('totalPrice').innerText = `Kaina: €${total.toFixed(2)}`;
-    }
-    function switchLang() {
-      const currentLang = document.documentElement.lang;
-      window.location.href = currentLang === 'lt' ? '?lang=en' : '?lang=lt';
-    }
-  </script>
 </head>
 <body>
-  <button class="lang-switcher" onclick="switchLang()">LT / EN</button>
+  <button class="language-switch" id="langSwitch">English</button>
+
   <header>
-    <h1>Oro fotografija Jaunuolio Akimis</h1>
-    <p>Aukštos kokybės drono fotografijos ir vaizdo įrašai už patrauklią kainą!</p>
+    <h1 id="header-title">Oro fotografija Jaunuolio Akimis</h1>
+    <p id="header-subtitle">Aukštos kokybės drono fotografijos ir vaizdo įrašai už patrauklią kainą!</p>
   </header>
+
   <nav>
-    <a href="#pricing">Kainos</a>
-    <a href="#gallery">Galerija</a>
-    <a href="#order">Užsakyti</a>
+    <a href="#pricing" id="nav-pricing">Kainos</a>
+    <a href="#gallery" id="nav-gallery">Galerija</a>
+    <a href="#order" id="nav-order">Užsakyti</a>
   </nav>
+
   <div class="content">
     <div id="pricing" class="pricing">
-      <p><b>Kainos apskaičiuojamos pagal atstumą, trukmę ir kokybę</b></p>
-      <ul>
-        <li>Pirmi 3 km – nemokamai</li>
-        <li>Kelionės kaina: €0.14/km</li>
-        <li>Vaizdo įrašymo kaina už minutę:
-          <ul>
-            <li>4K – €3</li>
-            <li>2.7K – €2</li>
-            <li>1080p – €1</li>
-          </ul>
-        </li>
-        <li>Skubi paslauga: +€5</li>
-      </ul>
+      <p>📸 <b>5-7 nuotraukos už €10!</b></p>
+      <p>📍 Už papildomus €5 – <b>nuotraukos iš jūsų pasakyto aukščio ir kampo</b>!</p>
+      <p>🎥 <b>4K Cinematinis vaizdo įrašas (2-3 min)</b> – €10</p>
+      <p>🎥 <b>4K Vaizdo įrašas (5-7 min)</b> – €15</p>
+      <p>🎥 <b>2.7K vaizdo įrašas (10 min)</b> – €10</p>
+      <p>🎥 <b>1080p vaizdo įrašas (5 min)</b> – €4</p>
+      <p><i>Kainos derinamos vietoje.</i></p>
     </div>
-    <div class="gallery">
-      <img src="nemunas.jpg" alt="Nuotrauka 1">
-      <img src="tik norfa.jpg" alt="Nuotrauka 2">
-      <img src="statybos.jpg" alt="Nuotrauka 3">
+
+    <div id="gallery" class="gallery">
+      <img src="nemunas.jpg" alt="Nuotrauka 1" />
+      <img src="tik norfa.jpg" alt="Nuotrauka 2" />
+      <img src="statybos.jpg" alt="Nuotrauka 3" />
     </div>
-    <form id="order" action="https://formspree.io/f/xgvezjqw" method="POST">
-      <h3>Užsakykite Paslaugas</h3>
-      <label for="name">Vardas ir Pavardė</label>
-      <input type="text" id="name" name="name" required>
 
-      <label for="email">El. Paštas</label>
-      <input type="email" id="email" name="email" required>
+    <form
+      id="order"
+      action="https://formspree.io/f/xgvezjqw"
+      method="POST"
+      onsubmit="return validateForm()"
+    >
+      <h3 id="form-title">Užsakykite Paslaugas</h3>
 
-      <label for="sms">Telefono Numeris</label>
-      <input type="tel" id="sms" name="sms" required>
+      <label for="name" id="label-name">Vardas ir Pavardė</label>
+      <input type="text" id="name" name="name" required />
 
-      <label for="distance">Atstumas (km)</label>
-      <input type="number" id="distance" name="distance" min="0" value="3" oninput="updatePrice()">
+      <label for="email" id="label-email">El. Paštas</label>
+      <input type="email" id="email" name="email" required />
 
-      <label for="duration">Vaizdo trukmė (min)</label>
-      <input type="number" id="duration" name="duration" min="1" value="5" oninput="updatePrice()">
+      <label for="sms" id="label-sms">Telefono Numeris</label>
+      <input type="tel" id="sms" name="sms" required />
 
-      <label for="quality">Kokybė</label>
-      <select id="quality" name="quality" onchange="updatePrice()">
-        <option value="4k">4K</option>
-        <option value="2.7k">2.7K</option>
-        <option value="1080p">1080p</option>
-      </select>
-
-      <label>
-        <input type="checkbox" id="urgent" name="urgent" onchange="updatePrice()">
-        Skubus užsakymas (papildomai +€5)
-      </label>
-
-      <p id="totalPrice">Kaina: €0.00</p>
-
-      <label for="address">Adresas</label>
-      <input type="text" id="address" name="address" required>
-
-      <label for="contact">Pageidaujamas Kontaktavimo Būdas</label>
+      <label for="contact" id="label-contact">Pageidaujamas Kontaktavimo Būdas</label>
       <select id="contact" name="contact">
         <option value="email">El. Paštas</option>
         <option value="sms">SMS</option>
       </select>
 
+      <label for="address" id="label-address">Adresas</label>
+      <input type="text" id="address" name="address" required />
+
+      <label for="distance" id="label-distance">Atstumas iki vietos (km)</label>
+      <input
+        type="number"
+        id="distance"
+        name="distance"
+        min="0"
+        max="100"
+        step="0.1"
+        value="3"
+        required
+        oninput="updatePrice()"
+      />
+
+      <label for="duration" id="label-duration"
+        >Skrydžio laikas (min) <small>(max 40 min)</small></label
+      >
+      <input
+        type="number"
+        id="duration"
+        name="duration"
+        min="1"
+        max="40"
+        value="10"
+        required
+        oninput="updatePrice()"
+      />
+
+      <label for="quality" id="label-quality">Vaizdo kokybė</label>
+      <select id="quality" name="quality" onchange="updatePrice()">
+        <option value="1080p">1080p</option>
+        <option value="2.7k">2.7K</option>
+        <option value="4k" selected>4K</option>
+      </select>
+
       <label>
-        <input type="checkbox" name="confirmation" required>
+        <input
+          type="checkbox"
+          id="urgent"
+          name="urgent"
+          onchange="updatePrice()"
+        />
+        Prioritetinis (skubus) užsakymas (+€5)
+      </label>
+
+      <label>
+        <input
+          type="checkbox"
+          id="negotiable"
+          name="negotiable"
+          checked
+          disabled
+        />
+        Kainos derinamos vietoje
+      </label>
+
+      <label>
+        <input
+          type="checkbox"
+          name="confirmation"
+          required
+        />
         Patvirtinu, kad perskaičiau ir supratau, jog darbas bus atliktas 13-mečio.
       </label>
 
+      <div class="price-estimate" id="priceEstimate">Apskaičiuota kaina: €0.00</div>
+
       <button type="submit">Pateikti Užsakymą</button>
     </form>
+
     <div style="margin-top: 20px; text-align: center;">
-      <a href="https://docs.google.com/forms/d/e/1FAIpQLSdVOeugjZrQjX68uABWOndHIqn5uwPzyVJDGtbx--ckeGGiJA/viewform?usp=dialog" 
-         target="_blank" 
-         style="display: inline-block; background-color: #22c55e; color: white; padding: 15px 30px; font-size: 1.2rem; font-weight: bold; border-radius: 10px; text-decoration: none; transition: background 0.3s;">
-        🛠️ Pateikti Remonto Užklausą
-      </a>
+      <a
+        href="https://docs.google.com/forms/d/e/1FAIpQLSdVOeugjZrQjX68uABWOndHIqn5uwPzyVJDGtbx--ckeGGiJA/viewform?usp=dialog"
+        target="_blank"
+        style="
+          display: inline-block;
+          background-color: #22c55e;
+          color: white;
+          padding: 15px 30px;
+          font-size: 1.2rem;
+          font-weight: bold;
+          border-radius: 10px;
+          text-decoration: none;
+          transition: background 0.3s;
+        "
+        >🛠️ Pateikti Remonto Užklausą</a
+      >
     </div>
   </div>
+
   <a href="tel:+37063522540" class="contact-button">📞 Skambinti</a>
+
   <footer>
     <p>Kontaktai: +370 635 22 540</p>
-    <p>Aptarnavimo zona: ±15 km aplink Šilainius, Kaunas</p>
+    <p>Aptarnavimo zona: ±15 km spinduliu aplink Šilainius, Kaunas</p>
   </footer>
+
+  <script>
+    const pricePerMin = {
+      "1080p": 0.8,
+      "2.7k": 1,
+      "4k": 1.5,
+    };
+    const urgentFee = 5;
+    const freeDistanceKm = 3;
+    const pricePerKm = 0.14;
+
+    function updatePrice() {
+      const distance = parseFloat(document.getElementById("distance").value) || 0;
+      const duration = parseInt(document.getElementById("duration").value) || 0;
+      const quality = document.getElementById("quality").value;
+      const urgent = document.getElementById("urgent").checked;
+
+      // Calculate arrival fee
+      const chargeableDistance = distance > freeDistanceKm ? distance - freeDistanceKm : 0;
+      const arrivalFee = chargeableDistance * pricePerKm;
+
+      // Calculate flight price (price per minute * duration)
+      const flightPrice = pricePerMin[quality] * duration;
+
+      // Total price
+      let total = arrivalFee + flightPrice;
+      if (urgent) total += urgentFee;
+
+      // Show price with two decimals
+      document.getElementById("priceEstimate").textContent =
+        `Apskaičiuota kaina: €${total.toFixed(2)}`;
+    }
+
+    // Initial price calculation on load
+    window.onload = () => {
+      updatePrice();
+    };
+
+    function validateForm() {
+      const duration = parseInt(document.getElementById("duration").value);
+      if (duration > 40) {
+        alert("Maksimalus skrydžio laikas yra 40 minučių.");
+        return false;
+      }
+      return true;
+    }
+
+    // Language switch example (LT to EN)
+    const texts = {
+      lt: {
+        headerTitle: "Oro fotografija Jaunuolio Akimis",
+        headerSubtitle:
+          "Aukštos kokybės drono fotografijos ir vaizdo įrašai už patrauklią kainą!",
+        navPricing: "Kainos",
+        navGallery: "Galerija",
+        navOrder: "Užsakyti",
+        formTitle: "Užsakykite Paslaugas",
+        labelName: "Vardas ir Pavardė",
+        labelEmail: "El. Paštas",
+        labelSms: "Telefono Numeris",
+        labelContact: "Pageidaujamas Kontaktavimo Būdas",
+        labelAddress: "Adresas",
+        labelDistance: "Atstumas iki vietos (km)",
+        labelDuration: "Skrydžio laikas (min) (max 40 min)",
+        labelQuality: "Vaizdo kokybė",
+        urgentLabel: "Prioritetinis (skubus) užsakymas (+€5)",
+        negotiableLabel: "Kainos derinamos vietoje",
+        confirmationText:
+          "Patvirtinu, kad perskaičiau ir supratau, jog darbas bus atliktas 13-mečio.",
+        priceEstimatePrefix: "Apskaičiuota kaina: €",
+      },
+      en: {
+        headerTitle: "Aerial Photography Through Young Eyes",
+        headerSubtitle:
+          "High-quality drone photos and videos at attractive prices!",
+        navPricing: "Pricing",
+        navGallery: "Gallery",
+        navOrder: "Order",
+        formTitle: "Order Services",
+        labelName: "Full Name",
+        labelEmail: "Email",
+        labelSms: "Phone Number",
+        labelContact: "Preferred Contact Method",
+        labelAddress: "Address",
+        labelDistance: "Distance to Location (km)",
+        labelDuration: "Flight Duration (min) (max 40 min)",
+        labelQuality: "Video Quality",
+        urgentLabel: "Urgent (priority) order (+€5)",
+        negotiableLabel: "Prices negotiable on site",
+        confirmationText:
+          "I confirm I have read and understand that the work will be done by a 13-year-old.",
+        priceEstimatePrefix: "Estimated price: €",
+      },
+    };
+
+    const langSwitchBtn = document.getElementById("langSwitch");
+    let currentLang = "lt";
+
+    langSwitchBtn.addEventListener("click", () => {
+      currentLang = currentLang === "lt" ? "en" : "lt";
+      switchLanguage(currentLang);
+      langSwitchBtn.textContent = currentLang === "lt" ? "English" : "Lietuvių";
+      updatePrice();
+    });
+
+    function switchLanguage(lang) {
+      const t = texts[lang];
+      document.getElementById("header-title").textContent = t.headerTitle;
+      document.getElementById("header-subtitle").textContent = t.headerSubtitle;
+      document.getElementById("nav-pricing").textContent = t.navPricing;
+      document.getElementById("nav-gallery").textContent = t.navGallery;
+      document.getElementById("nav-order").textContent = t.navOrder;
+      document.getElementById("form-title").textContent = t.formTitle;
+      document.getElementById("label-name").textContent = t.labelName;
+      document.getElementById("label-email").textContent = t.labelEmail;
+      document.getElementById("label-sms").textContent = t.labelSms;
+      document.getElementById("label-contact").textContent = t.labelContact;
+      document.getElementById("label-address").textContent = t.labelAddress;
+      document.getElementById("label-distance").textContent = t.labelDistance;
+      document.getElementById("label-duration").textContent = t.labelDuration;
+      document.getElementById("label-quality").textContent = t.labelQuality;
+      document.querySelector('label[for="urgent"]').textContent = t.urgentLabel;
+      document.querySelector('label[for="negotiable"]').textContent = t.negotiableLabel;
+      document.querySelector('input[name="confirmation"]').parentNode.childNodes[2].nodeValue = t.confirmationText;
+      document.getElementById("priceEstimate").textContent = `${t.priceEstimatePrefix}0.00`;
+    }
+  </script>
 </body>
 </html>
