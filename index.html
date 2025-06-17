@@ -1,123 +1,111 @@
 <!DOCTYPE html>
 <html lang="lt">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>OroFotografija</title>
   <style>
     body {
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
       margin: 0;
-      padding: 0;
-      background: linear-gradient(to bottom, #1e3a8a, #3b82f6, #93c5fd);
-      color: white;
+      font-family: 'Segoe UI', Tahoma, sans-serif;
+      background-color: #f1f5f9;
+      color: #1f2937;
     }
     header {
+      background: linear-gradient(to right, #3b82f6, #60a5fa);
+      color: white;
+      padding: 30px 20px;
       text-align: center;
-      padding: 20px;
-      background: #1e40af;
-      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+    header h1 {
+      font-size: 2.5rem;
+      margin-bottom: 10px;
     }
     nav {
-      background: #162d63;
-      padding: 10px;
+      background-color: #1e3a8a;
       text-align: center;
+      padding: 10px;
     }
     nav a {
       color: white;
-      text-decoration: none;
       margin: 0 15px;
-      font-size: 1.1rem;
-      transition: color 0.3s;
-    }
-    nav a:hover {
-      color: #facc15;
+      text-decoration: none;
+      font-size: 1rem;
+      font-weight: 500;
     }
     .content {
-      max-width: 1100px;
-      margin: auto;
-      padding: 20px;
+      max-width: 1000px;
+      margin: 30px auto;
+      padding: 0 20px;
     }
-    .pricing {
-      margin: 20px 0;
-      font-size: 1.2rem;
+    .card {
+      background: white;
+      border-radius: 15px;
+      box-shadow: 0 6px 18px rgba(0,0,0,0.05);
+      padding: 20px;
+      margin-bottom: 30px;
+    }
+    .card h2 {
+      font-size: 1.5rem;
+      margin-bottom: 10px;
+    }
+    .pricing-list p {
+      font-size: 1.1rem;
+      margin: 8px 0;
     }
     .gallery {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
       gap: 15px;
-      margin-bottom: 30px;
     }
     .gallery img {
       width: 100%;
-      border-radius: 10px;
-      transition: transform 0.3s, box-shadow 0.3s;
-    }
-    .gallery img:hover {
-      transform: scale(1.05);
-      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
     }
     form {
-      background: #1e40af;
-      padding: 20px;
-      border-radius: 10px;
-      margin-top: 20px;
-      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
-    }
-    form label, form h3 {
-      display: block;
-      margin-bottom: 10px;
-      font-size: 1.2rem;
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
     }
     form input, form select, form button {
-      width: 100%;
-      padding: 10px;
-      margin-bottom: 15px;
-      border: none;
-      border-radius: 5px;
+      padding: 12px;
       font-size: 1rem;
+      border-radius: 8px;
+      border: 1px solid #cbd5e1;
     }
     form button {
-      background: #22c55e;
+      background-color: #3b82f6;
       color: white;
-      font-size: 1rem;
+      border: none;
       cursor: pointer;
-      transition: background 0.3s;
     }
     form button:hover {
-      background: #16a34a;
+      background-color: #2563eb;
+    }
+    .calculator {
+      font-size: 1rem;
+      margin-top: 15px;
     }
     .contact-button {
       position: fixed;
       bottom: 20px;
       right: 20px;
-      background: #22c55e;
+      background: #10b981;
       color: white;
       padding: 15px 20px;
       border-radius: 50px;
       text-decoration: none;
-      font-size: 1.1rem;
       font-weight: bold;
-      transition: background 0.3s;
-    }
-    .contact-button:hover {
-      background: #16a34a;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
     }
     footer {
       text-align: center;
       padding: 20px;
       background: #1e3a8a;
-      font-size: 0.9rem;
-      box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.2);
-    }
-    @media (max-width: 768px) {
-      header h1 {
-        font-size: 2rem;
-      }
-      nav a {
-        font-size: 1rem;
-        margin: 0 10px;
-      }
+      color: white;
+      margin-top: 40px;
     }
   </style>
 </head>
@@ -125,7 +113,7 @@
 
   <header>
     <h1>Oro fotografija Jaunuolio Akimis</h1>
-    <p>Aukštos kokybės drono fotografijos ir vaizdo įrašai visiems norintiems!</p>
+    <p>Aukštos kokybės drono paslaugos – paprasta, patogu, prieinama!</p>
   </header>
 
   <nav>
@@ -135,65 +123,107 @@
   </nav>
 
   <div class="content">
-    <div id="pricing" class="pricing">
-      <p>📸 <b>5-7 nuotraukos už €10</b></p>
-      <p>📍 Už papildomus €5 – <b>nuotraukos iš jūsų pageidaujamo aukščio ir kampo</b></p>
-      <p>🎥 <b>4K Cinematinis vaizdo įrašas (2-3 min)</b> – €10</p>
-      <p>🎥 <b>4K Vaizdo įrašas (5-7 min)</b> – €15</p>
-      <p>🎥 <b>2.7K vaizdo įrašas (10 min)</b> – €10</p>
-      <p>🎥 <b>1080p vaizdo įrašas (5 min)</b> – €4</p>
+    <div id="pricing" class="card">
+      <h2>Paslaugų Kainos</h2>
+      <div class="pricing-list">
+        <p>📸 5–7 nuotraukos — <strong>€10</strong></p>
+        <p>📍 Nestandartinės pozicijos (kampai/aukštis) — <strong>+€5</strong></p>
+        <p>🎥 2 min 4K video — <strong>€10</strong></p>
+        <p>🎥 5 min 4K video — <strong>€12</strong></p>
+        <p>🎥 10 min 4K video — <strong>€15</strong> <small>(įsk. +6km kelionė)</small></p>
+        <p>🎥 5–7 min 2.7K video — <strong>€10</strong></p>
+        <p>🎥 5 min 1080p video — <strong>€4</strong></p>
+      </div>
     </div>
 
-    <div id="gallery" class="gallery">
-      <img src="nemunas.jpg" alt="Nuotrauka 1">
-      <img src="tik norfa.jpg" alt="Nuotrauka 2">
-      <img src="statybos.jpg" alt="Nuotrauka 3">
-    </div>
-
-    <form id="order" action="https://formspree.io/f/xgvezjqw" method="POST">
-      <h3>Užsakykite Paslaugas</h3>
-      <label for="name">Vardas ir Pavardė</label>
-      <input type="text" id="name" name="name" required>
-      
-      <label for="email">El. Paštas</label>
-      <input type="email" id="email" name="email" required>
-      
-      <label for="sms">Telefono Numeris</label>
-      <input type="tel" id="sms" name="sms" required>
-      
-      <label for="contact">Pageidaujamas Kontaktavimo Būdas</label>
-      <select id="contact" name="contact">
-        <option value="email">El. Paštas</option>
-        <option value="sms">SMS</option>
+    <div class="card calculator">
+      <h2>Skaičiuoklė</h2>
+      <label for="videoLength">Pasirinkite vaizdo trukmę:</label>
+      <select id="videoLength">
+        <option value="10">10 min 4K</option>
+        <option value="5">5 min 4K</option>
+        <option value="2">2 min 4K</option>
+        <option value="7">7 min 2.7K</option>
+        <option value="5fhd">5 min 1080p</option>
       </select>
-      
-      <label for="address">Adresas</label>
-      <input type="text" id="address" name="address" required>
-      
-      <label>
-        <input type="checkbox" name="confirmation" required>
-        Patvirtinu, kad perskaičiau ir supratau, jog paslaugą teikia 13-metis.
-      </label>
-      
-      <button type="submit">Pateikti Užsakymą</button>
-    </form>
 
-    <div style="margin-top: 20px; text-align: center;">
+      <label for="distance">Atstumas nuo Šilainių (km):</label>
+      <input type="number" id="distance" min="0" max="30" value="6"/>
+
+      <p><strong>Bendra kaina:</strong> <span id="totalPrice">€15</span></p>
+    </div>
+
+    <div id="gallery" class="card">
+      <h2>Galerija</h2>
+      <div class="gallery">
+        <img src="nemunas.jpg" alt="Nemunas">
+        <img src="tik norfa.jpg" alt="Norfa">
+        <img src="statybos.jpg" alt="Statybos">
+      </div>
+    </div>
+
+    <div id="order" class="card">
+      <h2>Užsakymo Forma</h2>
+      <form action="https://formspree.io/f/xgvezjqw" method="POST">
+        <input type="text" name="name" placeholder="Vardas Pavardė" required />
+        <input type="email" name="email" placeholder="El. paštas" required />
+        <input type="tel" name="phone" placeholder="Telefono numeris" required />
+        <select name="contact_method">
+          <option value="email">Susisiekti el. paštu</option>
+          <option value="sms">Susisiekti SMS</option>
+        </select>
+        <input type="text" name="address" placeholder="Adresas" required />
+        <label>
+          <input type="checkbox" required />
+          Patvirtinu, kad žinau, jog paslaugą teikia 13-metis.
+        </label>
+        <button type="submit">Pateikti užsakymą</button>
+      </form>
+    </div>
+
+    <div class="card" style="text-align:center;">
       <a href="https://docs.google.com/forms/d/e/1FAIpQLSdVOeugjZrQjX68uABWOndHIqn5uwPzyVJDGtbx--ckeGGiJA/viewform?usp=dialog" 
          target="_blank" 
-         style="display: inline-block; background-color: #22c55e; color: white; padding: 15px 30px; font-size: 1.2rem; font-weight: bold; border-radius: 10px; text-decoration: none; transition: background 0.3s;">
+         style="display: inline-block; background-color: #10b981; color: white; padding: 15px 30px; font-size: 1.1rem; border-radius: 10px; text-decoration: none;">
         🛠️ Pateikti Remonto Užklausą
       </a>
     </div>
-
   </div>
 
   <a href="tel:+37063522540" class="contact-button">📞 Skambinti</a>
 
   <footer>
     <p>Kontaktai: +370 635 22 540</p>
-    <p>Aptarnavimo zona: +-5 km spinduliu aplink Šilainius, Kaunas</p>
+    <p>Aptarnavimo zona: 15 km spinduliu aplink Šilainius, Kaunas</p>
   </footer>
+
+  <script>
+    const priceList = {
+      "10": 12,
+      "5": 10,
+      "2": 8,
+      "7": 10,
+      "5fhd": 4
+    };
+
+    const travelFeePerKm = 0.5;
+    const freeRange = 3;
+
+    function updatePrice() {
+      const video = document.getElementById("videoLength").value;
+      const distance = parseFloat(document.getElementById("distance").value);
+      let basePrice = priceList[video] || 0;
+
+      let extraFee = Math.max(0, distance - freeRange) * travelFeePerKm;
+      const total = basePrice + extraFee;
+
+      document.getElementById("totalPrice").innerText = "€" + total.toFixed(2);
+    }
+
+    document.getElementById("videoLength").addEventListener("change", updatePrice);
+    document.getElementById("distance").addEventListener("input", updatePrice);
+    updatePrice();
+  </script>
 
 </body>
 </html>
