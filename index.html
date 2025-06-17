@@ -2,228 +2,158 @@
 <html lang="lt">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>OroFotografija</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Užsakyti filmavimą</title>
   <style>
     body {
+      font-family: Arial, sans-serif;
+      background: #f4f6f9;
       margin: 0;
-      font-family: 'Segoe UI', Tahoma, sans-serif;
-      background-color: #f1f5f9;
-      color: #1f2937;
-    }
-    header {
-      background: linear-gradient(to right, #3b82f6, #60a5fa);
-      color: white;
-      padding: 30px 20px;
-      text-align: center;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-    }
-    header h1 {
-      font-size: 2.5rem;
-      margin-bottom: 10px;
-    }
-    nav {
-      background-color: #1e3a8a;
-      text-align: center;
-      padding: 10px;
-    }
-    nav a {
-      color: white;
-      margin: 0 15px;
-      text-decoration: none;
-      font-size: 1rem;
-      font-weight: 500;
-    }
-    .content {
-      max-width: 1000px;
-      margin: 30px auto;
-      padding: 0 20px;
-    }
-    .card {
-      background: white;
-      border-radius: 15px;
-      box-shadow: 0 6px 18px rgba(0,0,0,0.05);
       padding: 20px;
-      margin-bottom: 30px;
     }
-    .card h2 {
-      font-size: 1.5rem;
-      margin-bottom: 10px;
-    }
-    .pricing-list p {
-      font-size: 1.1rem;
-      margin: 8px 0;
-    }
-    .gallery {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-      gap: 15px;
-    }
-    .gallery img {
-      width: 100%;
+    .container {
+      max-width: 600px;
+      margin: auto;
+      background: #fff;
+      padding: 30px;
       border-radius: 12px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
     }
-    form {
-      display: flex;
-      flex-direction: column;
-      gap: 15px;
+    label {
+      font-weight: bold;
+      display: block;
+      margin-top: 20px;
     }
-    form input, form select, form button {
-      padding: 12px;
-      font-size: 1rem;
-      border-radius: 8px;
-      border: 1px solid #cbd5e1;
+    input, select {
+      width: 100%;
+      padding: 10px;
+      font-size: 16px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      margin-top: 5px;
     }
-    form button {
-      background-color: #3b82f6;
+    .price-display {
+      margin-top: 20px;
+      font-size: 20px;
+      font-weight: bold;
+      text-align: center;
+    }
+    button {
+      background-color: #4caf50;
       color: white;
+      padding: 12px;
       border: none;
+      border-radius: 6px;
+      width: 100%;
+      font-size: 16px;
+      margin-top: 30px;
       cursor: pointer;
     }
-    form button:hover {
-      background-color: #2563eb;
-    }
-    .calculator {
-      font-size: 1rem;
-      margin-top: 15px;
-    }
-    .contact-button {
-      position: fixed;
-      bottom: 20px;
-      right: 20px;
-      background: #10b981;
-      color: white;
-      padding: 15px 20px;
-      border-radius: 50px;
-      text-decoration: none;
-      font-weight: bold;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
-    }
-    footer {
-      text-align: center;
-      padding: 20px;
-      background: #1e3a8a;
-      color: white;
-      margin-top: 40px;
+    .lang-switch {
+      text-align: right;
+      font-size: 14px;
+      margin-bottom: -10px;
     }
   </style>
 </head>
 <body>
-
-  <header>
-    <h1>Oro fotografija Jaunuolio Akimis</h1>
-    <p>Aukštos kokybės drono paslaugos – paprasta, patogu, prieinama!</p>
-  </header>
-
-  <nav>
-    <a href="#pricing">Kainos</a>
-    <a href="#gallery">Galerija</a>
-    <a href="#order">Užsakyti</a>
-  </nav>
-
-  <div class="content">
-    <div id="pricing" class="card">
-      <h2>Paslaugų Kainos</h2>
-      <div class="pricing-list">
-        <p>📸 5–7 nuotraukos — <strong>€10</strong></p>
-        <p>📍 Nestandartinės pozicijos (kampai/aukštis) — <strong>+€5</strong></p>
-        <p>🎥 2 min 4K video — <strong>€10</strong></p>
-        <p>🎥 5 min 4K video — <strong>€12</strong></p>
-        <p>🎥 10 min 4K video — <strong>€15</strong> <small>(įsk. +6km kelionė)</small></p>
-        <p>🎥 5–7 min 2.7K video — <strong>€10</strong></p>
-        <p>🎥 5 min 1080p video — <strong>€4</strong></p>
-      </div>
+  <div class="container">
+    <div class="lang-switch">
+      <button onclick="switchLang('lt')">LT</button>
+      <button onclick="switchLang('en')">EN</button>
     </div>
+    <h2 id="title">Užsakymo forma</h2>
+    <form action="https://formspree.io/f/your-form-id" method="POST">
+      <label for="distance" id="label-distance">Atstumas nuo Šilainių (km):</label>
+      <input type="number" id="distance" name="distance" min="0" max="15" required />
 
-    <div class="card calculator">
-      <h2>Skaičiuoklė</h2>
-      <label for="videoLength">Pasirinkite vaizdo trukmę:</label>
-      <select id="videoLength">
-        <option value="10">10 min 4K</option>
-        <option value="5">5 min 4K</option>
-        <option value="2">2 min 4K</option>
-        <option value="7">7 min 2.7K</option>
-        <option value="5fhd">5 min 1080p</option>
+      <label for="minutes" id="label-minutes">Trukmė (minutėmis):</label>
+      <input type="number" id="minutes" name="minutes" min="1" required />
+
+      <label for="quality" id="label-quality">Kokybė:</label>
+      <select id="quality" name="quality">
+        <option value="4k">4K</option>
+        <option value="1080p">1080p</option>
+        <option value="720p">720p</option>
       </select>
 
-      <label for="distance">Atstumas nuo Šilainių (km):</label>
-      <input type="number" id="distance" min="0" max="30" value="6"/>
+      <label>
+        <input type="checkbox" id="urgent" name="urgent" />
+        <span id="label-urgent">Skubus užsakymas (papildomai 2€)</span>
+      </label>
 
-      <p><strong>Bendra kaina:</strong> <span id="totalPrice">€15</span></p>
-    </div>
+      <div class="price-display" id="price-display">Kaina: 0.00€</div>
 
-    <div id="gallery" class="card">
-      <h2>Galerija</h2>
-      <div class="gallery">
-        <img src="nemunas.jpg" alt="Nemunas">
-        <img src="tik norfa.jpg" alt="Norfa">
-        <img src="statybos.jpg" alt="Statybos">
-      </div>
-    </div>
-
-    <div id="order" class="card">
-      <h2>Užsakymo Forma</h2>
-      <form action="https://formspree.io/f/xgvezjqw" method="POST">
-        <input type="text" name="name" placeholder="Vardas Pavardė" required />
-        <input type="email" name="email" placeholder="El. paštas" required />
-        <input type="tel" name="phone" placeholder="Telefono numeris" required />
-        <select name="contact_method">
-          <option value="email">Susisiekti el. paštu</option>
-          <option value="sms">Susisiekti SMS</option>
-        </select>
-        <input type="text" name="address" placeholder="Adresas" required />
-        <label>
-          <input type="checkbox" required />
-          Patvirtinu, kad žinau, jog paslaugą teikia 13-metis.
-        </label>
-        <button type="submit">Pateikti užsakymą</button>
-      </form>
-    </div>
-
-    <div class="card" style="text-align:center;">
-      <a href="https://docs.google.com/forms/d/e/1FAIpQLSdVOeugjZrQjX68uABWOndHIqn5uwPzyVJDGtbx--ckeGGiJA/viewform?usp=dialog" 
-         target="_blank" 
-         style="display: inline-block; background-color: #10b981; color: white; padding: 15px 30px; font-size: 1.1rem; border-radius: 10px; text-decoration: none;">
-        🛠️ Pateikti Remonto Užklausą
-      </a>
-    </div>
+      <button type="submit" id="submit-button">Pateikti užsakymą</button>
+    </form>
   </div>
 
-  <a href="tel:+37063522540" class="contact-button">📞 Skambinti</a>
-
-  <footer>
-    <p>Kontaktai: +370 635 22 540</p>
-    <p>Aptarnavimo zona: 15 km spinduliu aplink Šilainius, Kaunas</p>
-  </footer>
-
   <script>
-    const priceList = {
-      "10": 12,
-      "5": 10,
-      "2": 8,
-      "7": 10,
-      "5fhd": 4
-    };
+    const distanceInput = document.getElementById('distance');
+    const minutesInput = document.getElementById('minutes');
+    const qualityInput = document.getElementById('quality');
+    const urgentCheckbox = document.getElementById('urgent');
+    const priceDisplay = document.getElementById('price-display');
 
-    const travelFeePerKm = 0.5;
-    const freeRange = 3;
+    function calculatePrice() {
+      const km = parseFloat(distanceInput.value) || 0;
+      const minutes = parseInt(minutesInput.value) || 0;
+      const urgent = urgentCheckbox.checked;
+      const quality = qualityInput.value;
 
-    function updatePrice() {
-      const video = document.getElementById("videoLength").value;
-      const distance = parseFloat(document.getElementById("distance").value);
-      let basePrice = priceList[video] || 0;
+      const freeKm = 3;
+      const costPerKm = 0.10;
+      const urgentFee = 2.00;
 
-      let extraFee = Math.max(0, distance - freeRange) * travelFeePerKm;
-      const total = basePrice + extraFee;
+      let videoCost = 0;
+      if (quality === "4k") videoCost = 1.0 * minutes;
+      else if (quality === "1080p") videoCost = 0.75 * minutes;
+      else videoCost = 0.5 * minutes;
 
-      document.getElementById("totalPrice").innerText = "€" + total.toFixed(2);
+      let kmCharge = Math.max(0, km - freeKm) * costPerKm;
+      let total = kmCharge + videoCost;
+      if (urgent) total += urgentFee;
+
+      priceDisplay.textContent = (currentLang === 'lt' ? 'Kaina: ' : 'Price: ') + total.toFixed(2) + '€';
     }
 
-    document.getElementById("videoLength").addEventListener("change", updatePrice);
-    document.getElementById("distance").addEventListener("input", updatePrice);
-    updatePrice();
-  </script>
+    distanceInput.addEventListener('input', calculatePrice);
+    minutesInput.addEventListener('input', calculatePrice);
+    qualityInput.addEventListener('change', calculatePrice);
+    urgentCheckbox.addEventListener('change', calculatePrice);
 
+    // Language switching
+    let currentLang = 'lt';
+    const langMap = {
+      lt: {
+        title: 'Užsakymo forma',
+        'label-distance': 'Atstumas nuo Šilainių (km):',
+        'label-minutes': 'Trukmė (minutėmis):',
+        'label-quality': 'Kokybė:',
+        'label-urgent': 'Skubus užsakymas (papildomai 2€)',
+        'submit-button': 'Pateikti užsakymą',
+        'price-prefix': 'Kaina: '
+      },
+      en: {
+        title: 'Order Form',
+        'label-distance': 'Distance from Šilainiai (km):',
+        'label-minutes': 'Duration (minutes):',
+        'label-quality': 'Quality:',
+        'label-urgent': 'Urgent order (+2€)',
+        'submit-button': 'Submit Order',
+        'price-prefix': 'Price: '
+      }
+    };
+
+    function switchLang(lang) {
+      currentLang = lang;
+      const map = langMap[lang];
+      for (const id in map) {
+        const el = document.getElementById(id);
+        if (el) el.textContent = map[id];
+      }
+      calculatePrice();
+    }
+  </script>
 </body>
 </html>
