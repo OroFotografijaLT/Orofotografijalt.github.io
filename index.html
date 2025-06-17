@@ -3,285 +3,331 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Aerial Videography Price Calculator</title>
+<title>Oro fotografija | Užsakymas</title>
 <style>
-  /* Reset and base */
+  /* Reset and basics */
   * {
     box-sizing: border-box;
   }
   body {
-    font-family: Arial, sans-serif;
-    margin: 0; padding: 0;
-    background: #f9f9f9;
-    color: #222;
-    line-height: 1.4;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
+    color: white;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
   }
   header {
-    background: #005f73;
-    color: #fff;
-    padding: 1rem;
     text-align: center;
+    padding: 2rem 1rem;
+    background: #1e40af;
+    box-shadow: 0 3px 8px rgba(0,0,0,0.3);
   }
   header h1 {
-    margin: 0 0 0.25rem;
-    font-size: 1.5rem;
+    margin: 0 0 0.3rem;
+    font-weight: 700;
   }
   header p {
     margin: 0;
-    font-size: 1rem;
-    font-weight: 300;
+    font-size: 1.1rem;
+    font-weight: 400;
   }
-  main {
-    max-width: 600px;
-    margin: 1rem auto;
-    padding: 1rem;
-    background: #fff;
-    border-radius: 6px;
-    box-shadow: 0 0 12px rgba(0,0,0,0.1);
+  nav {
+    background: #162d63;
+    padding: 0.75rem;
+    text-align: center;
   }
-  /* Language toggle */
-  #langSwitch {
-    position: fixed;
+  nav a {
+    color: white;
+    text-decoration: none;
+    margin: 0 1rem;
+    font-weight: 600;
+    font-size: 1.1rem;
+    transition: color 0.3s ease;
+  }
+  nav a:hover, nav a:focus {
+    color: #facc15;
+  }
+  .language-switch {
+    position: absolute;
     top: 1rem;
     right: 1rem;
-    background: #0a9396;
-    color: #fff;
+  }
+  .language-switch button {
+    background: transparent;
     border: none;
-    border-radius: 20px;
-    padding: 0.4rem 1rem;
-    font-size: 0.9rem;
+    color: white;
+    font-weight: 700;
     cursor: pointer;
-    z-index: 1000;
+    font-size: 1rem;
+    padding: 0 0.5rem;
+  }
+  .language-switch button.active {
+    text-decoration: underline;
+  }
+  main {
+    flex: 1;
+    max-width: 900px;
+    margin: 2rem auto;
+    padding: 1rem;
+    background: rgba(30, 64, 175, 0.85);
+    border-radius: 12px;
+    box-shadow: 0 0 30px rgba(0,0,0,0.2);
   }
   form {
     display: grid;
-    gap: 1rem;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem 2rem;
   }
-  label {
+  form label {
     display: block;
-    font-weight: bold;
-    margin-bottom: 0.25rem;
+    margin-bottom: 0.3rem;
+    font-weight: 600;
   }
-  input[type="text"],
-  input[type="email"],
-  input[type="number"],
-  select {
+  form input[type="text"],
+  form input[type="email"],
+  form input[type="tel"],
+  form select,
+  form input[type="number"] {
     width: 100%;
-    padding: 0.5rem;
+    padding: 0.5rem 0.75rem;
+    border-radius: 6px;
+    border: none;
     font-size: 1rem;
-    border: 1px solid #ccc;
-    border-radius: 4px;
   }
-  input[type="checkbox"] {
+  form input[type="checkbox"] {
     margin-right: 0.5rem;
-    vertical-align: middle;
   }
-  .checkbox-label {
-    display: flex;
-    align-items: center;
-    font-weight: normal;
+  form .full-width {
+    grid-column: 1 / -1;
   }
-  /* Price display */
-  #priceEstimate {
-    margin-top: 1rem;
-    font-size: 1.25rem;
-    font-weight: bold;
+  form button {
+    grid-column: 1 / -1;
+    padding: 0.8rem 0;
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: white;
+    background-color: #22c55e;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  form button:disabled {
+    background-color: #8fca9c;
+    cursor: not-allowed;
+  }
+  form button:hover:not(:disabled) {
+    background-color: #16a34a;
+  }
+  .price-display {
+    grid-column: 1 / -1;
+    font-size: 1.4rem;
+    font-weight: 700;
+    margin-top: 0.3rem;
     text-align: center;
-    color: #005f73;
+    color: #facc15;
   }
-  /* Responsive text sizing */
-  @media (min-width: 480px) {
-    header h1 {
-      font-size: 2rem;
-    }
-    main {
-      padding: 2rem;
-    }
-    #priceEstimate {
-      font-size: 1.5rem;
+  footer {
+    text-align: center;
+    padding: 1rem 1rem;
+    background: #1e3a8a;
+    font-size: 0.9rem;
+    box-shadow: 0 -3px 8px rgba(0,0,0,0.3);
+  }
+  footer p {
+    margin: 0.3rem 0;
+  }
+  @media (max-width: 600px) {
+    form {
+      grid-template-columns: 1fr;
     }
   }
 </style>
 </head>
 <body>
-
-<button id="langSwitch">English</button>
-
 <header>
-  <h1 id="header-title">Oro filmavimo kainos skaičiuoklė</h1>
-  <p id="header-subtitle">Greita ir tiksli kaina už Jūsų užsakymą</p>
+  <h1 data-lt="Oro fotografija | Užsakymas" data-en="Aerial Photography | Order">Oro fotografija | Užsakymas</h1>
+  <p data-lt="Aukštos kokybės drono fotografijos ir vaizdo įrašai už patrauklią kainą!" data-en="High quality drone photos and videos at a great price!">Aukštos kokybės drono fotografijos ir vaizdo įrašai už patrauklią kainą!</p>
+  <div class="language-switch" aria-label="Language switch">
+    <button id="lang-lt" class="active" aria-pressed="true">LT</button> | 
+    <button id="lang-en" aria-pressed="false">EN</button>
+  </div>
 </header>
 
+<nav>
+  <a href="#order" data-lt="Užsakyti" data-en="Order">Užsakyti</a>
+  <a href="#pricing" data-lt="Kainos" data-en="Pricing">Kainos</a>
+  <a href="#contact" data-lt="Kontaktai" data-en="Contact">Kontaktai</a>
+</nav>
+
 <main>
-  <form id="orderForm" autocomplete="off">
-    <div>
-      <label id="label-name" for="name">Vardas</label>
-      <input type="text" id="name" name="name" required />
-    </div>
+  <section id="pricing" aria-label="Pricing section" style="margin-bottom:2rem; color:#facc15;">
+    <h2 data-lt="Kainos" data-en="Pricing">Kainos</h2>
+    <ul>
+      <li data-lt="3 km pirmi nemokamai, po to €0.14 už km" data-en="First 3 km free, then €0.14 per km">3 km pirmi nemokamai, po to €0.14 už km</li>
+      <li data-lt="Kainos priklauso nuo pasirinkto video kokybės ir trukmės" data-en="Prices depend on selected video quality and duration">Kainos priklauso nuo pasirinkto video kokybės ir trukmės</li>
+      <li data-lt="Maksimalus skrydžio laikas: 40 min (priklauso nuo oro sąlygų)" data-en="Maximum flight time: 40 min (weather dependent)">Maksimalus skrydžio laikas: 40 min (priklauso nuo oro sąlygų)</li>
+      <li data-lt="Dėl kainų derinimo susisiekite asmeniškai" data-en="Prices are negotiable, contact us directly">Dėl kainų derinimo susisiekite asmeniškai</li>
+      <li data-lt="Papildomas atvykimo mokestis taikomas už kilometrus virš 3 km" data-en="Additional arrival fee applies for kilometers over 3 km">Papildomas atvykimo mokestis taikomas už kilometrus virš 3 km</li>
+      <li data-lt="Skubus užsakymas kainuoja +20% prie bendros sumos" data-en="Urgent orders cost +20% on total price">Skubus užsakymas kainuoja +20% prie bendros sumos</li>
+    </ul>
+  </section>
 
-    <div>
-      <label id="label-email" for="email">El. paštas</label>
-      <input type="email" id="email" name="email" required />
-    </div>
+  <form id="orderForm" action="https://formspree.io/f/xgvezjqw" method="POST" novalidate aria-label="Order form">
+    <h2 data-lt="Užsakykite paslaugą" data-en="Order Service">Užsakykite paslaugą</h2>
 
-    <div>
-      <label id="label-sms" for="sms">Telefono numeris (SMS)</label>
-      <input type="text" id="sms" name="sms" pattern="^\+?\d{7,15}$" placeholder="+37012345678" />
-    </div>
+    <label for="name" data-lt="Vardas ir Pavardė" data-en="Full Name">Vardas ir Pavardė</label>
+    <input type="text" id="name" name="name" required autocomplete="name" />
 
-    <div>
-      <label id="label-contact" for="contact">Kontaktinis numeris</label>
-      <input type="text" id="contact" name="contact" />
-    </div>
+    <label for="email" data-lt="El. Paštas" data-en="Email">El. Paštas</label>
+    <input type="email" id="email" name="email" required autocomplete="email" />
 
-    <div>
-      <label id="label-address" for="address">Adresas</label>
-      <input type="text" id="address" name="address" />
-    </div>
+    <label for="phone" data-lt="Telefono Numeris" data-en="Phone Number">Telefono Numeris</label>
+    <input type="tel" id="phone" name="phone" required autocomplete="tel" />
 
-    <div>
-      <label id="label-distance" for="distance">Atstumas iki kliento (km)</label>
-      <input type="number" id="distance" name="distance" min="0" max="1000" step="0.1" value="0" />
-    </div>
+    <label for="contactMethod" data-lt="Pageidaujamas kontaktavimo būdas" data-en="Preferred Contact Method">Pageidaujamas kontaktavimo būdas</label>
+    <select id="contactMethod" name="contactMethod" required>
+      <option value="email" data-lt="El. Paštas" data-en="Email" selected>El. Paštas</option>
+      <option value="sms" data-lt="SMS" data-en="SMS">SMS</option>
+    </select>
 
-    <div>
-      <label id="label-duration" for="duration">Filmo trukmė (min)</label>
-      <input type="number" id="duration" name="duration" min="1" max="40" value="1" />
-    </div>
+    <label for="address" data-lt="Adresas" data-en="Address">Adresas</label>
+    <input type="text" id="address" name="address" placeholder="Pvz. Vilniaus g. 10, Vilnius" required autocomplete="street-address" />
 
-    <div>
-      <label id="label-quality" for="quality">Filmavimo kokybė</label>
-      <select id="quality" name="quality">
-        <option value="1080p" selected>1080p Full HD</option>
-        <option value="2.7k">2.7K</option>
-        <option value="4k">4K</option>
-      </select>
-    </div>
+    <label for="distance" data-lt="Atstumas iki vietos (km)" data-en="Distance to Location (km)">Atstumas iki vietos (km)</label>
+    <input type="number" id="distance" name="distance" min="0" max="100" step="0.1" value="0" required />
 
-    <div class="checkbox-label">
+    <label for="videoLength" data-lt="Video trukmė (min)" data-en="Video Length (min)">Video trukmė (min)</label>
+    <input type="number" id="videoLength" name="videoLength" min="1" max="40" step="1" value="10" required />
+
+    <label for="quality" data-lt="Vaizdo kokybė" data-en="Video Quality">Vaizdo kokybė</label>
+    <select id="quality" name="quality" required>
+      <option value="basic" data-lt="Pagrindinė (FHD)" data-en="Basic (FHD)" selected>Pagrindinė (FHD)</option>
+      <option value="pro" data-lt="Profesionali (4K)" data-en="Professional (4K)">Profesionali (4K)</option>
+    </select>
+
+    <label class="full-width" for="urgent" style="display:flex; align-items:center;">
       <input type="checkbox" id="urgent" name="urgent" />
-      <label for="urgent" id="urgentLabel">Skubus užsakymas (+5 €)</label>
-    </div>
+      <span data-lt="Skubus užsakymas (+20% kaina)" data-en="Urgent Order (+20% price)">Skubus užsakymas (+20% kaina)</span>
+    </label>
 
-    <div class="checkbox-label">
-      <input type="checkbox" id="negotiable" name="negotiable" checked disabled />
-      <label for="negotiable" id="negotiableLabel">Kaina derinama vietoje</label>
-    </div>
-
-    <div class="checkbox-label" style="font-size:0.9rem;">
+    <label class="full-width" for="confirmation" style="display:flex; align-items:center;">
       <input type="checkbox" id="confirmation" name="confirmation" required />
-      <label for="confirmation" id="confirmationText">Patvirtinu, kad mano duomenys yra teisingi</label>
-    </div>
-  </form>
+      <span data-lt="Patvirtinu, jog darbas bus atliktas 13-mečio paauglio" data-en="I confirm the work will be done by a 13 year old teen">Patvirtinu, jog darbas bus atliktas 13-mečio paauglio</span>
+    </label>
 
-  <div id="priceEstimate">Numatoma kaina: 0.00 €</div>
+    <div class="price-display" aria-live="polite" aria-atomic="true" id="priceDisplay">Kaina: €0.00</div>
+
+    <button type="submit" id="confirmOrderBtn" disabled>Patvirtinti užsakymą</button>
+  </form>
 </main>
 
+<footer>
+  <p data-lt="© 2025 Oro fotografija. Visos teisės saugomos." data-en="© 2025 Aerial Photography. All rights reserved.">© 2025 Oro fotografija. Visos teisės saugomos.</p>
+</footer>
+
 <script>
-  const texts = {
-    lt: {
-      headerTitle: "Oro filmavimo kainos skaičiuoklė",
-      headerSubtitle: "Greita ir tiksli kaina už Jūsų užsakymą",
-      labelName: "Vardas",
-      labelEmail: "El. paštas",
-      labelSms: "Telefono numeris (SMS)",
-      labelContact: "Kontaktinis numeris",
-      labelAddress: "Adresas",
-      labelDistance: "Atstumas iki kliento (km)",
-      labelDuration: "Filmo trukmė (min)",
-      labelQuality: "Filmavimo kokybė",
-      urgentLabel: "Skubus užsakymas (+5 €)",
-      negotiableLabel: "Kaina derinama vietoje",
-      confirmationText: "Patvirtinu, kad mano duomenys yra teisingi",
-      priceEstimatePrefix: "Numatoma kaina: ",
-    },
-    en: {
-      headerTitle: "Aerial Videography Price Calculator",
-      headerSubtitle: "Quick and accurate price for your order",
-      labelName: "Name",
-      labelEmail: "Email",
-      labelSms: "Phone number (SMS)",
-      labelContact: "Contact number",
-      labelAddress: "Address",
-      labelDistance: "Distance to client (km)",
-      labelDuration: "Film duration (min)",
-      labelQuality: "Filming quality",
-      urgentLabel: "Urgent order (+5 €)",
-      negotiableLabel: "Price negotiable on site",
-      confirmationText: "I confirm my data is correct",
-      priceEstimatePrefix: "Estimated price: ",
+  // Language switch logic
+  const langLtBtn = document.getElementById("lang-lt");
+  const langEnBtn = document.getElementById("lang-en");
+  const elementsWithLang = document.querySelectorAll("[data-lt][data-en]");
+
+  function setLanguage(lang) {
+    elementsWithLang.forEach(el => {
+      el.textContent = el.getAttribute(`data-${lang}`);
+    });
+    langLtBtn.classList.toggle("active", lang === "lt");
+    langLtBtn.setAttribute("aria-pressed", lang === "lt");
+    langEnBtn.classList.toggle("active", lang === "en");
+    langEnBtn.setAttribute("aria-pressed", lang === "en");
+  }
+  langLtBtn.addEventListener("click", () => setLanguage("lt"));
+  langEnBtn.addEventListener("click", () => setLanguage("en"));
+  // default language
+  setLanguage("lt");
+
+  // Price calculation
+  const distanceInput = document.getElementById("distance");
+  const videoLengthInput = document.getElementById("videoLength");
+  const qualitySelect = document.getElementById("quality");
+  const urgentCheckbox = document.getElementById("urgent");
+  const priceDisplay = document.getElementById("priceDisplay");
+  const confirmOrderBtn = document.getElementById("confirmOrderBtn");
+  const confirmationCheckbox = document.getElementById("confirmation");
+
+  function calculatePrice() {
+    // Get values
+    let distance = parseFloat(distanceInput.value) || 0;
+    if (distance < 0) distance = 0;
+    let videoLength = parseInt(videoLengthInput.value) || 10;
+    if (videoLength < 1) videoLength = 1;
+    if (videoLength > 40) videoLength = 40; // max flight time
+    videoLengthInput.value = videoLength;
+
+    let quality = qualitySelect.value;
+    let urgent = urgentCheckbox.checked;
+
+    // Base rates (EUR)
+    const baseRates = {
+      basic: 20,    // per 10 min
+      pro: 35       // per 10 min
+    };
+
+    // Calculate base price per minute
+    let pricePerMin = baseRates[quality] / 10;
+
+    // Distance fee
+    const freeKm = 3;
+    const extraKm = distance > freeKm ? distance - freeKm : 0;
+    const kmFeePerKm = 0.14;
+    let distanceFee = extraKm * kmFeePerKm;
+
+    // Calculate price for video length
+    let videoPrice = videoLength * pricePerMin;
+
+    // Add distance fee
+    let totalPrice = videoPrice + distanceFee;
+
+    // Urgent surcharge +20%
+    if (urgent) {
+      totalPrice *= 1.20;
     }
-  };
 
-  const langSwitchBtn = document.getElementById("langSwitch");
-  let currentLang = "lt";
+    // Round to 2 decimals
+    totalPrice = totalPrice.toFixed(2);
 
-  langSwitchBtn.addEventListener("click", () => {
-    currentLang = currentLang === "lt" ? "en" : "lt";
-    switchLanguage(currentLang);
-    langSwitchBtn.textContent = currentLang === "lt" ? "English" : "Lietuvių";
-    updatePrice();
-  });
-
-  function switchLanguage(lang) {
-    const t = texts[lang];
-    document.getElementById("header-title").textContent = t.headerTitle;
-    document.getElementById("header-subtitle").textContent = t.headerSubtitle;
-    document.getElementById("label-name").textContent = t.labelName;
-    document.getElementById("label-email").textContent = t.labelEmail;
-    document.getElementById("label-sms").textContent = t.labelSms;
-    document.getElementById("label-contact").textContent = t.labelContact;
-    document.getElementById("label-address").textContent = t.labelAddress;
-    document.getElementById("label-distance").textContent = t.labelDistance;
-    document.getElementById("label-duration").textContent = t.labelDuration;
-    document.getElementById("label-quality").textContent = t.labelQuality;
-    document.querySelector('label[for="urgent"]').textContent = t.urgentLabel;
-    document.querySelector('label[for="negotiable"]').textContent = t.negotiableLabel;
-    document.querySelector('input[name="confirmation"]').parentNode.childNodes[2].nodeValue = " " + t.confirmationText;
-    document.getElementById("priceEstimate").textContent = t.priceEstimatePrefix + "0.00 €";
+    return totalPrice;
   }
 
   function updatePrice() {
-    const distance = parseFloat(document.getElementById("distance").value) || 0;
-    const duration = Math.min(Math.max(parseInt(document.getElementById("duration").value) || 1, 1), 40);
-    const quality = document.getElementById("quality").value;
-    const urgent = document.getElementById("urgent").checked;
-
-    // Price constants
-    const arrivalFreeKm = 3;
-    const arrivalPricePerKm = 0.14;
-
-    const qualityPrices = {
-      "1080p": 0.8,
-      "2.7k": 1.0,
-      "4k": 1.5
-    };
-
-    // Arrival fee calculation
-    const arrivalKm = distance > arrivalFreeKm ? distance - arrivalFreeKm : 0;
-    const arrivalFee = arrivalKm * arrivalPricePerKm;
-
-    // Flight fee calculation
-    const flightPricePerMin = qualityPrices[quality] || 0.8;
-    const flightFee = duration * flightPricePerMin;
-
-    // Urgent fee
-    const urgentFee = urgent ? 5 : 0;
-
-    const totalPrice = arrivalFee + flightFee + urgentFee;
-
-    const prefix = texts[currentLang].priceEstimatePrefix;
-
-    document.getElementById("priceEstimate").textContent = `${prefix}${totalPrice.toFixed(2)} €`;
+    const price = calculatePrice();
+    priceDisplay.textContent = `Kaina: €${price}`;
   }
 
-  // Update price on form changes
-  document.getElementById("orderForm").addEventListener("input", updatePrice);
+  // Enable confirm button only if confirmation checkbox checked
+  confirmationCheckbox.addEventListener("change", () => {
+    confirmOrderBtn.disabled = !confirmationCheckbox.checked;
+  });
 
-  // Initialize price and language on load
-  switchLanguage(currentLang);
+  // Update price live on input changes
+  [distanceInput, videoLengthInput, qualitySelect, urgentCheckbox].forEach(el => {
+    el.addEventListener("input", updatePrice);
+  });
+
+  // Initial price display
   updatePrice();
-</script>
 
+  // Optional: You can handle the form submit here or just let it POST to Formspree
+  const orderForm = document.getElementById("orderForm");
+  orderForm.addEventListener("submit", e => {
+    if (!confirmationCheckbox.checked) {
+      e.preventDefault();
+      alert("Prašome patvirtinti, kad darbas bus atliktas 13-mečio.");
+    }
+    // else, form submits normally
+  });
+</script>
 </body>
 </html>
