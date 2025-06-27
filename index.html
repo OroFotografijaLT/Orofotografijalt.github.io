@@ -1,333 +1,171 @@
 <!DOCTYPE html>
 <html lang="lt">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Oro fotografija | Užsakymas</title>
-<style>
-  /* Reset and basics */
-  * {
-    box-sizing: border-box;
-  }
-  body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    margin: 0;
-    background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
-    color: white;
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-  }
-  header {
-    text-align: center;
-    padding: 2rem 1rem;
-    background: #1e40af;
-    box-shadow: 0 3px 8px rgba(0,0,0,0.3);
-  }
-  header h1 {
-    margin: 0 0 0.3rem;
-    font-weight: 700;
-  }
-  header p {
-    margin: 0;
-    font-size: 1.1rem;
-    font-weight: 400;
-  }
-  nav {
-    background: #162d63;
-    padding: 0.75rem;
-    text-align: center;
-  }
-  nav a {
-    color: white;
-    text-decoration: none;
-    margin: 0 1rem;
-    font-weight: 600;
-    font-size: 1.1rem;
-    transition: color 0.3s ease;
-  }
-  nav a:hover, nav a:focus {
-    color: #facc15;
-  }
-  .language-switch {
-    position: absolute;
-    top: 1rem;
-    right: 1rem;
-  }
-  .language-switch button {
-    background: transparent;
-    border: none;
-    color: white;
-    font-weight: 700;
-    cursor: pointer;
-    font-size: 1rem;
-    padding: 0 0.5rem;
-  }
-  .language-switch button.active {
-    text-decoration: underline;
-  }
-  main {
-    flex: 1;
-    max-width: 900px;
-    margin: 2rem auto;
-    padding: 1rem;
-    background: rgba(30, 64, 175, 0.85);
-    border-radius: 12px;
-    box-shadow: 0 0 30px rgba(0,0,0,0.2);
-  }
-  form {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 1rem 2rem;
-  }
-  form label {
-    display: block;
-    margin-bottom: 0.3rem;
-    font-weight: 600;
-  }
-  form input[type="text"],
-  form input[type="email"],
-  form input[type="tel"],
-  form select,
-  form input[type="number"] {
-    width: 100%;
-    padding: 0.5rem 0.75rem;
-    border-radius: 6px;
-    border: none;
-    font-size: 1rem;
-  }
-  form input[type="checkbox"] {
-    margin-right: 0.5rem;
-  }
-  form .full-width {
-    grid-column: 1 / -1;
-  }
-  form button {
-    grid-column: 1 / -1;
-    padding: 0.8rem 0;
-    font-size: 1.15rem;
-    font-weight: 700;
-    color: white;
-    background-color: #22c55e;
-    border: none;
-    border-radius: 10px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-  }
-  form button:disabled {
-    background-color: #8fca9c;
-    cursor: not-allowed;
-  }
-  form button:hover:not(:disabled) {
-    background-color: #16a34a;
-  }
-  .price-display {
-    grid-column: 1 / -1;
-    font-size: 1.4rem;
-    font-weight: 700;
-    margin-top: 0.3rem;
-    text-align: center;
-    color: #facc15;
-  }
-  footer {
-    text-align: center;
-    padding: 1rem 1rem;
-    background: #1e3a8a;
-    font-size: 0.9rem;
-    box-shadow: 0 -3px 8px rgba(0,0,0,0.3);
-  }
-  footer p {
-    margin: 0.3rem 0;
-  }
-  @media (max-width: 600px) {
-    form {
-      grid-template-columns: 1fr;
-    }
-  }
-</style>
+  <meta charset="UTF-8">
+  <title>Drone Flight Request</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    body { font-family: Arial, sans-serif; margin: 20px; max-width: 600px; }
+    h2 { margin-top: 30px; }
+    label { display: block; margin-top: 10px; }
+    input, select, textarea { width: 100%; padding: 8px; margin-top: 5px; }
+    .hidden { display: none; }
+    .language-select button { margin-right: 10px; }
+  </style>
 </head>
 <body>
-<header>
-  <h1 data-lt="Oro fotografija | Užsakymas" data-en="Aerial Photography | Order">Oro fotografija | Užsakymas</h1>
-  <p data-lt="Aukštos kokybės drono fotografijos ir vaizdo įrašai už patrauklią kainą!" data-en="High quality drone photos and videos at a great price!">Aukštos kokybės drono fotografijos ir vaizdo įrašai už patrauklią kainą!</p>
-  <div class="language-switch" aria-label="Language switch">
-    <button id="lang-lt" class="active" aria-pressed="true">LT</button> | 
-    <button id="lang-en" aria-pressed="false">EN</button>
+
+  <h1 id="title">Pasirinkite kalbą / Choose your language</h1>
+  <div class="language-select">
+    <button onclick="setLang('lt')">Lietuvių</button>
+    <button onclick="setLang('en')">English</button>
+    <button onclick="setLang('ru')">Русский</button>
   </div>
-</header>
 
-<nav>
-  <a href="#order" data-lt="Užsakyti" data-en="Order">Užsakyti</a>
-  <a href="#pricing" data-lt="Kainos" data-en="Pricing">Kainos</a>
-  <a href="#contact" data-lt="Kontaktai" data-en="Contact">Kontaktai</a>
-</nav>
+  <form id="droneForm" class="hidden" method="POST" action="https://formspree.io/f/xgvezjqw">
+    
+    <p id="disclaimer"></p>
 
-<main>
-  <section id="pricing" aria-label="Pricing section" style="margin-bottom:2rem; color:#facc15;">
-    <h2 data-lt="Kainos" data-en="Pricing">Kainos</h2>
-    <ul>
-      <li data-lt="3 km pirmi nemokamai, po to €0.14 už km" data-en="First 3 km free, then €0.14 per km">3 km pirmi nemokamai, po to €0.14 už km</li>
-      <li data-lt="Kainos priklauso nuo pasirinkto video kokybės ir trukmės" data-en="Prices depend on selected video quality and duration">Kainos priklauso nuo pasirinkto video kokybės ir trukmės</li>
-      <li data-lt="Maksimalus skrydžio laikas: 40 min (priklauso nuo oro sąlygų)" data-en="Maximum flight time: 40 min (weather dependent)">Maksimalus skrydžio laikas: 40 min (priklauso nuo oro sąlygų)</li>
-      <li data-lt="Dėl kainų derinimo susisiekite asmeniškai" data-en="Prices are negotiable, contact us directly">Dėl kainų derinimo susisiekite asmeniškai</li>
-      <li data-lt="Papildomas atvykimo mokestis taikomas už kilometrus virš 3 km" data-en="Additional arrival fee applies for kilometers over 3 km">Papildomas atvykimo mokestis taikomas už kilometrus virš 3 km</li>
-      <li data-lt="Skubus užsakymas kainuoja +20% prie bendros sumos" data-en="Urgent orders cost +20% on total price">Skubus užsakymas kainuoja +20% prie bendros sumos</li>
-    </ul>
-  </section>
-
-  <form id="orderForm" action="https://formspree.io/f/xgvezjqw" method="POST" novalidate aria-label="Order form">
-    <h2 data-lt="Užsakykite paslaugą" data-en="Order Service">Užsakykite paslaugą</h2>
-
-    <label for="name" data-lt="Vardas ir Pavardė" data-en="Full Name">Vardas ir Pavardė</label>
-    <input type="text" id="name" name="name" required autocomplete="name" />
-
-    <label for="email" data-lt="El. Paštas" data-en="Email">El. Paštas</label>
-    <input type="email" id="email" name="email" required autocomplete="email" />
-
-    <label for="phone" data-lt="Telefono Numeris" data-en="Phone Number">Telefono Numeris</label>
-    <input type="tel" id="phone" name="phone" required autocomplete="tel" />
-
-    <label for="contactMethod" data-lt="Pageidaujamas kontaktavimo būdas" data-en="Preferred Contact Method">Pageidaujamas kontaktavimo būdas</label>
-    <select id="contactMethod" name="contactMethod" required>
-      <option value="email" data-lt="El. Paštas" data-en="Email" selected>El. Paštas</option>
-      <option value="sms" data-lt="SMS" data-en="SMS">SMS</option>
+    <label id="qualityLabel" for="quality"></label>
+    <select name="quality" id="quality" required>
+      <option value="1080p">1080p</option>
+      <option value="2.7k">2.7K</option>
+      <option value="4k">4K</option>
     </select>
 
-    <label for="address" data-lt="Adresas" data-en="Address">Adresas</label>
-    <input type="text" id="address" name="address" placeholder="Pvz. Vilniaus g. 10, Vilnius" required autocomplete="street-address" />
+    <label id="distanceLabel" for="distance"></label>
+    <input type="number" id="distance" name="distance_km" min="0" max="15" required oninput="calcDistancePrice()" placeholder="0–15">
 
-    <label for="distance" data-lt="Atstumas iki vietos (km)" data-en="Distance to Location (km)">Atstumas iki vietos (km)</label>
-    <input type="number" id="distance" name="distance" min="0" max="100" step="0.1" value="0" required />
+    <p><strong id="distancePrice"></strong></p>
 
-    <label for="videoLength" data-lt="Video trukmė (min)" data-en="Video Length (min)">Video trukmė (min)</label>
-    <input type="number" id="videoLength" name="videoLength" min="1" max="40" step="1" value="10" required />
+    <label id="nameLabel" for="fullname"></label>
+    <input type="text" name="fullname" id="fullname" required>
 
-    <label for="quality" data-lt="Vaizdo kokybė" data-en="Video Quality">Vaizdo kokybė</label>
-    <select id="quality" name="quality" required>
-      <option value="basic" data-lt="Pagrindinė (FHD)" data-en="Basic (FHD)" selected>Pagrindinė (FHD)</option>
-      <option value="pro" data-lt="Profesionali (4K)" data-en="Professional (4K)">Profesionali (4K)</option>
+    <label id="addressLabel" for="address"></label>
+    <input type="text" name="address" id="address" required>
+
+    <label id="urgencyLabel" for="urgency"></label>
+    <select name="urgency" id="urgency">
+      <option value="normal">Normal</option>
+      <option value="urgent">Urgent (+5–10%)</option>
     </select>
 
-    <label class="full-width" for="urgent" style="display:flex; align-items:center;">
-      <input type="checkbox" id="urgent" name="urgent" />
-      <span data-lt="Skubus užsakymas (+20% kaina)" data-en="Urgent Order (+20% price)">Skubus užsakymas (+20% kaina)</span>
+    <label id="dateLabel" for="flightdate"></label>
+    <input type="date" name="flightdate" id="flightdate" required>
+
+    <label id="phoneLabel" for="phone"></label>
+    <input type="tel" name="phone" id="phone" required>
+
+    <label id="emailLabel" for="email"></label>
+    <input type="email" name="email" id="email" required>
+
+    <label id="contactLabel" for="contactMethod"></label>
+    <select name="contactMethod" id="contactMethod">
+      <option value="sms">SMS</option>
+      <option value="email">Email</option>
+    </select>
+
+    <label>
+      <input type="checkbox" name="confirm13yo" required>
+      <span id="checkboxText"></span>
     </label>
 
-    <label class="full-width" for="confirmation" style="display:flex; align-items:center;">
-      <input type="checkbox" id="confirmation" name="confirmation" required />
-      <span data-lt="Patvirtinu, jog darbas bus atliktas 13-mečio paauglio" data-en="I confirm the work will be done by a 13 year old teen">Patvirtinu, jog darbas bus atliktas 13-mečio paauglio</span>
-    </label>
+    <label id="paymentLabel" for="payment"></label>
+    <select name="payment" id="payment" required>
+      <option value="cash">Cash</option>
+      <option value="bank">Bank transfer</option>
+    </select>
 
-    <div class="price-display" aria-live="polite" aria-atomic="true" id="priceDisplay">Kaina: €0.00</div>
-
-    <button type="submit" id="confirmOrderBtn" disabled>Patvirtinti užsakymą</button>
+    <br><br>
+    <button type="submit" id="submitBtn">Pateikti</button>
   </form>
-</main>
 
-<footer>
-  <p data-lt="© 2025 Oro fotografija. Visos teisės saugomos." data-en="© 2025 Aerial Photography. All rights reserved.">© 2025 Oro fotografija. Visos teisės saugomos.</p>
-</footer>
-
-<script>
-  // Language switch logic
-  const langLtBtn = document.getElementById("lang-lt");
-  const langEnBtn = document.getElementById("lang-en");
-  const elementsWithLang = document.querySelectorAll("[data-lt][data-en]");
-
-  function setLanguage(lang) {
-    elementsWithLang.forEach(el => {
-      el.textContent = el.getAttribute(`data-${lang}`);
-    });
-    langLtBtn.classList.toggle("active", lang === "lt");
-    langLtBtn.setAttribute("aria-pressed", lang === "lt");
-    langEnBtn.classList.toggle("active", lang === "en");
-    langEnBtn.setAttribute("aria-pressed", lang === "en");
-  }
-  langLtBtn.addEventListener("click", () => setLanguage("lt"));
-  langEnBtn.addEventListener("click", () => setLanguage("en"));
-  // default language
-  setLanguage("lt");
-
-  // Price calculation
-  const distanceInput = document.getElementById("distance");
-  const videoLengthInput = document.getElementById("videoLength");
-  const qualitySelect = document.getElementById("quality");
-  const urgentCheckbox = document.getElementById("urgent");
-  const priceDisplay = document.getElementById("priceDisplay");
-  const confirmOrderBtn = document.getElementById("confirmOrderBtn");
-  const confirmationCheckbox = document.getElementById("confirmation");
-
-  function calculatePrice() {
-    // Get values
-    let distance = parseFloat(distanceInput.value) || 0;
-    if (distance < 0) distance = 0;
-    let videoLength = parseInt(videoLengthInput.value) || 10;
-    if (videoLength < 1) videoLength = 1;
-    if (videoLength > 40) videoLength = 40; // max flight time
-    videoLengthInput.value = videoLength;
-
-    let quality = qualitySelect.value;
-    let urgent = urgentCheckbox.checked;
-
-    // Base rates (EUR)
-    const baseRates = {
-      basic: 20,    // per 10 min
-      pro: 35       // per 10 min
+  <script>
+    const translations = {
+      lt: {
+        title: "Pasirinkite kalbą",
+        disclaimer: "❗ Visi skrydžiai vykdomi 13-mečio. Skrydžio metu galite susitarti dėl norimo kampo ar nustatymų.",
+        qualityLabel: "Pasirinkite vaizdo kokybę:",
+        distanceLabel: "Atstumas nuo Šilainių (km, max 15):",
+        nameLabel: "Pilnas vardas:",
+        addressLabel: "Adresas:",
+        urgencyLabel: "Skubumas:",
+        dateLabel: "Pageidaujama skrydžio data:",
+        phoneLabel: "Telefono numeris:",
+        emailLabel: "El. paštas:",
+        contactLabel: "Kontaktinis būdas:",
+        checkboxText: "Patvirtinu, kad perskaičiau ir sutinku, jog darbas bus atliekamas 13-mečio.",
+        paymentLabel: "Apmokėjimas po atlikimo:",
+        submitBtn: "Pateikti",
+      },
+      en: {
+        title: "Choose your language",
+        disclaimer: "❗ All flights are performed by a 13-year-old. During the flight, you may negotiate and specify desired angles or settings.",
+        qualityLabel: "Select video quality:",
+        distanceLabel: "Distance from Šilainiai, Kaunas (km, max 15):",
+        nameLabel: "Full name:",
+        addressLabel: "Address:",
+        urgencyLabel: "Urgency:",
+        dateLabel: "Preferred flight date:",
+        phoneLabel: "Phone number:",
+        emailLabel: "Email:",
+        contactLabel: "Preferred contact method:",
+        checkboxText: "I confirm that I have read and understand the job will be done by a 13-year-old.",
+        paymentLabel: "Payment upon completion:",
+        submitBtn: "Submit",
+      },
+      ru: {
+        title: "Выберите язык",
+        disclaimer: "❗ Все полеты выполняются 13-летним ребенком. Во время полета вы можете указать нужные углы и настройки.",
+        qualityLabel: "Выберите качество видео:",
+        distanceLabel: "Расстояние от Шялайняй, Каунас (км, максимум 15):",
+        nameLabel: "Полное имя:",
+        addressLabel: "Адрес:",
+        urgencyLabel: "Срочность:",
+        dateLabel: "Желаемая дата полета:",
+        phoneLabel: "Номер телефона:",
+        emailLabel: "Эл. почта:",
+        contactLabel: "Предпочтительный способ связи:",
+        checkboxText: "Я подтверждаю, что ознакомлен и согласен с тем, что работу выполнит 13-летний ребенок.",
+        paymentLabel: "Оплата после выполнения:",
+        submitBtn: "Отправить",
+      }
     };
 
-    // Calculate base price per minute
-    let pricePerMin = baseRates[quality] / 10;
+    function setLang(lang) {
+      const t = translations[lang] || translations.lt;
+      document.getElementById('title').innerText = t.title;
+      document.getElementById('disclaimer').innerText = t.disclaimer;
+      document.getElementById('qualityLabel').innerText = t.qualityLabel;
+      document.getElementById('distanceLabel').innerText = t.distanceLabel;
+      document.getElementById('nameLabel').innerText = t.nameLabel;
+      document.getElementById('addressLabel').innerText = t.addressLabel;
+      document.getElementById('urgencyLabel').innerText = t.urgencyLabel;
+      document.getElementById('dateLabel').innerText = t.dateLabel;
+      document.getElementById('phoneLabel').innerText = t.phoneLabel;
+      document.getElementById('emailLabel').innerText = t.emailLabel;
+      document.getElementById('contactLabel').innerText = t.contactLabel;
+      document.getElementById('checkboxText').innerText = t.checkboxText;
+      document.getElementById('paymentLabel').innerText = t.paymentLabel;
+      document.getElementById('submitBtn').innerText = t.submitBtn;
 
-    // Distance fee
-    const freeKm = 3;
-    const extraKm = distance > freeKm ? distance - freeKm : 0;
-    const kmFeePerKm = 0.14;
-    let distanceFee = extraKm * kmFeePerKm;
-
-    // Calculate price for video length
-    let videoPrice = videoLength * pricePerMin;
-
-    // Add distance fee
-    let totalPrice = videoPrice + distanceFee;
-
-    // Urgent surcharge +20%
-    if (urgent) {
-      totalPrice *= 1.20;
+      document.querySelector('.language-select').classList.add('hidden');
+      document.getElementById('droneForm').classList.remove('hidden');
     }
 
-    // Round to 2 decimals
-    totalPrice = totalPrice.toFixed(2);
-
-    return totalPrice;
-  }
-
-  function updatePrice() {
-    const price = calculatePrice();
-    priceDisplay.textContent = `Kaina: €${price}`;
-  }
-
-  // Enable confirm button only if confirmation checkbox checked
-  confirmationCheckbox.addEventListener("change", () => {
-    confirmOrderBtn.disabled = !confirmationCheckbox.checked;
-  });
-
-  // Update price live on input changes
-  [distanceInput, videoLengthInput, qualitySelect, urgentCheckbox].forEach(el => {
-    el.addEventListener("input", updatePrice);
-  });
-
-  // Initial price display
-  updatePrice();
-
-  // Optional: You can handle the form submit here or just let it POST to Formspree
-  const orderForm = document.getElementById("orderForm");
-  orderForm.addEventListener("submit", e => {
-    if (!confirmationCheckbox.checked) {
-      e.preventDefault();
-      alert("Prašome patvirtinti, kad darbas bus atliktas 13-mečio.");
+    function calcDistancePrice() {
+      const distance = parseFloat(document.getElementById('distance').value);
+      let price = 0;
+      if (!isNaN(distance) && distance > 3) {
+        price = (distance - 3) * 0.14;
+      }
+      const formatted = price > 0 ? `+ €${price.toFixed(2)} papildomai / extra` : "Nemokamas atstumas / Free distance";
+      document.getElementById('distancePrice').innerText = formatted;
     }
-    // else, form submits normally
-  });
-</script>
+
+    // Default to Lithuanian
+    window.onload = () => setLang('lt');
+  </script>
+
 </body>
 </html>
